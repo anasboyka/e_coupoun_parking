@@ -2,7 +2,7 @@ import 'package:e_coupoun_parking/constant.dart';
 import 'package:e_coupoun_parking/route_generator.dart';
 import 'package:flutter/material.dart';
 
-//test edit untuk hg pull kali ke 2
+//test push
 void main() {
   runApp(MyApp());
 }
