@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
               textAlign: TextAlign.left,
             ),
             content: Text(
-              'Please enter a valid $inputData',
+              'Please enter $inputData',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 19,
@@ -324,13 +324,11 @@ class _LoginState extends State<Login> {
 
   Widget loginInputDesign(Size size) {
     return Column(
+      //mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(
-              ((size.width - (size.width * 0.77)) / 2),
-              0.015 * size.height,
-              ((size.width - (size.width * 0.77)) / 2),
-              80),
+          padding: EdgeInsets.fromLTRB(((size.width - (size.width * 0.77)) / 2),
+              0.015 * size.height, ((size.width - (size.width * 0.77)) / 2), 0),
           child: Stack(
             children: [
               Container(
@@ -412,39 +410,120 @@ class _LoginState extends State<Login> {
           ),
         ),
         Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 48,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Remember Me',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 19,
-                    color: const Color(0xff131450),
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.left,
+          child: Padding(
+            padding: EdgeInsets.only(top: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 48,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Remember Me',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 19,
+                          color: const Color(0xff131450),
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Switch(
+                      value: valSwitch,
+                      activeColor: Color(0xff2AD53A),
+                      activeTrackColor: Color(0xffADF3C4),
+                      splashRadius: 20,
+                      onChanged: (val) {
+                        print(val);
+                        setState(() {
+                          valSwitch = val;
+                        });
+                      },
+                    ),
+                  ],
                 ),
-              ),
-              Switch(
-                value: valSwitch,
-                activeColor: Color(0xff2AD53A),
-                activeTrackColor: Color(0xffADF3C4),
-                splashRadius: 20,
-                onChanged: (val) {
-                  print(val);
-                  setState(() {
-                    valSwitch = val;
-                  });
-                },
-              ),
-            ],
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Officer? ',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 19,
+                        color: const Color(0xff000000),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    InkWell(
+                      child: Text(
+                        'Click Here',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 19,
+                          color: const Color(0xff1F8FEB),
+                          fontWeight: FontWeight.w700,
+                          decoration: TextDecoration.underline,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      onTap: () {
+                        print("login as officer");
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Administrator? ',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 19,
+                        color: const Color(0xff000000),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    InkWell(
+                      child: Text(
+                        'Click Here',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 19,
+                          color: const Color(0xff1F8FEB),
+                          fontWeight: FontWeight.w700,
+                          decoration: TextDecoration.underline,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      onTap: () {
+                        print("administrator");
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        )
+        ),
+        // Expanded(
+        //   child: Text('test'),
+        // ),
+        // Expanded(
+        //   child: Text('test'),
+        // ),
       ],
     );
   }
@@ -587,9 +666,12 @@ class _LoginState extends State<Login> {
                 ),
                 onTap: () async {
                   print("register");
-                  if (formValidation()) {
-                    print("test");
+                  if (_formkey.currentState!.validate()) {
+                    if (formValidation()) {
+                      print("test");
+                    }
                   }
+
                   // if (_formkey.currentState!.validate()) {
                   //   // ScaffoldMessenger.of(context).showSnackBar(
                   //   //   const SnackBar(content: Text('Processing Data')),
@@ -615,10 +697,44 @@ class _LoginState extends State<Login> {
 
   bool formValidation() {
     if (usernamecon.text.isEmpty) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(content: Text('Processing Data')),
-      // );
       createAlertDialog(context, "Username");
+      return false;
+    }
+    if (namecon.text.isEmpty) {
+      createAlertDialog(context, "name");
+      return false;
+    }
+    if (phoneNumcon.text.isEmpty) {
+      createAlertDialog(context, "Phone number");
+      return false;
+    }
+    if (emailcon.text.isEmpty) {
+      createAlertDialog(context, "E-mail adrress");
+      return false;
+    }
+    if (passcon.text.isEmpty) {
+      createAlertDialog(context, "Password");
+      return false;
+    }
+    if (confirmpasscon.text.isEmpty) {
+      createAlertDialog(context, "Password Confirmation");
+      return false;
+    }
+    if (icNumcon.text.isEmpty) {
+      createAlertDialog(context, "IC number");
+      return false;
+    }
+    if (dateOfBirthcon.text.isEmpty) {
+      createAlertDialog(context, "Date of birth");
+      return false;
+    }
+    if (passcon.text.length <= 6) {
+      createAlertDialog(context, "Password more than 6 character");
+      return false;
+    }
+    if (passcon.text != confirmpasscon.text) {
+      createAlertDialog(context, "Matched password");
+      return false;
     }
     return true;
   }
@@ -649,6 +765,7 @@ class _LoginState extends State<Login> {
                   _selectDate(context);
                 }
               },
+
               // validator: (val) {
               //   if (hintText == "Username") {
               //     return val!.isEmpty ? "Enter username" : null;
@@ -699,6 +816,8 @@ class _LoginState extends State<Login> {
                   ? isHidden
                   : false,
               decoration: InputDecoration(
+                //suffixText: "test",
+                //suffix: Text('test'),
                 hintText: hintText,
                 contentPadding: EdgeInsets.all(0),
                 isDense: true,
