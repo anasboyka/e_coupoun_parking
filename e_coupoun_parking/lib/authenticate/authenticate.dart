@@ -121,7 +121,7 @@ class _AuthenticationState extends State<Authentication> {
             actionsPadding: EdgeInsets.fromLTRB(0, 43, 9, 15),
             buttonPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             contentPadding: EdgeInsets.fromLTRB(27, 20, 15, 0),
-            //insetPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            insetPadding: EdgeInsets.fromLTRB(55, 0, 55, 0),
             titlePadding: EdgeInsets.fromLTRB(27, 27, 27, 0),
           );
         });
@@ -399,8 +399,8 @@ class _AuthenticationState extends State<Authentication> {
                       ),
                     ),
                     onTap: () {
+                      Navigator.of(context).pushNamed('/home');
                       print("login");
-                      //Navigator.
                     },
                   ),
                 ),
@@ -475,6 +475,7 @@ class _AuthenticationState extends State<Authentication> {
                         textAlign: TextAlign.left,
                       ),
                       onTap: () {
+                        Navigator.of(context).pushNamed('/loginofficer');
                         print("login as officer");
                       },
                     ),
@@ -508,6 +509,7 @@ class _AuthenticationState extends State<Authentication> {
                         textAlign: TextAlign.left,
                       ),
                       onTap: () {
+                        Navigator.of(context).pushNamed('/loginadmin');
                         print("administrator");
                       },
                     ),
