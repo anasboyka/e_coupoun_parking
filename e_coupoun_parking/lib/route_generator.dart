@@ -12,18 +12,68 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return CupertinoPageRoute(builder: (_) => Wrapper());
+        return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+          return Wrapper();
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          final tween = Tween(begin: begin, end: end);
+          final offsetAnimation = animation.drive(tween);
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        });
       // case '/subBluebook':
       //   return CupertinoPageRoute(
       //       builder: (_) => SubBluebook(bluebookdata: args));
       case '/home':
-        return CupertinoPageRoute(builder: (_) => HomeScreen());
+        return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+          return HomeScreen();
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          final tween = Tween(begin: begin, end: end);
+          final offsetAnimation = animation.drive(tween);
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        });
       case '/loginadmin':
-        return CupertinoPageRoute(builder: (_) => LoginAdminPage());
+        return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+          return LoginAdminPage();
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          final tween = Tween(begin: begin, end: end);
+          final offsetAnimation = animation.drive(tween);
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        });
       case '/loginofficer':
-        return CupertinoPageRoute(builder: (_) => LoginOfficerPage());
+        return PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+          return LoginOfficerPage();
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          final tween = Tween(begin: begin, end: end);
+          final offsetAnimation = animation.drive(tween);
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        });
+
       default:
         return CupertinoPageRoute(builder: (_) => HomeScreen());
     }
   }
+  
 }

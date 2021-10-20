@@ -399,7 +399,7 @@ class _AuthenticationState extends State<Authentication> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed('/home');
+                      Navigator.of(context).pushReplacementNamed('/home');
                       print("login");
                     },
                   ),
@@ -476,6 +476,7 @@ class _AuthenticationState extends State<Authentication> {
                       ),
                       onTap: () {
                         Navigator.of(context).pushNamed('/loginofficer');
+                        //Navigator.of(context).pushReplacementNamed('/loginofficer');
                         print("login as officer");
                       },
                     ),
@@ -509,7 +510,12 @@ class _AuthenticationState extends State<Authentication> {
                         textAlign: TextAlign.left,
                       ),
                       onTap: () {
-                        Navigator.of(context).pushNamed('/loginadmin');
+                        //Navigator.of(context).pushNamed('/loginadmin');
+                        //Navigator.of(context).pushReplacementNamed('/loginadmin');
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/loginadmin',
+                        );
                         print("administrator");
                       },
                     ),
@@ -519,12 +525,6 @@ class _AuthenticationState extends State<Authentication> {
             ),
           ),
         ),
-        // Expanded(
-        //   child: Text('test'),
-        // ),
-        // Expanded(
-        //   child: Text('test'),
-        // ),
       ],
     );
   }
@@ -817,12 +817,9 @@ class _AuthenticationState extends State<Authentication> {
                   ? isHidden
                   : false,
               decoration: InputDecoration(
-                //suffixText: "test",
-                //suffix: Text('test'),
                 hintText: hintText,
                 contentPadding: EdgeInsets.all(0),
                 isDense: true,
-                //alignLabelWithHint: true,
                 hintStyle: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 16,
