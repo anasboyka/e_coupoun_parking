@@ -1,4 +1,6 @@
 import 'package:e_coupoun_parking/constant.dart';
+import 'package:e_coupoun_parking/services/auth.dart';
+import 'package:e_coupoun_parking/services/mysql_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,7 +16,8 @@ class _AuthenticationState extends State<Authentication> {
   int animatedpos = 0;
 
   bool togglePlaces = true;
-  bool isHidden = true;
+  bool isHidden2 = true;
+  bool isHidden1 = true;
   bool animationEnd = true;
   bool valSwitch = true;
   bool loading = true;
@@ -40,10 +43,11 @@ class _AuthenticationState extends State<Authentication> {
       confirmPass = "",
       icNum = "",
       dateOfBirth = "",
-      error = "";
+      error = "error";
 
   final _formkey = GlobalKey<FormState>();
-
+  final AuthService _auth = new AuthService();
+  final MysqlService _sql = new MysqlService();
   DateTime _date = DateTime.now();
 
   Future _selectDate(BuildContext context) async {
@@ -343,6 +347,7 @@ class _AuthenticationState extends State<Authentication> {
                       builder: (context, constraint) {
                         //print(constraint.maxWidth);
                         return Form(
+                          key: _formkey,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             //crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -400,7 +405,10 @@ class _AuthenticationState extends State<Authentication> {
                     ),
                     onTap: () {
                       Navigator.of(context).pushReplacementNamed('/home');
-                      print("login");
+                      // print("login");
+                      // if (_formkey.currentState!.validate()) {
+                      //   if (loginFormValidation()) {}
+                      // }
                     },
                   ),
                 ),
@@ -668,15 +676,26 @@ class _AuthenticationState extends State<Authentication> {
                 onTap: () async {
                   print("register");
                   if (_formkey.currentState!.validate()) {
-                    if (formValidation()) {
-                      print("test");
+                    if (registerFormValidation()) {
+                      print("start firebase");
+                      print(emailcon.text);
+                      print(passcon.text);
+                      dynamic result = await _auth.registerWithEmailAndPassword(
+                          emailcon.text, passcon.text);
+                      if (result == null) {
+                        setState(() => error = "please supply a valid email");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('$error')),
+                        );
+                      }
+                      print(error);
                     }
                   }
 
                   // if (_formkey.currentState!.validate()) {
-                  //   // ScaffoldMessenger.of(context).showSnackBar(
-                  //   //   const SnackBar(content: Text('Processing Data')),
-                  //   // );
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(content: Text('Processing Data')),
+                  // );
                   //   setState(() => loading = true);
                   //   // dynamic result = await _auth.registerWithEmailAndPassword(
                   //   //     email, password, name, mobileNo);
@@ -696,7 +715,7 @@ class _AuthenticationState extends State<Authentication> {
     );
   }
 
-  bool formValidation() {
+  bool registerFormValidation() {
     if (usernamecon.text.isEmpty) {
       createAlertDialog(context, "Username");
       return false;
@@ -735,6 +754,18 @@ class _AuthenticationState extends State<Authentication> {
     }
     if (passcon.text != confirmpasscon.text) {
       createAlertDialog(context, "Matched password");
+      return false;
+    }
+    return true;
+  }
+
+  bool loginFormValidation() {
+    if (loginEmailcon.text.isEmpty) {
+      createAlertDialog(context, "Username/email");
+      return false;
+    }
+    if (loginpasscon.text.isEmpty) {
+      createAlertDialog(context, "Password");
       return false;
     }
     return true;
@@ -812,10 +843,11 @@ class _AuthenticationState extends State<Authentication> {
                           : TextInputType.text,
               //textAlign: TextAlign.center,
               //style: ,
-              obscureText: (hintText == 'Password' ||
-                      hintText == 'Password Confirmation')
-                  ? isHidden
-                  : false,
+              obscureText: (hintText == 'Password')
+                  ? isHidden1
+                  : hintText == 'Password Confirmation'
+                      ? isHidden2
+                      : false,
               decoration: InputDecoration(
                 hintText: hintText,
                 contentPadding: EdgeInsets.all(0),
@@ -850,7 +882,7 @@ class _AuthenticationState extends State<Authentication> {
             ),
           ),
         ),
-        (hintText == "Password" || hintText == "Password Confirmation")
+        hintText == "Password"
             ? SizedBox(
                 width: 26,
                 height: 26,
@@ -858,11 +890,11 @@ class _AuthenticationState extends State<Authentication> {
                   iconSize: 26,
                   onPressed: () {
                     setState(() {
-                      isHidden = !isHidden;
+                      isHidden1 = !isHidden1;
                     });
                   },
                   icon: Icon(
-                    isHidden ? Icons.visibility : Icons.visibility_off,
+                    isHidden1 ? Icons.visibility : Icons.visibility_off,
                     size: 26,
                   ),
                   alignment: Alignment.center,
@@ -870,10 +902,30 @@ class _AuthenticationState extends State<Authentication> {
                   splashRadius: 20,
                 ),
               )
-            : SizedBox(
-                width: 0,
-                height: 0,
-              )
+            : hintText == "Password Confirmation"
+                ? SizedBox(
+                    width: 26,
+                    height: 26,
+                    child: IconButton(
+                      iconSize: 26,
+                      onPressed: () {
+                        setState(() {
+                          isHidden2 = !isHidden2;
+                        });
+                      },
+                      icon: Icon(
+                        isHidden2 ? Icons.visibility : Icons.visibility_off,
+                        size: 26,
+                      ),
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(0),
+                      splashRadius: 20,
+                    ),
+                  )
+                : SizedBox(
+                    width: 0,
+                    height: 0,
+                  )
       ],
     );
   }

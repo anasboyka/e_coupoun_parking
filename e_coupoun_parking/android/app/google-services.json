@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "213542346814",
+    "project_id": "e-coupoun-parking",
+    "storage_bucket": "e-coupoun-parking.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213542346814:android:7cb873465be8682693b16f",
+        "android_client_info": {
+          "package_name": "com.example.e_coupoun_parking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213542346814-kq1kp12a72vocvsakedp5d0ffpofboav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3E3i_JxZ7_b7gYUbznuAssMZpyub43qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213542346814-kq1kp12a72vocvsakedp5d0ffpofboav.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
