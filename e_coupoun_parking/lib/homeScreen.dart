@@ -74,8 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
           splashColor: Colors.green,
           child: Container(
             alignment: Alignment.center,
-            height: 130,
-            width: 130,
+            height: 100,
+            width: 100,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xffCBF0C1),
@@ -138,8 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
           alignment: Alignment.topRight,
           child: IconButton(
             onPressed: () async {
-              Navigator.of(context).pushReplacementNamed('/');
-              //await _auth.signOut();
+              //Navigator.of(context).pushReplacementNamed('/');
+              await _auth.signOut();
             },
             icon: Icon(
               Icons.power_settings_new,
