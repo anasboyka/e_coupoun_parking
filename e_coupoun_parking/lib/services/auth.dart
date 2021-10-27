@@ -1,4 +1,5 @@
 import 'package:e_coupoun_parking/models/user.dart';
+import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -23,6 +24,8 @@ class AuthService {
           email: email, password: password);
       User? user = credential.user;
       print(credential.user);
+      await FirebaseService(uid: user!.uid).updateDriverData(
+          'username', "name", 'phoneNum', 'icNum', DateTime.now());
       if (credential.user == null) {
         return null;
       } else {
@@ -34,7 +37,7 @@ class AuthService {
     }
   }
 
-   Future signInWithEmailAndPassword(String email, String password) async {
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -59,6 +62,4 @@ class AuthService {
       return null;
     }
   }
-
-
 }
