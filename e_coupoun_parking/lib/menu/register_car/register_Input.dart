@@ -82,6 +82,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                   duration: Duration(seconds: 3),
                                 ),
                               );
+                              Navigator.of(context).pop();
                             },
                             child: Text(
                               'Save',

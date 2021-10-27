@@ -404,11 +404,12 @@ class _AuthenticationState extends State<Authentication> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pushReplacementNamed('/home');
-                      // print("login");
-                      // if (_formkey.currentState!.validate()) {
-                      //   if (loginFormValidation()) {}
-                      // }
+                      print("login");
+                      if (_formkey.currentState!.validate()) {
+                        if (loginFormValidation()) {
+                          Navigator.of(context).pushReplacementNamed('/home');
+                        }
+                      }
                     },
                   ),
                 ),
@@ -631,8 +632,8 @@ class _AuthenticationState extends State<Authentication> {
                             height: 0,
                           ),
                         ),
-                        inputDesign(constraint, 'Date of Birth',
-                            dateOfBirthcon, 'assets/icons/birthDateIcon.png'),
+                        inputDesign(constraint, 'Date of Birth', dateOfBirthcon,
+                            'assets/icons/birthDateIcon.png'),
                       ],
                     );
                   },
@@ -827,6 +828,11 @@ class _AuthenticationState extends State<Authentication> {
               //     return null;
               //   }
               // },
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 22,
+                color: Colors.black,
+              ),
               readOnly: hintText == "Date of Birth" ? true : false,
               //focusNode: ,
               textAlignVertical: TextAlignVertical.center,
@@ -851,7 +857,7 @@ class _AuthenticationState extends State<Authentication> {
                 isDense: true,
                 hintStyle: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 16,
+                  fontSize: 22,
                   color: const Color(0xffa8a8a8),
                 ),
                 border: InputBorder.none,
