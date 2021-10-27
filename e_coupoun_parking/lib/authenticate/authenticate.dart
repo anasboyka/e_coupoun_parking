@@ -621,7 +621,13 @@ class _AuthenticationState extends State<Authentication> {
                       print(emailcon.text);
                       print(passcon.text);
                       dynamic result = await _auth.registerWithEmailAndPassword(
-                          emailcon.text, passcon.text);
+                          emailcon.text,
+                          passcon.text,
+                          usernamecon.text,
+                          namecon.text,
+                          phoneNumcon.text,
+                          icNumcon.text,
+                          _date);
                       //setState(() => loading = false);
                       if (result == null) {
                         setState(() => error = "please supply a valid email");
@@ -653,7 +659,7 @@ class _AuthenticationState extends State<Authentication> {
           ),
           Align(
             alignment: Alignment.center,
-            child:loading? CircularProgressIndicator():SizedBox(),
+            child: loading ? CircularProgressIndicator() : SizedBox(),
           )
         ],
       ),

@@ -18,14 +18,21 @@ class AuthService {
         .map(_userFromFirebaseUser);
   }
 
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String email,
+      String password,
+      String username,
+      String name,
+      String phoneNum,
+      String icNum,
+      DateTime dateOfbirth) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = credential.user;
       print(credential.user);
-      await FirebaseService(uid: user!.uid).updateDriverData(
-          'username', "name", 'phoneNum', 'icNum', DateTime.now());
+      await FirebaseService(uid: user!.uid)
+          .updateDriverData(username, name, phoneNum, icNum, dateOfbirth);
       if (credential.user == null) {
         return null;
       } else {
