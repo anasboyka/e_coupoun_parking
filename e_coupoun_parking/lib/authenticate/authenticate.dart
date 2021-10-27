@@ -20,7 +20,7 @@ class _AuthenticationState extends State<Authentication> {
   bool isHidden1 = true;
   bool animationEnd = true;
   bool valSwitch = true;
-  bool loading = true;
+  bool loading = false;
 
   final usernamecon = new TextEditingController();
   final namecon = new TextEditingController();
