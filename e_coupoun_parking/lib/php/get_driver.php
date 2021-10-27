@@ -19,8 +19,6 @@ while ($resultsFrom = $stm ->fetch()){
         )
     );
 }
-
-//$row = $stm->fetch(PDO::FETCH_ASSOC);
 echo json_encode($myarray);
 
 ?>

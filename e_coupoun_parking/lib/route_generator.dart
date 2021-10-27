@@ -1,5 +1,8 @@
 import 'package:e_coupoun_parking/authenticate/loginAdmin.dart';
 import 'package:e_coupoun_parking/authenticate/loginOfficer.dart';
+import 'package:e_coupoun_parking/menu/e_wallet/e_wallet.dart';
+import 'package:e_coupoun_parking/menu/register_car/register_Input.dart';
+import 'package:e_coupoun_parking/menu/register_car/register_car.dart';
 import 'package:e_coupoun_parking/wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,10 +73,14 @@ class RouteGenerator {
             child: child,
           );
         });
-
+      case '/registercar':
+        return CupertinoPageRoute(builder: (_) => RegisterCar());
+      case '/registerinputcar':
+        return CupertinoPageRoute(builder: (_) => RegisterCarInput());
+      case '/ewallet':
+        return CupertinoPageRoute(builder: (_) => Ewallet());
       default:
         return CupertinoPageRoute(builder: (_) => HomeScreen());
     }
   }
-  
 }

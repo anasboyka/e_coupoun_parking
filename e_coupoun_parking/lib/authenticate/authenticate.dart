@@ -304,17 +304,20 @@ class _AuthenticationState extends State<Authentication> {
               Container(
                 width: size.width,
                 height: 563 + 80 + (0.015 * size.height),
-                child: PageView(
-                  onPageChanged: (index) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
-                  controller: pagecon,
-                  children: [
-                    loginInputDesign(size),
-                    registerInputDesign(size),
-                  ],
+                child: Form(
+                  key: _formkey,
+                  child: PageView(
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    controller: pagecon,
+                    children: [
+                      loginInputDesign(size),
+                      registerInputDesign(size),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -346,27 +349,24 @@ class _AuthenticationState extends State<Authentication> {
                     child: LayoutBuilder(
                       builder: (context, constraint) {
                         //print(constraint.maxWidth);
-                        return Form(
-                          key: _formkey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            //crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              inputDesign(constraint, 'Username/e-mail',
-                                  loginEmailcon, 'assets/icons/nameIcon.png'),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 38, 0, 38),
-                                child: Divider(
-                                  color: kgreycolor1,
-                                  thickness: 1.5,
-                                  height: 0,
-                                ),
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          //crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            inputDesign(constraint, 'Username/e-mail',
+                                loginEmailcon, 'assets/icons/nameIcon.png'),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 38, 0, 38),
+                              child: Divider(
+                                color: kgreycolor1,
+                                thickness: 1.5,
+                                height: 0,
                               ),
-                              inputDesign(constraint, 'Password', loginpasscon,
-                                  'assets/icons/passwordIcon.png'),
-                            ],
-                          ),
+                            ),
+                            inputDesign(constraint, 'Password', loginpasscon,
+                                'assets/icons/passwordIcon.png'),
+                          ],
                         );
                       },
                     ),
@@ -483,7 +483,7 @@ class _AuthenticationState extends State<Authentication> {
                         textAlign: TextAlign.left,
                       ),
                       onTap: () {
-                        Navigator.of(context).pushNamed('/loginofficer');
+                        //Navigator.of(context).pushNamed('/loginofficer');
                         //Navigator.of(context).pushReplacementNamed('/loginofficer');
                         print("login as officer");
                       },
@@ -520,10 +520,10 @@ class _AuthenticationState extends State<Authentication> {
                       onTap: () {
                         //Navigator.of(context).pushNamed('/loginadmin');
                         //Navigator.of(context).pushReplacementNamed('/loginadmin');
-                        Navigator.pushReplacementNamed(
-                          context,
-                          '/loginadmin',
-                        );
+                        // Navigator.pushReplacementNamed(
+                        //   context,
+                        //   '/loginadmin',
+                        // );
                         print("administrator");
                       },
                     ),
@@ -556,87 +556,84 @@ class _AuthenticationState extends State<Authentication> {
                 child: LayoutBuilder(
                   builder: (context, constraint) {
                     //print(constraint.maxWidth);
-                    return Form(
-                      key: _formkey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        //crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          inputDesign(constraint, 'Username', usernamecon,
-                              'assets/icons/usernameIcon.png'),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                            child: Divider(
-                              color: kgreycolor1,
-                              thickness: 1.5,
-                              height: 0,
-                            ),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      //crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        inputDesign(constraint, 'Username', usernamecon,
+                            'assets/icons/usernameIcon.png'),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+                          child: Divider(
+                            color: kgreycolor1,
+                            thickness: 1.5,
+                            height: 0,
                           ),
-                          inputDesign(constraint, 'Name', namecon,
-                              'assets/icons/nameIcon.png'),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                            child: Divider(
-                              color: kgreycolor1,
-                              thickness: 1.5,
-                              height: 0,
-                            ),
+                        ),
+                        inputDesign(constraint, 'Name', namecon,
+                            'assets/icons/nameIcon.png'),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+                          child: Divider(
+                            color: kgreycolor1,
+                            thickness: 1.5,
+                            height: 0,
                           ),
-                          inputDesign(constraint, 'Phone Number', phoneNumcon,
-                              'assets/icons/phoneNumberIcon.png'),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                            child: Divider(
-                              color: kgreycolor1,
-                              thickness: 1.5,
-                              height: 0,
-                            ),
+                        ),
+                        inputDesign(constraint, 'Phone Number', phoneNumcon,
+                            'assets/icons/phoneNumberIcon.png'),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+                          child: Divider(
+                            color: kgreycolor1,
+                            thickness: 1.5,
+                            height: 0,
                           ),
-                          inputDesign(constraint, 'E-mail Address', emailcon,
-                              'assets/icons/emailIcon.png'),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                            child: Divider(
-                              color: kgreycolor1,
-                              thickness: 1.5,
-                              height: 0,
-                            ),
+                        ),
+                        inputDesign(constraint, 'E-mail Address', emailcon,
+                            'assets/icons/emailIcon.png'),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+                          child: Divider(
+                            color: kgreycolor1,
+                            thickness: 1.5,
+                            height: 0,
                           ),
-                          inputDesign(constraint, 'Password', passcon,
-                              'assets/icons/passwordIcon.png'),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                            child: Divider(
-                              color: kgreycolor1,
-                              thickness: 1.5,
-                              height: 0,
-                            ),
+                        ),
+                        inputDesign(constraint, 'Password', passcon,
+                            'assets/icons/passwordIcon.png'),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+                          child: Divider(
+                            color: kgreycolor1,
+                            thickness: 1.5,
+                            height: 0,
                           ),
-                          inputDesign(constraint, 'Password Confirmation',
-                              confirmpasscon, 'assets/icons/passwordIcon.png'),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                            child: Divider(
-                              color: kgreycolor1,
-                              thickness: 1.5,
-                              height: 0,
-                            ),
+                        ),
+                        inputDesign(constraint, 'Password Confirmation',
+                            confirmpasscon, 'assets/icons/passwordIcon.png'),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+                          child: Divider(
+                            color: kgreycolor1,
+                            thickness: 1.5,
+                            height: 0,
                           ),
-                          inputDesign(constraint, 'IC Number', icNumcon,
-                              'assets/icons/icNumberIcon.png'),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                            child: Divider(
-                              color: kgreycolor1,
-                              thickness: 1.5,
-                              height: 0,
-                            ),
+                        ),
+                        inputDesign(constraint, 'IC Number', icNumcon,
+                            'assets/icons/icNumberIcon.png'),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+                          child: Divider(
+                            color: kgreycolor1,
+                            thickness: 1.5,
+                            height: 0,
                           ),
-                          inputDesign(constraint, 'Date of Birth',
-                              dateOfBirthcon, 'assets/icons/birthDateIcon.png'),
-                        ],
-                      ),
+                        ),
+                        inputDesign(constraint, 'Date of Birth',
+                            dateOfBirthcon, 'assets/icons/birthDateIcon.png'),
+                      ],
                     );
                   },
                 ),
