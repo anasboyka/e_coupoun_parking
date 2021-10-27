@@ -469,79 +469,8 @@ class _AuthenticationState extends State<Authentication> {
                   height: 30,
                 ),
                 Center(
-                  child: loading?CircularProgressIndicator():SizedBox(),
+                  child: loading ? CircularProgressIndicator() : SizedBox(),
                 )
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text(
-                //       'Officer? ',
-                //       style: TextStyle(
-                //         fontFamily: 'Roboto',
-                //         fontSize: 19,
-                //         color: const Color(0xff000000),
-                //       ),
-                //       textAlign: TextAlign.left,
-                //     ),
-                //     InkWell(
-                //       child: Text(
-                //         'Click Here',
-                //         style: TextStyle(
-                //           fontFamily: 'Roboto',
-                //           fontSize: 19,
-                //           color: const Color(0xff1F8FEB),
-                //           fontWeight: FontWeight.w700,
-                //           decoration: TextDecoration.underline,
-                //         ),
-                //         textAlign: TextAlign.left,
-                //       ),
-                //       onTap: () {
-                //         //Navigator.of(context).pushNamed('/loginofficer');
-                //         //Navigator.of(context).pushReplacementNamed('/loginofficer');
-                //         print("login as officer");
-                //       },
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 13,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text(
-                //       'Administrator? ',
-                //       style: TextStyle(
-                //         fontFamily: 'Roboto',
-                //         fontSize: 19,
-                //         color: const Color(0xff000000),
-                //       ),
-                //       textAlign: TextAlign.left,
-                //     ),
-                //     InkWell(
-                //       child: Text(
-                //         'Click Here',
-                //         style: TextStyle(
-                //           fontFamily: 'Roboto',
-                //           fontSize: 19,
-                //           color: const Color(0xff1F8FEB),
-                //           fontWeight: FontWeight.w700,
-                //           decoration: TextDecoration.underline,
-                //         ),
-                //         textAlign: TextAlign.left,
-                //       ),
-                //       onTap: () {
-                //         //Navigator.of(context).pushNamed('/loginadmin');
-                //         //Navigator.of(context).pushReplacementNamed('/loginadmin');
-                //         // Navigator.pushReplacementNamed(
-                //         //   context,
-                //         //   '/loginadmin',
-                //         // );
-                //         print("administrator");
-                //       },
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -687,11 +616,13 @@ class _AuthenticationState extends State<Authentication> {
                   print("register");
                   if (_formkey.currentState!.validate()) {
                     if (registerFormValidation()) {
+                      setState(() => loading = true);
                       print("start firebase");
                       print(emailcon.text);
                       print(passcon.text);
                       dynamic result = await _auth.registerWithEmailAndPassword(
                           emailcon.text, passcon.text);
+                      //setState(() => loading = false);
                       if (result == null) {
                         setState(() => error = "please supply a valid email");
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -719,6 +650,10 @@ class _AuthenticationState extends State<Authentication> {
                 },
               ),
             ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child:loading? CircularProgressIndicator():SizedBox(),
           )
         ],
       ),
@@ -808,38 +743,6 @@ class _AuthenticationState extends State<Authentication> {
                 }
               },
 
-              // validator: (val) {
-              //   if (hintText == "Username") {
-              //     return val!.isEmpty ? "Enter username" : null;
-              //   } else if (hintText == "Name") {
-              //     return val!.isEmpty ? "Enter a name" : null;
-              //   } else if (hintText == "Phone Number") {
-              //     return val!.isEmpty ? "Enter an Email" : null;
-              //   } else if (hintText == "E-mail Address") {
-              //     return val!.isEmpty ? "Enter an Email" : null;
-              //   } else if (hintText == "Password") {
-              //     return val!.length < 6
-              //         ? "password must be at least 6 character"
-              //         : null;
-              //   } else if (hintText == "Password Confirmation") {
-              //     if (controller.text != passcon.text) {
-              //       print('password not match');
-              //     }
-              //     if (val!.length < 6) {
-              //       return "password must be at least 6 character";
-              //     } else if (controller.text != passcon.text) {
-              //       return "password must be same";
-              //     } else {
-              //       return null;
-              //     }
-              //   } else if (hintText == "IC Number") {
-              //     return val!.isEmpty ? "Enter IC number" : null;
-              //   } else if (hintText == "Date of Birth") {
-              //     return val!.isEmpty ? "Enter date" : null;
-              //   } else {
-              //     return null;
-              //   }
-              // },
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 22,

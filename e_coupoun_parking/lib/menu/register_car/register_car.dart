@@ -1,4 +1,6 @@
+import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterCar extends StatefulWidget {
   @override
@@ -126,111 +128,84 @@ class _RegisterCarState extends State<RegisterCar> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        appBar: registerCarAppbarDesign(),
-        body: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              color: Color(0xffF1F1F1),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 0.131 * size.height,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color(0xffE1F9E0),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
+    return StreamProvider.value(
+      initialData: null,
+      value: FirebaseService().cars,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: registerCarAppbarDesign(),
+          body: Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                color: Color(0xffF1F1F1),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 0.131 * size.height,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color(0xffE1F9E0),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                        ),
+                        boxShadow: [
+                          BoxShadow(color: Colors.grey, blurRadius: 6),
+                        ],
                       ),
-                      boxShadow: [
-                        BoxShadow(color: Colors.grey, blurRadius: 6),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          width: 105,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Registered Car',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: const Color(0xff000000),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: 105,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Registered Car',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 16,
+                                    color: const Color(0xff000000),
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(height: 14),
-                              Text(
-                                registerCar,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 30,
-                                  color: const Color(0xff000000),
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.left,
-                              )
-                            ],
+                                SizedBox(height: 14),
+                                Text(
+                                  registerCar,
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 30,
+                                    color: const Color(0xff000000),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 105,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Personal Car',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: const Color(0xff000000),
+                          SizedBox(
+                            width: 105,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Personal Car',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 16,
+                                    color: const Color(0xff000000),
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(height: 14),
-                              Text(
-                                personalCar,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 30,
-                                  color: const Color(0xff000000),
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.center,
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 105,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Other Car',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: const Color(0xff000000),
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(height: 14),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  otherCar,
+                                SizedBox(height: 14),
+                                Text(
+                                  personalCar,
                                   style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontSize: 30,
@@ -238,36 +213,67 @@ class _RegisterCarState extends State<RegisterCar> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                   textAlign: TextAlign.center,
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            width: 105,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Other Car',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 16,
+                                    color: const Color(0xff000000),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(height: 14),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    otherCar,
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 30,
+                                      color: const Color(0xff000000),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 40),
-                  expansionCarDesign('Personal'),
-                  SizedBox(height: 16),
-                  registerCarDesign('Personal'),
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Divider(
-                      color: Colors.black,
-                      height: 1,
-                      thickness: 1,
+                    SizedBox(height: 40),
+                    expansionCarDesign('Personal'),
+                    SizedBox(height: 16),
+                    registerCarDesign('Personal'),
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Divider(
+                        color: Colors.black,
+                        height: 1,
+                        thickness: 1,
+                      ),
                     ),
-                  ),
-                  expansionCarDesign('Other'),
-                  SizedBox(height: 16),
-                  registerCarDesign('Other'),
-                  SizedBox(
-                    height: 25,
-                  )
-                ],
-              ),
-            )
-          ],
+                    expansionCarDesign('Other'),
+                    SizedBox(height: 16),
+                    registerCarDesign('Other'),
+                    SizedBox(
+                      height: 25,
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
