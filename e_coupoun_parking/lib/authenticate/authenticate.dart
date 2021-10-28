@@ -411,7 +411,7 @@ class _AuthenticationState extends State<Authentication> {
                           dynamic result = await AuthService()
                               .signInWithEmailAndPassword(
                                   loginEmailcon.text, loginpasscon.text);
-                          setState(() => loading = false);
+                          //setState(() => loading = false);
                           if (result == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('No User found')));
