@@ -76,7 +76,9 @@ class RouteGenerator {
       case '/registercar':
         return CupertinoPageRoute(builder: (_) => RegisterCar());
       case '/registerinputcar':
-        return CupertinoPageRoute(builder: (_) => RegisterCarInput());
+        return CupertinoPageRoute(
+            builder: (_) =>
+                RegisterCarInput(argument: args as Map<String?, dynamic>));
       case '/ewallet':
         return CupertinoPageRoute(builder: (_) => Ewallet());
       default:

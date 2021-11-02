@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/constant.dart';
-import 'package:e_coupoun_parking/models/user.dart';
+import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/route_generator.dart';
 import 'package:e_coupoun_parking/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';

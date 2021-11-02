@@ -1,7 +1,7 @@
 import 'package:e_coupoun_parking/homeScreen.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_Input.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_car.dart';
-import 'package:e_coupoun_parking/models/user.dart';
+import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,6 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final driver = Provider.of<Driver?>(context);
-    final user = null;
 
     if (driver == null) {
       //return RegisterCar();
