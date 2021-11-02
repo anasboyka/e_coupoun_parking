@@ -124,7 +124,7 @@ class _RegisterCarState extends State<RegisterCar> {
     Size size = MediaQuery.of(context).size;
     return StreamProvider<List<Car>>.value(
       initialData: [],
-      value: FirebaseService().cars,
+      value: FirebaseService(uid: getCurrentUserId()).userCars,
       child: SafeArea(
         child: Scaffold(
           appBar: registerCarAppbarDesign(),
@@ -170,16 +170,39 @@ class _RegisterCarState extends State<RegisterCar> {
                                   textAlign: TextAlign.left,
                                 ),
                                 SizedBox(height: 14),
-                                Text(
-                                  registerCar,
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 30,
-                                    color: const Color(0xff000000),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                )
+                                StreamBuilder(
+                                    stream:
+                                        FirebaseService(uid: getCurrentUserId())
+                                            .userCars,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        List<Car> carList =
+                                            snapshot.data! as List<Car>;
+                                        return Text(
+                                          carList.length
+                                              .toString()
+                                              .padLeft(2, '0'),
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 30,
+                                            color: const Color(0xff000000),
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        );
+                                      } else {
+                                        return Text(
+                                          '00',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 30,
+                                            color: const Color(0xff000000),
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        );
+                                      }
+                                    })
                               ],
                             ),
                           ),
@@ -198,16 +221,47 @@ class _RegisterCarState extends State<RegisterCar> {
                                   textAlign: TextAlign.left,
                                 ),
                                 SizedBox(height: 14),
-                                Text(
-                                  personalCar,
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 30,
-                                    color: const Color(0xff000000),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )
+                                StreamBuilder(
+                                    stream:
+                                        FirebaseService(uid: getCurrentUserId())
+                                            .userCars,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        List<Car> carList =
+                                            snapshot.data! as List<Car>;
+                                        List<Car?> carListPersonal = [];
+                                        carList.map((list) {
+                                          if (list.carOwnerType == "Personal") {
+                                            //print(list.carType);
+                                            carListPersonal.add(list);
+                                          }
+                                        }).toList();
+                                        return Text(
+                                          carListPersonal.length
+                                              .toString()
+                                              .padLeft(2, '0'),
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 30,
+                                            color: const Color(0xff000000),
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        );
+                                      }
+                                      {
+                                        return Text(
+                                          '00',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 30,
+                                            color: const Color(0xff000000),
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        );
+                                      }
+                                    })
                               ],
                             ),
                           ),
@@ -228,16 +282,48 @@ class _RegisterCarState extends State<RegisterCar> {
                                 SizedBox(height: 14),
                                 Align(
                                   alignment: Alignment.center,
-                                  child: Text(
-                                    otherCar,
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 30,
-                                      color: const Color(0xff000000),
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  child: StreamBuilder(
+                                      stream: FirebaseService(
+                                              uid: getCurrentUserId())
+                                          .userCars,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          List<Car> carList =
+                                              snapshot.data! as List<Car>;
+                                          List<Car?> carListOther = [];
+                                          carList.map((list) {
+                                            if (list.carOwnerType ==
+                                                "Others") {
+                                              //print(list.carType);
+                                              carListOther.add(list);
+                                            }
+                                          }).toList();
+                                          return Text(
+                                            carListOther.length
+                                                .toString()
+                                                .padLeft(2, '0'),
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto',
+                                              fontSize: 30,
+                                              color: const Color(0xff000000),
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          );
+                                        }
+                                        {
+                                          return Text(
+                                            '00',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto',
+                                              fontSize: 30,
+                                              color: const Color(0xff000000),
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          );
+                                        }
+                                      }),
                                 )
                               ],
                             ),
@@ -303,7 +389,7 @@ class _RegisterCarState extends State<RegisterCar> {
           collapsedIconColor: Color(0xff16AA10),
           children: [
             StreamBuilder(
-                stream: FirebaseService(uid: getCurrentUserId()).UserCars,
+                stream: FirebaseService(uid: getCurrentUserId()).userCars,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     print('hasdata');

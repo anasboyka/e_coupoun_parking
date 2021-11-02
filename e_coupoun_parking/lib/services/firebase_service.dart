@@ -63,7 +63,7 @@ class FirebaseService {
     return carCollection.snapshots().map(_carListFromSnapshot);
   }
 
-  Stream<List<Car>> get UserCars {
+  Stream<List<Car>> get userCars {
     return driverCollection
         .doc(this.uid)
         .collection('Cars')
@@ -106,6 +106,14 @@ class FirebaseService {
         return false;
       }
     });
+  }
+
+  Future<int> getNumberOfCarsFromDriver() async {
+    QuerySnapshot doc =
+        await driverCollection.doc(this.uid).collection('Cars').get();
+    List<DocumentSnapshot> docList = doc.docs;
+    print(docList.length);
+    return docList.length;
   }
 
   //test data start
