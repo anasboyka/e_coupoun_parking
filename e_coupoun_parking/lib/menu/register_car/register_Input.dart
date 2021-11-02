@@ -31,12 +31,13 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
     return user!.uid;
   }
 
-  var ownerTypeList = ['Personal', 'Others'];
+  // var ownerTypeList = ['Personal', 'Others'];
 
-  var _currentItemSelected = "Personal";
+  // var _currentItemSelected = "Personal";
 
   @override
   Widget build(BuildContext context) {
+    print(widget.argument);
     return SafeArea(
       child: Scaffold(
         appBar: registerCarInputAppbarDesign(),
@@ -126,7 +127,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                           carPlateNumcon.text
                                               .trim()
                                               .toUpperCase(),
-                                          _currentItemSelected);
+                                          widget.argument!['ownerType']);
                                   if (await FirebaseService().checkCarExist(
                                           carPlateNumcon.text
                                               .trim()
@@ -143,7 +144,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                             carPlateNumcon.text
                                                 .trim()
                                                 .toUpperCase(),
-                                            _currentItemSelected);
+                                            widget.argument!['ownerType']);
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -223,36 +224,36 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
     );
   }
 
-  Container dropDownDesign() {
-    return Container(
-      height: 70,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(color: Colors.grey, blurRadius: 2),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Center(
-          child: DropdownButton(
-              onChanged: (String? newValueSelected) {
-                onDropDownItemSelected(newValueSelected!);
-              },
-              value: _currentItemSelected,
-              underline: SizedBox(),
-              isExpanded: true,
-              items: ownerTypeList.map((String item) {
-                return DropdownMenuItem(
-                  value: item,
-                  child: Text(item),
-                );
-              }).toList()),
-        ),
-      ),
-    );
-  }
+  // Container dropDownDesign() {
+  //   return Container(
+  //     height: 70,
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(10),
+  //       color: Colors.white,
+  //       boxShadow: [
+  //         BoxShadow(color: Colors.grey, blurRadius: 2),
+  //       ],
+  //     ),
+  //     child: Padding(
+  //       padding: EdgeInsets.symmetric(horizontal: 24),
+  //       child: Center(
+  //         child: DropdownButton(
+  //             onChanged: (String? newValueSelected) {
+  //               onDropDownItemSelected(newValueSelected!);
+  //             },
+  //             value: _currentItemSelected,
+  //             underline: SizedBox(),
+  //             isExpanded: true,
+  //             items: ownerTypeList.map((String item) {
+  //               return DropdownMenuItem(
+  //                 value: item,
+  //                 child: Text(item),
+  //               );
+  //             }).toList()),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Container textFormInputDesign(
       String hintText, TextEditingController controller) {
@@ -352,9 +353,9 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
     );
   }
 
-  void onDropDownItemSelected(String newValueSelected) {
-    setState(() {
-      this._currentItemSelected = newValueSelected;
-    });
-  }
+  // void onDropDownItemSelected(String newValueSelected) {
+  //   setState(() {
+  //     this._currentItemSelected = newValueSelected;
+  //   });
+  // }
 }

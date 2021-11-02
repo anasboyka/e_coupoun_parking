@@ -292,9 +292,7 @@ class _RegisterCarState extends State<RegisterCar> {
                                               snapshot.data! as List<Car>;
                                           List<Car?> carListOther = [];
                                           carList.map((list) {
-                                            if (list.carOwnerType ==
-                                                "Others") {
-                                              //print(list.carType);
+                                            if (list.carOwnerType == "Others") {
                                               carListOther.add(list);
                                             }
                                           }).toList();
@@ -345,7 +343,7 @@ class _RegisterCarState extends State<RegisterCar> {
                     ),
                     expansionCarDesign('Other'),
                     SizedBox(height: 16),
-                    registerCarDesign('Other'),
+                    registerCarDesign('Others'),
                     SizedBox(
                       height: 25,
                     )
