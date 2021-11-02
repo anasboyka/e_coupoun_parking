@@ -1,7 +1,10 @@
+import 'package:e_coupoun_parking/services/firebase_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterCarInput extends StatefulWidget {
-  //const RegisterCarInput({ Key? key }) : super(key: key);
+  Map? argument = {};
+  RegisterCarInput({Key? key, this.argument}) : super(key: key);
 
   @override
   State<RegisterCarInput> createState() => _RegisterCarInputState();
@@ -10,6 +13,7 @@ class RegisterCarInput extends StatefulWidget {
 class _RegisterCarInputState extends State<RegisterCarInput> {
   // dummy data start
   bool conditionRegister = false;
+  bool loading = false;
   // dummy data end
   TextEditingController carBrandcon = new TextEditingController();
 
@@ -20,6 +24,12 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   TextEditingController carYrManufactcon = new TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String getCurrentUserId() {
+    final user = auth.currentUser;
+    return user!.uid;
+  }
 
   var ownerTypeList = ['Personal', 'Others'];
 
@@ -63,8 +73,31 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                         textAlign: TextAlign.left,
                       ),
                       SizedBox(height: 16),
-                      dropDownDesign(),
-                      SizedBox(height: 23),
+                      Container(
+                        height: 70,
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(color: Colors.grey, blurRadius: 2),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            widget.argument!['ownerType'],
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                                color: Colors.black,
+                                decoration: TextDecoration.none),
+                          ),
+                        ),
+                      ),
+                      //dropDownDesign(),
+                      SizedBox(height: 23,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -75,14 +108,68 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 fixedSize: Size(190, 70)),
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Car Registered Successfully'),
-                                  duration: Duration(seconds: 3),
-                                ),
-                              );
-                              Navigator.of(context).pop();
+                            onPressed: () async {
+                              if (carBrandcon.text.isNotEmpty &&
+                                  carTypecon.text.isNotEmpty &&
+                                  carPlateNumcon.text.isNotEmpty) {
+                                // carPlateNumcon.text = carPlateNumcon.text.toUpperCase();
+                                setState(() => loading = true);
+                                bool carExist = await FirebaseService(
+                                        uid: getCurrentUserId())
+                                    .checkCarExistFromUser(
+                                        carPlateNumcon.text.toUpperCase());
+                                if (!carExist) {
+                                  await FirebaseService(uid: getCurrentUserId())
+                                      .updateCarDataDriver(
+                                          carBrandcon.text.trim().toUpperCase(),
+                                          carTypecon.text.trim().toUpperCase(),
+                                          carPlateNumcon.text
+                                              .trim()
+                                              .toUpperCase(),
+                                          _currentItemSelected);
+                                  if (await FirebaseService().checkCarExist(
+                                          carPlateNumcon.text
+                                              .trim()
+                                              .toUpperCase()) ==
+                                      false) {
+                                    await FirebaseService()
+                                        .updateCarDataCollection(
+                                            carBrandcon.text
+                                                .trim()
+                                                .toUpperCase(),
+                                            carTypecon.text
+                                                .trim()
+                                                .toUpperCase(),
+                                            carPlateNumcon.text
+                                                .trim()
+                                                .toUpperCase(),
+                                            _currentItemSelected);
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text('Car Registered Successfully'),
+                                      duration: Duration(seconds: 3),
+                                    ),
+                                  );
+                                  Navigator.of(context).pop();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Car Already Exist'),
+                                      duration: Duration(seconds: 3),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Please input all the field'),
+                                    duration: Duration(seconds: 3),
+                                  ),
+                                );
+                              }
+                              setState(() => loading = false);
                             },
                             child: Text(
                               'Save',

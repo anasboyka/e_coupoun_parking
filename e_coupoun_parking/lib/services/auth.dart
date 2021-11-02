@@ -1,4 +1,4 @@
-import 'package:e_coupoun_parking/models/user.dart';
+import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
