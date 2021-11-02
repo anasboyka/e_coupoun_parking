@@ -16,29 +16,6 @@ class _RegisterCarState extends State<RegisterCar> {
   String registerCar = '00', personalCar = "00", otherCar = '00';
   bool registerStatus = false;
 
-  List car = [
-    {
-      'carName': 'PERODUA ARUZ',
-      'carPlate': 'ABC1234',
-      'categoryOwn': 'Personal'
-    },
-    {
-      'carName': 'TOYOTA AVANZA',
-      'carPlate': 'DEF5678',
-      'categoryOwn': 'Personal'
-    },
-    {
-      'carName': 'PERODUA MYVI',
-      'carPlate': 'GHI8765',
-      'categoryOwn': 'Personal'
-    },
-    {
-      'carName': 'TOYOTA SUPRA',
-      'carPlate': 'JKL4321',
-      'categoryOwn': 'Personal'
-    }
-  ];
-
   bool conditionList = false;
 
   //dummy data end
@@ -566,7 +543,8 @@ class _RegisterCarState extends State<RegisterCar> {
             textAlign: TextAlign.left,
           ),
           onTap: () async {
-            Navigator.of(context).pushNamed('/registerinputcar',arguments: {"ownerType":title});
+            Navigator.of(context).pushNamed('/registerinputcar',
+                arguments: {"ownerType": title});
           },
         ),
       ),
