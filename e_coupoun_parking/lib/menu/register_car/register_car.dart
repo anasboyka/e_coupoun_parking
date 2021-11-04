@@ -390,10 +390,6 @@ class _RegisterCarState extends State<RegisterCar> {
                 stream: FirebaseService(uid: getCurrentUserId()).userCars,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    print('hasdata');
-
-                    // print("data other = ${carListOther.length}");
-                    // print("data personal = ${carListPersonal.length}");
                     return listViewCarDivideDesign(title, snapshot);
                   } else {
                     return ListView.builder(
@@ -409,17 +405,9 @@ class _RegisterCarState extends State<RegisterCar> {
                               ),
                             ),
                           );
-                          // return Column(
-                          //   children: [
-                          //     dividerListview(),
-                          //     noRegisteredCarDesign()
-                          //   ],
-                          // );
                         });
                   }
                 }),
-            // dividerListview(),
-            // noRegisteredCarDesign()
           ],
         ),
       ),
@@ -490,7 +478,6 @@ class _RegisterCarState extends State<RegisterCar> {
                 horizontalTitleGap: 8,
                 title: Text(
                   '${carList[index]!.carBrand}',
-                  //'${car[index]['carName']}',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 12,
@@ -503,7 +490,6 @@ class _RegisterCarState extends State<RegisterCar> {
                     EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                 subtitle: Text(
                   '${carList[index]!.carPlateNum}',
-                  //'${car[index]['carPlate']}',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 10,
@@ -519,13 +505,20 @@ class _RegisterCarState extends State<RegisterCar> {
                       height: 30,
                       child: Material(
                         shape: CircleBorder(),
-                        //borderRadius: BorderRadius.circular(5),
                         child: IconButton(
                           highlightColor: Colors.transparent,
                           padding: EdgeInsets.all(0),
                           iconSize: 30,
                           onPressed: () {
-                            print('edit');
+                            //_editCarOnPressed();
+                            Navigator.of(context)
+                                .pushNamed('/registerinputcar', arguments: {
+                              "carPlateNum": carList[index]!.carPlateNum,
+                              "carBrand": carList[index]!.carBrand,
+                              "carOwnerType": carList[index]!.carOwnerType,
+                              "carType": carList[index]!.carType,
+                              "appbarTitle":"Edit Car"
+                            });
                           },
                           icon: Icon(
                             Icons.edit,
@@ -545,11 +538,7 @@ class _RegisterCarState extends State<RegisterCar> {
                           padding: EdgeInsets.all(0),
                           iconSize: 30,
                           onPressed: () {
-                            createAlertDialog(
-                              context,
-                              '${carList[index]!.carBrand}',
-                              '${carList[index]!.carPlateNum}',
-                            );
+                            _deleteCarOnPressed(context, carList, index);
                           },
                           icon: Icon(
                             Icons.delete,
@@ -565,6 +554,15 @@ class _RegisterCarState extends State<RegisterCar> {
             ],
           );
         });
+  }
+
+  void _deleteCarOnPressed(
+      BuildContext context, List<Car?> carList, int index) {
+    createAlertDialog(
+      context,
+      '${carList[index]!.carBrand}',
+      '${carList[index]!.carPlateNum}',
+    );
   }
 
   Padding dividerListview() {
@@ -627,8 +625,10 @@ class _RegisterCarState extends State<RegisterCar> {
             textAlign: TextAlign.left,
           ),
           onTap: () async {
-            Navigator.of(context).pushNamed('/registerinputcar',
-                arguments: {"ownerType": title});
+            Navigator.of(context).pushNamed('/registerinputcar', arguments: {
+              "carOwnerType": title,
+              "appbarTitle":"Register New Car"
+            });
           },
         ),
       ),
@@ -670,5 +670,10 @@ class _RegisterCarState extends State<RegisterCar> {
       //backgroundColor: Colors.transparent,
       elevation: 1,
     );
+  }
+
+  void _editCarOnPressed() {
+    print('edit car');
+    //Navigator.of(context).pushNamed('/registerinputcar',arguments: {})
   }
 }

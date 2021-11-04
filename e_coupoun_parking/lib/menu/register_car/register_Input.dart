@@ -15,6 +15,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   bool conditionRegister = false;
   bool loading = false;
   // dummy data end
+
   TextEditingController carBrandcon = new TextEditingController();
 
   TextEditingController carTypecon = new TextEditingController();
@@ -31,6 +32,21 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
     return user!.uid;
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    carBrandcon = widget.argument!["carBrand"] != null
+        ? new TextEditingController(text: widget.argument!["carBrand"])
+        : new TextEditingController();
+    carTypecon = widget.argument!["carType"] != null
+        ? new TextEditingController(text: widget.argument!["carType"])
+        : new TextEditingController();
+    carPlateNumcon = widget.argument!["carPlateNum"] != null
+        ? new TextEditingController(text: widget.argument!["carPlateNum"])
+        : new TextEditingController();
+  }
+
   // var ownerTypeList = ['Personal', 'Others'];
 
   // var _currentItemSelected = "Personal";
@@ -40,7 +56,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
     print(widget.argument);
     return SafeArea(
       child: Scaffold(
-        appBar: registerCarInputAppbarDesign(),
+        appBar: registerCarInputAppbarDesign(widget.argument!['appbarTitle']),
         body: Stack(
           children: [
             Container(
@@ -57,10 +73,55 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
+                      widget.argument!["appbarTitle"] == 'Edit Car'
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Text(
+                                ' Car Brand :',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            )
+                          : SizedBox(),
                       textFormInputDesign('Car Brand', carBrandcon),
                       SizedBox(height: 23),
+                      widget.argument!["appbarTitle"] == 'Edit Car'
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Text(
+                                ' Car Type :',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            )
+                          : SizedBox(),
                       textFormInputDesign('Car Type', carTypecon),
                       SizedBox(height: 23),
+                      widget.argument!["appbarTitle"] == 'Edit Car'
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Text(
+                                ' Car Plate Number :',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            )
+                          : SizedBox(),
                       textFormInputDesign('Car Plate Number', carPlateNumcon),
                       SizedBox(height: 23),
                       Text(
@@ -88,7 +149,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24),
                           child: Text(
-                            widget.argument!['ownerType'],
+                            widget.argument!['carOwnerType'],
                             style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 16,
@@ -98,7 +159,9 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                         ),
                       ),
                       //dropDownDesign(),
-                      SizedBox(height: 23,),
+                      SizedBox(
+                        height: 23,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -119,7 +182,9 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                         uid: getCurrentUserId())
                                     .checkCarExistFromUser(
                                         carPlateNumcon.text.toUpperCase());
-                                if (!carExist) {
+                                if (!carExist ||
+                                    widget.argument!["appbarTitle"] ==
+                                        "Edit Car") {
                                   await FirebaseService(uid: getCurrentUserId())
                                       .updateCarDataDriver(
                                           carBrandcon.text.trim().toUpperCase(),
@@ -127,12 +192,15 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                           carPlateNumcon.text
                                               .trim()
                                               .toUpperCase(),
-                                          widget.argument!['ownerType']);
+                                          widget.argument!['carOwnerType']);
                                   if (await FirebaseService().checkCarExist(
-                                          carPlateNumcon.text
-                                              .trim()
-                                              .toUpperCase()) ==
-                                      false) {
+                                              carPlateNumcon.text
+                                                  .trim()
+                                                  .toUpperCase()) ==
+                                          false ||
+                                      widget.argument!["appbarTitle"] ==
+                                          "Edit Car") {
+                                    print('here');
                                     await FirebaseService()
                                         .updateCarDataCollection(
                                             carBrandcon.text
@@ -144,7 +212,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                             carPlateNumcon.text
                                                 .trim()
                                                 .toUpperCase(),
-                                            widget.argument!['ownerType']);
+                                            widget.argument!['carOwnerType']);
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -266,6 +334,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         boxShadow: [
           BoxShadow(color: Colors.grey, blurRadius: 2),
         ],
+        //border: Border.all(color: Colors.grey, width: 1),
       ),
       child: TextFormField(
         validator: (val) {
@@ -276,13 +345,24 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         //autocorrect: true,
         textCapitalization: TextCapitalization.characters,
         controller: controller,
+        enabled: hintText == "Car Plate Number"
+            ? widget.argument!['appbarTitle'] == 'Edit Car'
+                ? false
+                : true
+            : true,
+
         style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 16,
             color: Colors.black,
             decoration: TextDecoration.none),
         decoration: InputDecoration(
-          filled: true,
+          filled: widget.argument!['appbarTitle'] == 'Edit Car'
+              ? hintText == "Car Plate Number"
+                  ? true
+                  : false
+              : false,
+          fillColor: Colors.grey[200],
           contentPadding: EdgeInsets.all(27),
           hintStyle: TextStyle(
             fontFamily: 'Roboto',
@@ -316,10 +396,10 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
     );
   }
 
-  AppBar registerCarInputAppbarDesign() {
+  AppBar registerCarInputAppbarDesign(String titleAppbar) {
     return AppBar(
       title: Text(
-        'Register New Car',
+        titleAppbar,
         style: TextStyle(
           fontFamily: 'Roboto',
           fontSize: 22,
