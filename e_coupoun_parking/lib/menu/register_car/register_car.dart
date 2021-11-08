@@ -1,31 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/models/car.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
+import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RegisterCar extends StatefulWidget {
+  final Driver? driverInfo;
+
+  RegisterCar({Key? key, this.driverInfo}) : super(key: key);
+
   @override
   State<RegisterCar> createState() => _RegisterCarState();
 }
 
 class _RegisterCarState extends State<RegisterCar> {
   //dummy data start
-  String registerCar = '00', personalCar = "00", otherCar = '00';
+  String registerCar = '00', personalCar = "00", nonPersonalCar = '00';
   bool registerStatus = false;
 
   bool conditionList = false;
 
   //dummy data end
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  String getCurrentUserId() {
-    final user = auth.currentUser;
-    return user!.uid;
-  }
+  // final FirebaseAuth auth = FirebaseAuth.instance;
+  // String getCurrentUserId() {
+  //   final user = auth.currentUser;
+  //   return user!.uid;
+  // }
 
-  createAlertDialog(BuildContext context, String carBrand, String carPlateNum) {
+  createAlertDialog(
+      BuildContext context, String carBrand, String carPlateNum, String uid) {
     Size size = MediaQuery.of(context).size;
     return showDialog(
         context: context,
@@ -71,7 +77,7 @@ class _RegisterCarState extends State<RegisterCar> {
                 ),
                 onTap: () async {
                   //Navigator.of(context).pop("data from dialog");
-                  await FirebaseService(uid: getCurrentUserId())
+                  await FirebaseService(uid: uid)
                       .deleteCarFromUser(carPlateNum);
                   Navigator.of(context).pop();
                 },
@@ -122,9 +128,15 @@ class _RegisterCarState extends State<RegisterCar> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return StreamProvider<List<Car>>.value(
-      initialData: [],
-      value: FirebaseService(uid: getCurrentUserId()).userCars,
+    final driver = Provider.of<Driveruid?>(context);
+
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<Car>>.value(
+          initialData: [],
+          value: FirebaseService(uid: driver!.uid).userCars,
+        ),
+      ],
       child: SafeArea(
         child: Scaffold(
           appBar: registerCarAppbarDesign(),
@@ -156,7 +168,7 @@ class _RegisterCarState extends State<RegisterCar> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SizedBox(
-                            width: 105,
+                            width: size.width / 3,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -171,9 +183,8 @@ class _RegisterCarState extends State<RegisterCar> {
                                 ),
                                 SizedBox(height: 14),
                                 StreamBuilder(
-                                    stream:
-                                        FirebaseService(uid: getCurrentUserId())
-                                            .userCars,
+                                    stream: FirebaseService(uid: driver.uid)
+                                        .userCars,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         List<Car> carList =
@@ -207,7 +218,7 @@ class _RegisterCarState extends State<RegisterCar> {
                             ),
                           ),
                           SizedBox(
-                            width: 105,
+                            width: size.width / 3,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -222,9 +233,8 @@ class _RegisterCarState extends State<RegisterCar> {
                                 ),
                                 SizedBox(height: 14),
                                 StreamBuilder(
-                                    stream:
-                                        FirebaseService(uid: getCurrentUserId())
-                                            .userCars,
+                                    stream: FirebaseService(uid: driver.uid)
+                                        .userCars,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         List<Car> carList =
@@ -266,12 +276,12 @@ class _RegisterCarState extends State<RegisterCar> {
                             ),
                           ),
                           SizedBox(
-                            width: 105,
+                            width: size.width / 3,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Other Car',
+                                  'Non-Personal Car',
                                   style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontSize: 16,
@@ -283,21 +293,21 @@ class _RegisterCarState extends State<RegisterCar> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: StreamBuilder(
-                                      stream: FirebaseService(
-                                              uid: getCurrentUserId())
+                                      stream: FirebaseService(uid: driver.uid)
                                           .userCars,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           List<Car> carList =
                                               snapshot.data! as List<Car>;
-                                          List<Car?> carListOther = [];
+                                          List<Car?> carListNonPersonal = [];
                                           carList.map((list) {
-                                            if (list.carOwnerType == "Others") {
-                                              carListOther.add(list);
+                                            if (list.carOwnerType ==
+                                                "Non-Personal") {
+                                              carListNonPersonal.add(list);
                                             }
                                           }).toList();
                                           return Text(
-                                            carListOther.length
+                                            carListNonPersonal.length
                                                 .toString()
                                                 .padLeft(2, '0'),
                                             style: TextStyle(
@@ -330,9 +340,9 @@ class _RegisterCarState extends State<RegisterCar> {
                       ),
                     ),
                     SizedBox(height: 40),
-                    expansionCarDesign('Personal'),
+                    expansionCarDesign('Personal', driver.uid),
                     SizedBox(height: 16),
-                    registerCarDesign('Personal'),
+                    expansionCarDesign('Non-Personal', driver.uid),
                     Padding(
                       padding: EdgeInsets.all(20),
                       child: Divider(
@@ -341,12 +351,12 @@ class _RegisterCarState extends State<RegisterCar> {
                         thickness: 1,
                       ),
                     ),
-                    expansionCarDesign('Other'),
+                    registerCarDesign(),
                     SizedBox(height: 16),
-                    registerCarDesign('Others'),
-                    SizedBox(
-                      height: 25,
-                    )
+                    // registerCarDesign('Non-Personal'),
+                    // SizedBox(
+                    //   height: 25,
+                    // )
                   ],
                 ),
               )
@@ -357,7 +367,7 @@ class _RegisterCarState extends State<RegisterCar> {
     );
   }
 
-  Widget expansionCarDesign(String title) {
+  Widget expansionCarDesign(String title, String uid) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       child: Container(
@@ -387,10 +397,10 @@ class _RegisterCarState extends State<RegisterCar> {
           collapsedIconColor: Color(0xff16AA10),
           children: [
             StreamBuilder(
-                stream: FirebaseService(uid: getCurrentUserId()).userCars,
+                stream: FirebaseService(uid: uid).userCars,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return listViewCarDivideDesign(title, snapshot);
+                    return listViewCarDivideDesign(title, snapshot, uid);
                   } else {
                     return ListView.builder(
                         shrinkWrap: true,
@@ -414,27 +424,28 @@ class _RegisterCarState extends State<RegisterCar> {
     );
   }
 
-  ListView listViewCarDivideDesign(String title, AsyncSnapshot snapshot) {
+  ListView listViewCarDivideDesign(
+      String title, AsyncSnapshot snapshot, String uid) {
     List<Car> carList = snapshot.data! as List<Car>;
 
     List<Car?> carListPersonal = [];
     carList.map((list) {
       if (list.carOwnerType == "Personal") {
-        print(list.carType);
+        //print(list.carType);
         carListPersonal.add(list);
       }
     }).toList();
-    List<Car?> carListOther = [];
+    List<Car?> carListNonPersonal = [];
     carList.map((list) {
-      if (list.carOwnerType == "Others") {
-        carListOther.add(list);
+      if (list.carOwnerType == "Non-Personal") {
+        carListNonPersonal.add(list);
       }
     }).toList();
-    if (title == 'Other' && carListOther.length > 0) {
-      return listViewCarDesign(title, carListOther);
+    if (title == 'Non-Personal' && carListNonPersonal.length > 0) {
+      return listViewCarDesign(title, carListNonPersonal, uid);
     } else if (title == 'Personal' && carListPersonal.length > 0) {
-      return listViewCarDesign(title, carListPersonal);
-    } else if (carListOther.length < 0 || carListPersonal.length < 0) {
+      return listViewCarDesign(title, carListPersonal, uid);
+    } else if (carListNonPersonal.length < 0 || carListPersonal.length < 0) {
       return ListView.builder(
           shrinkWrap: true,
           itemCount: 1,
@@ -455,7 +466,7 @@ class _RegisterCarState extends State<RegisterCar> {
     //return listViewCarDesignn(title, carList);
   }
 
-  ListView listViewCarDesign(String title, List<Car?> carList) {
+  ListView listViewCarDesign(String title, List<Car?> carList, String uid) {
     return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         itemCount: carList.length,
@@ -510,6 +521,7 @@ class _RegisterCarState extends State<RegisterCar> {
                           padding: EdgeInsets.all(0),
                           iconSize: 30,
                           onPressed: () {
+                            print(widget.driverInfo);
                             //_editCarOnPressed();
                             Navigator.of(context)
                                 .pushNamed('/registerinputcar', arguments: {
@@ -517,7 +529,8 @@ class _RegisterCarState extends State<RegisterCar> {
                               "carBrand": carList[index]!.carBrand,
                               "carOwnerType": carList[index]!.carOwnerType,
                               "carType": carList[index]!.carType,
-                              "appbarTitle":"Edit Car"
+                              "appbarTitle": "Edit Car",
+                              "driverInfo": widget.driverInfo
                             });
                           },
                           icon: Icon(
@@ -538,7 +551,7 @@ class _RegisterCarState extends State<RegisterCar> {
                           padding: EdgeInsets.all(0),
                           iconSize: 30,
                           onPressed: () {
-                            _deleteCarOnPressed(context, carList, index);
+                            _deleteCarOnPressed(context, carList, index, uid);
                           },
                           icon: Icon(
                             Icons.delete,
@@ -557,11 +570,12 @@ class _RegisterCarState extends State<RegisterCar> {
   }
 
   void _deleteCarOnPressed(
-      BuildContext context, List<Car?> carList, int index) {
+      BuildContext context, List<Car?> carList, int index, String uid) {
     createAlertDialog(
       context,
       '${carList[index]!.carBrand}',
       '${carList[index]!.carPlateNum}',
+      uid,
     );
   }
 
@@ -592,7 +606,7 @@ class _RegisterCarState extends State<RegisterCar> {
     );
   }
 
-  Padding registerCarDesign(String title) {
+  Padding registerCarDesign() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       child: Container(
@@ -615,7 +629,7 @@ class _RegisterCarState extends State<RegisterCar> {
           ),
           horizontalTitleGap: 4,
           title: Text(
-            'Register New $title Car',
+            'Register New Car',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 16,
@@ -626,8 +640,8 @@ class _RegisterCarState extends State<RegisterCar> {
           ),
           onTap: () async {
             Navigator.of(context).pushNamed('/registerinputcar', arguments: {
-              "carOwnerType": title,
-              "appbarTitle":"Register New Car"
+              "appbarTitle": "Register New Car",
+              "driverInfo": widget.driverInfo
             });
           },
         ),
@@ -657,7 +671,7 @@ class _RegisterCarState extends State<RegisterCar> {
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           splashRadius: 25,
           onPressed: () {
-            print('clicked');
+            //print('clicked');
             return Navigator.of(context).pop();
           },
         ),

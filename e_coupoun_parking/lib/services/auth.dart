@@ -1,17 +1,18 @@
 import 'package:e_coupoun_parking/models/driver.dart';
+import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Driver _userFromFirebaseUser(User? user) {
-    // ignore: unnecessary_null_comparison
-    return Driver(uid: user!.uid);
+  
+  Driveruid _userFromFirebaseUser(User? user) {
+    
+    return Driveruid(uid: user!.uid);
   }
 
-  Stream<Driver> get user {
+  Stream<Driveruid?> get user {
     return _auth
         .authStateChanges()
         //.map((User? user) => _userFromFirebaseUser(user!));
@@ -32,7 +33,7 @@ class AuthService {
       User? user = credential.user;
       print(credential.user);
       await FirebaseService(uid: user!.uid)
-          .updateDriverData(username, name, phoneNum, icNum, dateOfbirth);
+          .updateDriverDataCollection(username, name, phoneNum, icNum, dateOfbirth);
       if (credential.user == null) {
         return null;
       } else {
