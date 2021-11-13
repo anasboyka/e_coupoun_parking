@@ -32,6 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
       birthdatenosql = 'null';
 //test database end
 //final StreamController _streamController = StreamController();
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: appBarDesign(context),
         drawer: Drawer(
-          child: Text('data = ${driverinfo!.name}'),
+          child: driverinfo == null
+              ? Text('null')
+              : Text('data = ${driverinfo.name}'),
         ),
         body: SingleChildScrollView(
           child: Container(
