@@ -1,3 +1,4 @@
+import 'package:e_coupoun_parking/models/car.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
@@ -154,82 +155,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                 ),
                                 fixedSize: Size(190, 70)),
                             onPressed: () async {
-                              if (carBrandcon.text.isNotEmpty &&
-                                  carTypecon.text.isNotEmpty &&
-                                  carPlateNumcon.text.isNotEmpty) {
-                                // carPlateNumcon.text = carPlateNumcon.text.toUpperCase();
-                                setState(() => loading = true);
-                                bool carExistFromDriver =
-                                    await FirebaseService(uid: driveruid!.uid)
-                                        .checkCarExistFromUser(
-                                            carPlateNumcon.text.toUpperCase());
-                                String appbarTitle =
-                                    widget.argument!["appbarTitle"];
-                                if (!carExistFromDriver ||
-                                    appbarTitle == "Edit Car") {
-                                  bool carExistCollection =
-                                      await FirebaseService().checkCarExist(
-                                          carPlateNumcon.text
-                                              .trim()
-                                              .toUpperCase());
-                                  if (!carExistCollection ||
-                                      appbarTitle == "Edit Car") {
-                                    await FirebaseService()
-                                        .updateCarDataCollection(
-                                            carBrandcon.text
-                                                .trim()
-                                                .toUpperCase(),
-                                            carTypecon.text
-                                                .trim()
-                                                .toUpperCase(),
-                                            carPlateNumcon.text
-                                                .trim() 
-                                                .toUpperCase(),
-                                            _currentItemSelected);
-
-                                    await FirebaseService(uid: driveruid.uid)
-                                        .updateDriverDataFromCar(
-                                            driverinfo.name,
-                                            driverinfo.username,
-                                            carPlateNumcon.text.trim().toUpperCase(),
-                                            driverinfo.phoneNum!,
-                                            driverinfo.icNum!,
-                                            driverinfo.birthDate!);
-                                  }
-                                  await FirebaseService(uid: driveruid.uid)
-                                      .updateCarDataFromDriver(
-                                          carBrandcon.text.trim().toUpperCase(),
-                                          carTypecon.text.trim().toUpperCase(),
-                                          carPlateNumcon.text
-                                              .trim()
-                                              .toUpperCase(),
-                                          _currentItemSelected);
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          Text('Car Registered Successfully'),
-                                      duration: Duration(seconds: 3),
-                                    ),
-                                  );
-                                  Navigator.of(context).pop();
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Car Already Exist'),
-                                      duration: Duration(seconds: 3),
-                                    ),
-                                  );
-                                }
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Please input all the field'),
-                                    duration: Duration(seconds: 3),
-                                  ),
-                                );
-                              }
-                              setState(() => loading = false);
+                              await saveCar(driveruid, driverinfo, context);
                             },
                             child: Text(
                               'Save',
@@ -249,7 +175,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 fixedSize: Size(190, 70)),
-                            onPressed: () {
+                            onPressed: () async {
                               carBrandcon.text = '';
                               carPlateNumcon.text = '';
                               carTypecon.text = '';
@@ -283,7 +209,141 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
     );
   }
 
-  Container dropDownDesign() {
+  Future<void> saveCar(
+      Driveruid? driveruid, driverinfo, BuildContext context) async {
+    String carPlateNum = carPlateNumcon.text.trim().toUpperCase();
+    if (carBrandcon.text.isNotEmpty &&
+        carTypecon.text.isNotEmpty &&
+        carPlateNumcon.text.isNotEmpty) {
+      setState(() => loading = true);
+      bool carExistFromDriver = await FirebaseService(uid: driveruid!.uid)
+          .checkCarExistFromUser(carPlateNum);
+      String appbarTitle = widget.argument!["appbarTitle"];
+      //if car not exist in driver
+      if (!carExistFromDriver || appbarTitle == "Edit Car") {
+        bool carExistCollection =
+            await FirebaseService().checkCarExistCollection(carPlateNum);
+        //if car not exist in collection or status not edit
+        if (!carExistCollection || appbarTitle == "Edit Car") {
+          await FirebaseService().updateCarDataCollection(
+              carBrandcon.text.trim().toUpperCase(),
+              carTypecon.text.trim().toUpperCase(),
+              carPlateNum,
+              _currentItemSelected);
+          await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
+              driverinfo.name,
+              driverinfo.username,
+              carPlateNum,
+              driverinfo.phoneNum!,
+              driverinfo.icNum!,
+              driverinfo.birthDate!);
+          await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+              carBrandcon.text.trim().toUpperCase(),
+              carTypecon.text.trim().toUpperCase(),
+              carPlateNum,
+              _currentItemSelected);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Car Registered Successfully'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+          Navigator.of(context).pop();
+        }
+
+        //if car exist in collection or status not edit
+        else {
+          //if ownertype personal
+          if (_currentItemSelected == "Personal") {
+            bool personalExist =
+                await FirebaseService().checkCarPersonalExist(carPlateNum);
+            //if personal car already exist
+            if (personalExist) {
+              print('exist');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('this car already registered as personal car'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            }
+            //if personal car not exist
+            else {
+              print('not exist');
+              await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+                  carBrandcon.text.trim().toUpperCase(),
+                  carTypecon.text.trim().toUpperCase(),
+                  carPlateNum,
+                  _currentItemSelected);
+
+              await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
+                  driverinfo.name,
+                  driverinfo.username,
+                  carPlateNum,
+                  driverinfo.phoneNum!,
+                  driverinfo.icNum!,
+                  driverinfo.birthDate!);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Car Registered Successfully'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+              Navigator.of(context).pop();
+            }
+          }
+          //if not personal
+          else {
+            await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+                carBrandcon.text.trim().toUpperCase(),
+                carTypecon.text.trim().toUpperCase(),
+                carPlateNum,
+                _currentItemSelected);
+            await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+                carBrandcon.text.trim().toUpperCase(),
+                carTypecon.text.trim().toUpperCase(),
+                carPlateNum,
+                _currentItemSelected);
+
+            await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
+                driverinfo.name,
+                driverinfo.username,
+                carPlateNum,
+                driverinfo.phoneNum!,
+                driverinfo.icNum!,
+                driverinfo.birthDate!);
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Car Registered Successfully'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+            Navigator.of(context).pop();
+          }
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Car Already Exist'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please input all the field'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+    setState(() => loading = false);
+  }
+
+  Widget dropDownDesign() {
     return Container(
       height: 70,
       decoration: BoxDecoration(

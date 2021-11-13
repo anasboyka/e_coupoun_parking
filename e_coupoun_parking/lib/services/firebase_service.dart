@@ -163,13 +163,51 @@ class FirebaseService {
     });
   }
 
-  Future<bool> checkCarExist(String carPlateNum) {
+  Future<bool> checkCarExistCollection(String carPlateNum) {
     return carCollection.doc(carPlateNum).get().then((snapshot) {
       if (snapshot.exists) {
         return true;
       } else {
         return false;
       }
+    });
+  }
+
+  Future<Car> getCarInfoFromDriver(String carPlateNum) async {
+    return driverCollection
+        .doc(this.uid)
+        .collection("Cars")
+        .doc(carPlateNum)
+        .get()
+        .then((data) => Car(
+              carBrand: data['carBrand'],
+              carOwnerType: data['carOwnerType'],
+              carPlateNum: data['carPlateNum'],
+              carType: data['carType'],
+            ));
+  }
+
+  Future<Car> getCarInfoCollection(String carPlateNum) async {
+    return carCollection.doc(carPlateNum).get().then((data) => Car(
+          carBrand: data['carBrand'],
+          carOwnerType: data['carOwnerType'],
+          carPlateNum: data['carPlateNum'],
+          carType: data['carType'],
+        ));
+  }
+
+  Future<bool> checkCarPersonalExist(String carPlateNum) {
+    return carCollection
+        .where('carPlateNum', isEqualTo: carPlateNum)
+        .where('carOwnerType', isEqualTo: 'Personal')
+        .get()
+        .then((value) {
+      //final val = value.docs.first.data() as Map<String, dynamic>;
+      //print(val['carBrand']);
+      return value.docs.isNotEmpty;
+    }).catchError((error) {
+      print(error);
+      return false;
     });
   }
 
