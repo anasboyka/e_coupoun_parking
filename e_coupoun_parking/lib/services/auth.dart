@@ -6,9 +6,8 @@ import 'package:flutter/cupertino.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
+
   Driveruid _userFromFirebaseUser(User? user) {
-    
     return Driveruid(uid: user!.uid);
   }
 
@@ -32,13 +31,20 @@ class AuthService {
           email: email, password: password);
       User? user = credential.user;
       print(credential.user);
-      await FirebaseService(uid: user!.uid)
-          .updateDriverDataCollection(username, name, phoneNum, icNum, dateOfbirth);
+      await FirebaseService(uid: user!.uid).updateDriverDataCollection(
+          username, name, phoneNum, icNum, dateOfbirth);
       if (credential.user == null) {
         return null;
       } else {
         return credential.user;
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return 'passwordweak';
+      } else if (e.code == 'email-already-in-use') {
+        return 'emailUsed';
+      }
+      return null;
     } catch (e) {
       print(e.toString());
       return null;

@@ -1,3 +1,5 @@
+//untuk CRUD punya firestore query
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/models/car.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
@@ -6,8 +8,10 @@ import 'package:provider/provider.dart';
 class FirebaseService {
   final String? uid;
   FirebaseService({this.uid});
+
   final CollectionReference driverCollection =
       FirebaseFirestore.instance.collection('drivers');
+
   final CollectionReference carCollection =
       FirebaseFirestore.instance.collection('cars');
 

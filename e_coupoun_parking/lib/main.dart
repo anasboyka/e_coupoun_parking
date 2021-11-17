@@ -10,8 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//test
-
+// test pullll
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
             catchError: (_, __) => null,
             value: AuthService().user,
             initialData: null),
-        
       ],
       child: MaterialApp(
         title: 'E-Coupoun Parking',
