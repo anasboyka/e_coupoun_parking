@@ -45,7 +45,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                 Padding(
                   padding: EdgeInsets.only(top: 0.05 * size.height),
                   child: Image.asset(
-                    'assets/icons/mpsp-sungaiPetani.png',
+                    'assets/icons/logo1.png',
                     height: 185,
                   ),
                 ),
@@ -77,15 +77,17 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                           //height: 90,
                           width: 0.356 * size.height,
                           //color: Colors.grey,
-                          child: inputDesignLogin(usernameofficercon,
-                              "Officer Username", 'assets/icons/officerIcon.png'),
+                          child: inputDesignLogin(
+                              usernameofficercon,
+                              "Officer Username",
+                              'assets/icons/officerIcon.png'),
                         ),
                         Container(
                           //height: 90,
                           width: 0.356 * size.height,
                           //color: Colors.grey,
-                          child: inputDesignLogin(passwordofficercon, "Password",
-                              'assets/icons/passwordIcon.png'),
+                          child: inputDesignLogin(passwordofficercon,
+                              "Password", 'assets/icons/passwordIcon.png'),
                         ),
                       ],
                     ),
