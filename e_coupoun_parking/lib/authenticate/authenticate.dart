@@ -415,6 +415,7 @@ class _AuthenticationState extends State<Authentication> {
                           if (result == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('No User found')));
+                            setState(() => loading = false);
                           }
                           //Navigator.of(context).pushReplacementNamed('/home');
                         }

@@ -1,9 +1,14 @@
+import 'dart:async';
+
+import 'package:e_coupoun_parking/models/driver.dart';
+import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/auth.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:e_coupoun_parking/services/mysql_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -26,14 +31,26 @@ class _HomeScreenState extends State<HomeScreen> {
       emailnosql = 'null',
       birthdatenosql = 'null';
 //test database end
+//final StreamController _streamController = StreamController();
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final driveruid = Provider.of<Driveruid?>(context);
+    final driverinfo = Provider.of<Driver?>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: appBarDesign(context),
         drawer: Drawer(
-          child: Text('test'),
+          child: driverinfo == null
+              ? Text('null')
+              : Text('data = ${driverinfo.name}'),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -46,18 +63,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    menuDesign('Parking', 'assets/icons/parkingIcon.png','/registercar'),
-                    menuDesign('Register Car', 'assets/icons/carIcon.png','/registercar')
+                    menuDesign('Parking', 'assets/icons/parkingIcon.png',
+                        '/registercar', driverinfo),
+                    menuDesign('Register Car', 'assets/icons/carIcon.png',
+                        '/registercar', driverinfo)
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    menuDesign('Compound', 'assets/icons/compoundIcon.png','/registercar'),
-                    menuDesign('E-wallet', 'assets/icons/walletIcon.png','/ewallet'),
+                    menuDesign('Compound', 'assets/icons/compoundIcon.png',
+                        '/registercar', driverinfo),
+                    menuDesign('E-wallet', 'assets/icons/walletIcon.png',
+                        '/ewallet', driverinfo),
                   ],
                 ),
-                menuDesign('History', 'assets/icons/historyIcon.png','/registercar')
+                menuDesign('History', 'assets/icons/historyIcon.png',
+                    '/registercar', driverinfo)
               ],
             ),
           ),
@@ -66,7 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Column menuDesign(String title, String imagePath,String navigationPath) {
+  Column menuDesign(
+      String title, String imagePath, String navigationPath, Object? args) {
     return Column(
       children: [
         InkWell(
@@ -80,18 +103,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 shape: BoxShape.circle,
                 color: Color(0xffCBF0C1),
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 6
-                  ),
+                  BoxShadow(color: Colors.grey, blurRadius: 6),
                 ]),
             child: Image.asset(
               imagePath,
             ),
           ),
-          onTap: (){
+          onTap: () {
             print(title);
-            Navigator.of(context).pushNamed(navigationPath);
+            Navigator.of(context).pushNamed(navigationPath, arguments: args);
           },
         ),
         SizedBox(

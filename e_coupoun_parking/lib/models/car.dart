@@ -1,8 +1,8 @@
 class Car {
+  final String? carName;
   final String? carBrand;
   final String? carType;
   final String? carPlateNum;
-  final String? carOwnerType;
 
-  Car({this.carBrand, this.carOwnerType, this.carPlateNum, this.carType});
+  Car({this.carName, this.carBrand, this.carPlateNum, this.carType});
 }
