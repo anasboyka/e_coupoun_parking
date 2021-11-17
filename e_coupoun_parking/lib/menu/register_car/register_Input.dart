@@ -45,162 +45,160 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         ? new TextEditingController(text: widget.argument!["carPlateNum"])
         : new TextEditingController();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     final driveruid = Provider.of<Driveruid?>(context);
     final driverinfo = widget.argument!['driverInfo'];
-    return SafeArea(
-      child: Scaffold(
-        appBar: registerCarInputAppbarDesign(widget.argument!['appbarTitle']),
-        body: Stack(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height,
-              color: Color(0xffE1F9E0),
-            ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                child: Form(
-                  key: _formkey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20),
-                      widget.argument!["appbarTitle"] == 'Edit Car'
-                          ? Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                              child: Text(
-                                ' Car Name:',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            )
-                          : SizedBox(),
-                      textFormInputDesign('Car Name', carNamecon),
-                      SizedBox(height: 23),
-                      widget.argument!["appbarTitle"] == 'Edit Car'
-                          ? Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                              child: Text(
-                                ' Car Name :',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            )
-                          : SizedBox(),
-                      textFormInputDesign('Car Brand', carBrandcon),
-                      SizedBox(height: 23),
-                      widget.argument!["appbarTitle"] == 'Edit Car'
-                          ? Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                              child: Text(
-                                ' Car Type :',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            )
-                          : SizedBox(),
-                      textFormInputDesign('Car Type', carTypecon),
-                      SizedBox(height: 23),
-                      widget.argument!["appbarTitle"] == 'Edit Car'
-                          ? Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                              child: Text(
-                                ' Car Plate Number :',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            )
-                          : SizedBox(),
-                      textFormInputDesign('Car Plate Number', carPlateNumcon),
-                      SizedBox(height: 16),
-                      SizedBox(
-                        height: 23,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Color(0xff16AA10),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                fixedSize: Size(190, 70)),
-                            onPressed: () async {
-                              await saveCar(driveruid, driverinfo, context);
-                            },
+    return Scaffold(
+      appBar: registerCarInputAppbarDesign(widget.argument!['appbarTitle']),
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            color: Color(0xffE1F9E0),
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              child: Form(
+                key: _formkey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20),
+                    widget.argument!["appbarTitle"] == 'Edit Car'
+                        ? Padding(
+                            padding: EdgeInsets.only(bottom: 20),
                             child: Text(
-                              'Save',
+                              ' Car Name:',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: 25,
-                                color: const Color(0xffffffff),
+                                fontSize: 16,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w700,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Color(0xffffffff),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                fixedSize: Size(190, 70)),
-                            onPressed: () async {
-                              carBrandcon.text = '';
-                              carPlateNumcon.text = '';
-                              carTypecon.text = '';
-                            },
-                            child: Text(
-                              'Clear',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 25,
-                                color: const Color(0xffBEBEBE),
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.left,
                             ),
                           )
-                        ],
-                      ),
-                      SizedBox(height: 50),
-                      Center(
-                          child: loading
-                              ? CircularProgressIndicator()
-                              : SizedBox())
-                    ],
-                  ),
+                        : SizedBox(),
+                    textFormInputDesign('Car Name', carNamecon),
+                    SizedBox(height: 23),
+                    widget.argument!["appbarTitle"] == 'Edit Car'
+                        ? Padding(
+                            padding: EdgeInsets.only(bottom: 20),
+                            child: Text(
+                              ' Car Name :',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          )
+                        : SizedBox(),
+                    textFormInputDesign('Car Brand', carBrandcon),
+                    SizedBox(height: 23),
+                    widget.argument!["appbarTitle"] == 'Edit Car'
+                        ? Padding(
+                            padding: EdgeInsets.only(bottom: 20),
+                            child: Text(
+                              ' Car Type :',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          )
+                        : SizedBox(),
+                    textFormInputDesign('Car Type', carTypecon),
+                    SizedBox(height: 23),
+                    widget.argument!["appbarTitle"] == 'Edit Car'
+                        ? Padding(
+                            padding: EdgeInsets.only(bottom: 20),
+                            child: Text(
+                              ' Car Plate Number :',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          )
+                        : SizedBox(),
+                    textFormInputDesign('Car Plate Number', carPlateNumcon),
+                    SizedBox(height: 16),
+                    SizedBox(
+                      height: 23,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xff16AA10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              fixedSize: Size(190, 70)),
+                          onPressed: () async {
+                            await saveCar(driveruid, driverinfo, context);
+                          },
+                          child: Text(
+                            'Save',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 25,
+                              color: const Color(0xffffffff),
+                              fontWeight: FontWeight.w700,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xffffffff),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              fixedSize: Size(190, 70)),
+                          onPressed: () async {
+                            carBrandcon.text = '';
+                            carPlateNumcon.text = '';
+                            carTypecon.text = '';
+                          },
+                          child: Text(
+                            'Clear',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 25,
+                              color: const Color(0xffBEBEBE),
+                              fontWeight: FontWeight.w700,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 50),
+                    Center(
+                        child: loading
+                            ? CircularProgressIndicator()
+                            : SizedBox())
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
