@@ -1,13 +1,20 @@
+//untuk CRUD punya firestore query
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/models/car.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:provider/provider.dart';
 
 class FirebaseService {
+  
+  //untuk declare siap2 id time call class ni.. optional untuk declare
   final String? uid;
   FirebaseService({this.uid});
+
+  //declare instance untuk collection drivers
   final CollectionReference driverCollection =
       FirebaseFirestore.instance.collection('drivers');
+  //declare instance untuk collection cars
   final CollectionReference carCollection =
       FirebaseFirestore.instance.collection('cars');
 
