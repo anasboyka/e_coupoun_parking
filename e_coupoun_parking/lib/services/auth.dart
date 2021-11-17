@@ -1,3 +1,5 @@
+//coding untuk handle firebase authentication
+
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
@@ -5,12 +7,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthService {
+
+  //declare instance untuk firebase authentication
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  //declare instance untuk firebase user based on id
   Driveruid _userFromFirebaseUser(User? user) {
     return Driveruid(uid: user!.uid);
   }
 
+  //check state nak tengok dalam state sign in or dalam state sign out
   Stream<Driveruid?> get user {
     return _auth
         .authStateChanges()
@@ -18,6 +24,7 @@ class AuthService {
         .map(_userFromFirebaseUser);
   }
 
+  //register guna email and password, skali dgn bwak masuk data lain dalam firestore
   Future registerWithEmailAndPassword(
       String email,
       String password,
@@ -51,6 +58,7 @@ class AuthService {
     }
   }
 
+  //untuk sign in pakai email dgn password shj
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
@@ -68,6 +76,7 @@ class AuthService {
     }
   }
 
+  //signout
   Future signOut() async {
     try {
       return await _auth.signOut();
