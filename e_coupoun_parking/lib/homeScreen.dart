@@ -244,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Image.asset(
-                  'assets/icons/mpsp-sungaiPetani.png',
+                  'assets/icons/logo1.png',
                   width: 99,
                 )
               ],
