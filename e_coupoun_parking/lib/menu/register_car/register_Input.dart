@@ -20,6 +20,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   bool loading = false;
   // dummy data end
 
+  TextEditingController carNamecon = new TextEditingController();
   TextEditingController carBrandcon = new TextEditingController();
   TextEditingController carTypecon = new TextEditingController();
   TextEditingController carPlateNumcon = new TextEditingController();
@@ -31,6 +32,9 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    carNamecon = widget.argument!["carName"] != null
+        ? new TextEditingController(text: widget.argument!["carName"])
+        : new TextEditingController();
     carBrandcon = widget.argument!["carBrand"] != null
         ? new TextEditingController(text: widget.argument!["carBrand"])
         : new TextEditingController();
@@ -69,7 +73,24 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                           ? Padding(
                               padding: EdgeInsets.only(bottom: 20),
                               child: Text(
-                                ' Car Brand :',
+                                ' Car Name:',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            )
+                          : SizedBox(),
+                      textFormInputDesign('Car Name', carNamecon),
+                      SizedBox(height: 23),
+                      widget.argument!["appbarTitle"] == 'Edit Car'
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Text(
+                                ' Car Name :',
                                 style: TextStyle(
                                   fontFamily: 'Roboto',
                                   fontSize: 16,
@@ -201,6 +222,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         //if car not exist in collection or status is editing
         if (!carExistCollection || appbarTitle == "Edit Car") {
           await FirebaseService().updateCarDataCollection(
+              carNamecon.text.trim().toUpperCase(),
               carBrandcon.text.trim().toUpperCase(),
               carTypecon.text.trim().toUpperCase(),
               carPlateNum);
@@ -212,10 +234,10 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
               driverinfo.icNum!,
               driverinfo.birthDate!);
           await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+              carNamecon.text.trim().toUpperCase(),
               carBrandcon.text.trim().toUpperCase(),
               carTypecon.text.trim().toUpperCase(),
               carPlateNum);
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Car Registered Successfully'),
@@ -225,6 +247,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           Navigator.of(context).pop();
         } else {
           await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+            carNamecon.text.trim().toUpperCase(),
             carBrandcon.text.trim().toUpperCase(),
             carTypecon.text.trim().toUpperCase(),
             carPlateNum,

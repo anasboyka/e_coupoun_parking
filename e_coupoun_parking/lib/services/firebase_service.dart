@@ -22,27 +22,27 @@ class FirebaseService {
     });
   }
 
-  Future updateCarDataCollection(String carBrand, String carType,
-      String carPlateNum) async {
+  Future updateCarDataCollection(String carName, String carBrand,
+      String carType, String carPlateNum) async {
     return await carCollection.doc(carPlateNum).set({
+      "carName": carName,
       "carBrand": carBrand,
       "carType": carType,
       "carPlateNum": carPlateNum
-     
     });
   }
 
-  Future updateCarDataFromDriver(String carBrand, String carType,
-      String carPlateNum ) async {
+  Future updateCarDataFromDriver(String carName, String carBrand,
+      String carType, String carPlateNum) async {
     return await driverCollection
         .doc(uid)
         .collection('Cars')
         .doc(carPlateNum)
         .set({
+      "carName": carName,
       "carBrand": carBrand,
       "carType": carType,
       "carPlateNum": carPlateNum,
-      
     });
   }
 
@@ -70,6 +70,7 @@ class FirebaseService {
     return snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
       return Car(
+        carName: data['carName'],
         carBrand: data['carBrand'],
         carPlateNum: data['carPlateNum'],
         carType: data['carType'],
@@ -175,8 +176,8 @@ class FirebaseService {
         .doc(carPlateNum)
         .get()
         .then((data) => Car(
+              carName: data['carName'],
               carBrand: data['carBrand'],
-             
               carPlateNum: data['carPlateNum'],
               carType: data['carType'],
             ));
@@ -184,6 +185,7 @@ class FirebaseService {
 
   Future<Car> getCarInfoCollection(String carPlateNum) async {
     return carCollection.doc(carPlateNum).get().then((data) => Car(
+          carName: data['carName'],
           carBrand: data['carBrand'],
           carPlateNum: data['carPlateNum'],
           carType: data['carType'],

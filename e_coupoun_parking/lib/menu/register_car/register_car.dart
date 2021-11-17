@@ -410,6 +410,7 @@ class _RegisterCarState extends State<RegisterCar> {
 
                             Navigator.of(context)
                                 .pushNamed('/registerinputcar', arguments: {
+                              "carName": carList[index]!.carName,
                               "carPlateNum": carList[index]!.carPlateNum,
                               "carBrand": carList[index]!.carBrand,
                               "carType": carList[index]!.carType,
@@ -500,7 +501,7 @@ class _RegisterCarState extends State<RegisterCar> {
     );
   }
 
-  Padding registerCarDesign() {
+  Widget registerCarDesign() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       child: Container(
