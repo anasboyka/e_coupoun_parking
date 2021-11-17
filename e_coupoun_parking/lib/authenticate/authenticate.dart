@@ -629,31 +629,28 @@ class _AuthenticationState extends State<Authentication> {
                           phoneNumcon.text,
                           icNumcon.text,
                           _date);
-                      //setState(() => loading = false);
                       if (result == null) {
                         setState(() => error = "please supply a valid email");
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('$error')),
                         );
+                        setState(() => loading = false);
+                      } else if (result == 'emailUsed') {
+                        setState(() => error = "Email is already in used");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('$error')),
+                        );
+                        setState(() => loading = false);
+                      } else if (result == 'passwordweak') {
+                        setState(() => error = "Password is to weak");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('$error')),
+                        );
+                        setState(() => loading = false);
                       }
                       print(error);
                     }
                   }
-
-                  // if (_formkey.currentState!.validate()) {
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(content: Text('Processing Data')),
-                  // );
-                  //   setState(() => loading = true);
-                  //   // dynamic result = await _auth.registerWithEmailAndPassword(
-                  //   //     email, password, name, mobileNo);
-                  //   // if (result == null) {
-                  //   //   setState(() {
-                  //   //     error = "Please supply a valid email";
-                  //   //     loading = false;
-                  //   //   });
-                  //   // }
-                  // }
                 },
               ),
             ),
