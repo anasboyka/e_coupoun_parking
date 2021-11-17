@@ -23,17 +23,17 @@ class FirebaseService {
   }
 
   Future updateCarDataCollection(String carBrand, String carType,
-      String carPlateNum, String carOwnerType) async {
+      String carPlateNum) async {
     return await carCollection.doc(carPlateNum).set({
       "carBrand": carBrand,
       "carType": carType,
-      "carPlateNum": carPlateNum,
-      "carOwnerType": carOwnerType
+      "carPlateNum": carPlateNum
+     
     });
   }
 
   Future updateCarDataFromDriver(String carBrand, String carType,
-      String carPlateNum, String carOwnerType) async {
+      String carPlateNum ) async {
     return await driverCollection
         .doc(uid)
         .collection('Cars')
@@ -42,7 +42,7 @@ class FirebaseService {
       "carBrand": carBrand,
       "carType": carType,
       "carPlateNum": carPlateNum,
-      "carOwnerType": carOwnerType
+      
     });
   }
 
@@ -71,7 +71,6 @@ class FirebaseService {
       Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
       return Car(
         carBrand: data['carBrand'],
-        carOwnerType: data['carOwnerType'],
         carPlateNum: data['carPlateNum'],
         carType: data['carType'],
       );
@@ -91,10 +90,6 @@ class FirebaseService {
       );
     }).toList();
   }
-
-  // Stream get drivers {
-  //   return driverCollection.snapshots();
-  // }
 
   Stream<List<Car>> get cars {
     return carCollection.snapshots().map(_carListFromSnapshot);
@@ -181,7 +176,7 @@ class FirebaseService {
         .get()
         .then((data) => Car(
               carBrand: data['carBrand'],
-              carOwnerType: data['carOwnerType'],
+             
               carPlateNum: data['carPlateNum'],
               carType: data['carType'],
             ));
@@ -190,26 +185,25 @@ class FirebaseService {
   Future<Car> getCarInfoCollection(String carPlateNum) async {
     return carCollection.doc(carPlateNum).get().then((data) => Car(
           carBrand: data['carBrand'],
-          carOwnerType: data['carOwnerType'],
           carPlateNum: data['carPlateNum'],
           carType: data['carType'],
         ));
   }
 
-  Future<bool> checkCarPersonalExist(String carPlateNum) {
-    return carCollection
-        .where('carPlateNum', isEqualTo: carPlateNum)
-        .where('carOwnerType', isEqualTo: 'Personal')
-        .get()
-        .then((value) {
-      //final val = value.docs.first.data() as Map<String, dynamic>;
-      //print(val['carBrand']);
-      return value.docs.isNotEmpty;
-    }).catchError((error) {
-      print(error);
-      return false;
-    });
-  }
+  // Future<bool> checkCarPersonalExist(String carPlateNum) {
+  //   return carCollection
+  //       .where('carPlateNum', isEqualTo: carPlateNum)
+  //       .where('', isEqualTo: 'Personal')
+  //       .get()
+  //       .then((value) {
+  //     //final val = value.docs.first.data() as Map<String, dynamic>;
+  //     //print(val['carBrand']);
+  //     return value.docs.isNotEmpty;
+  //   }).catchError((error) {
+  //     print(error);
+  //     return false;
+  //   });
+  // }
 
   Future<int> getNumberOfCarsFromDriver() async {
     QuerySnapshot doc =

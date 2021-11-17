@@ -21,20 +21,11 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   // dummy data end
 
   TextEditingController carBrandcon = new TextEditingController();
-
   TextEditingController carTypecon = new TextEditingController();
-
   TextEditingController carPlateNumcon = new TextEditingController();
-
   TextEditingController carYrManufactcon = new TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
-
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  // String getCurrentUserId() {
-  //   final user = auth.currentUser;
-  //   return user!.uid;
-  // }
 
   @override
   void initState() {
@@ -50,10 +41,6 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         ? new TextEditingController(text: widget.argument!["carPlateNum"])
         : new TextEditingController();
   }
-
-  var ownerTypeList = ['Personal', 'Non-Personal'];
-
-  var _currentItemSelected = "Personal";
 
   @override
   Widget build(BuildContext context) {
@@ -128,19 +115,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                             )
                           : SizedBox(),
                       textFormInputDesign('Car Plate Number', carPlateNumcon),
-                      SizedBox(height: 23),
-                      Text(
-                        ' Car Owner Type :',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
                       SizedBox(height: 16),
-                      dropDownDesign(),
                       SizedBox(
                         height: 23,
                       ),
@@ -195,7 +170,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                       ),
                       SizedBox(height: 50),
                       Center(
-                          child: conditionRegister
+                          child: loading
                               ? CircularProgressIndicator()
                               : SizedBox())
                     ],
@@ -223,13 +198,12 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       if (!carExistFromDriver || appbarTitle == "Edit Car") {
         bool carExistCollection =
             await FirebaseService().checkCarExistCollection(carPlateNum);
-        //if car not exist in collection or status not edit
+        //if car not exist in collection or status is editing
         if (!carExistCollection || appbarTitle == "Edit Car") {
           await FirebaseService().updateCarDataCollection(
               carBrandcon.text.trim().toUpperCase(),
               carTypecon.text.trim().toUpperCase(),
-              carPlateNum,
-              _currentItemSelected);
+              carPlateNum);
           await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
               driverinfo.name,
               driverinfo.username,
@@ -240,8 +214,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
               carBrandcon.text.trim().toUpperCase(),
               carTypecon.text.trim().toUpperCase(),
-              carPlateNum,
-              _currentItemSelected);
+              carPlateNum);
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -250,79 +223,26 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
             ),
           );
           Navigator.of(context).pop();
-        }
-
-        //if car exist in collection or status not edit
-        else {
-          //if ownertype personal
-          if (_currentItemSelected == "Personal") {
-            bool personalExist =
-                await FirebaseService().checkCarPersonalExist(carPlateNum);
-            //if personal car already exist
-            if (personalExist) {
-              print('exist');
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('this car already registered as personal car'),
-                  duration: Duration(seconds: 3),
-                ),
-              );
-            }
-            //if personal car not exist
-            else {
-              print('not exist');
-              await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
-                  carBrandcon.text.trim().toUpperCase(),
-                  carTypecon.text.trim().toUpperCase(),
-                  carPlateNum,
-                  _currentItemSelected);
-
-              await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
-                  driverinfo.name,
-                  driverinfo.username,
-                  carPlateNum,
-                  driverinfo.phoneNum!,
-                  driverinfo.icNum!,
-                  driverinfo.birthDate!);
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Car Registered Successfully'),
-                  duration: Duration(seconds: 3),
-                ),
-              );
-              Navigator.of(context).pop();
-            }
-          }
-          //if not personal
-          else {
-            await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
-                carBrandcon.text.trim().toUpperCase(),
-                carTypecon.text.trim().toUpperCase(),
-                carPlateNum,
-                _currentItemSelected);
-            await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
-                carBrandcon.text.trim().toUpperCase(),
-                carTypecon.text.trim().toUpperCase(),
-                carPlateNum,
-                _currentItemSelected);
-
-            await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
-                driverinfo.name,
-                driverinfo.username,
-                carPlateNum,
-                driverinfo.phoneNum!,
-                driverinfo.icNum!,
-                driverinfo.birthDate!);
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Car Registered Successfully'),
-                duration: Duration(seconds: 3),
-              ),
-            );
-            Navigator.of(context).pop();
-          }
+        } else {
+          await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+            carBrandcon.text.trim().toUpperCase(),
+            carTypecon.text.trim().toUpperCase(),
+            carPlateNum,
+          );
+          await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
+              driverinfo.name,
+              driverinfo.username,
+              carPlateNum,
+              driverinfo.phoneNum!,
+              driverinfo.icNum!,
+              driverinfo.birthDate!);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Car Registered Successfully'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+          Navigator.of(context).pop();
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -341,37 +261,6 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       );
     }
     setState(() => loading = false);
-  }
-
-  Widget dropDownDesign() {
-    return Container(
-      height: 70,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(color: Colors.grey, blurRadius: 2),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Center(
-          child: DropdownButton(
-              onChanged: (String? newValueSelected) {
-                onDropDownItemSelected(newValueSelected!);
-              },
-              value: _currentItemSelected,
-              underline: SizedBox(),
-              isExpanded: true,
-              items: ownerTypeList.map((String item) {
-                return DropdownMenuItem(
-                  value: item,
-                  child: Text(item),
-                );
-              }).toList()),
-        ),
-      ),
-    );
   }
 
   Container textFormInputDesign(
@@ -482,11 +371,5 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       //backgroundColor: Colors.transparent,
       elevation: 1,
     );
-  }
-
-  void onDropDownItemSelected(String newValueSelected) {
-    setState(() {
-      this._currentItemSelected = newValueSelected;
-    });
   }
 }

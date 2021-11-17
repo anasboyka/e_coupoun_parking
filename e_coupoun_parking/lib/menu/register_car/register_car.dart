@@ -17,18 +17,10 @@ class RegisterCar extends StatefulWidget {
 }
 
 class _RegisterCarState extends State<RegisterCar> {
-  //dummy data start
-  String registerCar = '00', personalCar = "00", nonPersonalCar = '00';
+  String registerCar = '00';
   bool registerStatus = false;
 
   bool conditionList = false;
-
-  //dummy data end
-  // final FirebaseAuth auth = FirebaseAuth.instance;
-  // String getCurrentUserId() {
-  //   final user = auth.currentUser;
-  //   return user!.uid;
-  // }
 
   createAlertDialog(
       BuildContext context, String carBrand, String carPlateNum, String uid) {
@@ -76,7 +68,6 @@ class _RegisterCarState extends State<RegisterCar> {
                   ),
                 ),
                 onTap: () async {
-                  //Navigator.of(context).pop("data from dialog");
                   await FirebaseService(uid: uid)
                       .deleteCarFromUser(carPlateNum);
                   Navigator.of(context).pop();
@@ -102,7 +93,6 @@ class _RegisterCarState extends State<RegisterCar> {
                   ),
                 ),
                 onTap: () {
-                  //Navigator.of(context).pop("data from dialog");
                   Navigator.of(context).pop();
                 },
               )
@@ -121,7 +111,6 @@ class _RegisterCarState extends State<RegisterCar> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -137,231 +126,119 @@ class _RegisterCarState extends State<RegisterCar> {
           value: FirebaseService(uid: driver!.uid).userCars,
         ),
       ],
-      child: SafeArea(
-        child: Scaffold(
-          appBar: registerCarAppbarDesign(),
-          body: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height,
-                color: Color(0xffF1F1F1),
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 0.131 * size.height,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Color(0xffE1F9E0),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                        boxShadow: [
-                          BoxShadow(color: Colors.grey, blurRadius: 6),
-                        ],
+      child: Scaffold(
+        appBar: registerCarAppbarDesign(),
+        body: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              color: Color(0xffF1F1F1),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 0.131 * size.height,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color(0xffE1F9E0),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      boxShadow: [
+                        BoxShadow(color: Colors.grey, blurRadius: 6),
+                      ],
+                    ),
+                    child: SizedBox(
+                      width: size.width / 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: size.width / 3,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Registered Car',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 16,
-                                    color: const Color(0xff000000),
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                SizedBox(height: 14),
-                                StreamBuilder(
-                                    stream: FirebaseService(uid: driver.uid)
-                                        .userCars,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        List<Car> carList =
-                                            snapshot.data! as List<Car>;
-                                        return Text(
-                                          carList.length
-                                              .toString()
-                                              .padLeft(2, '0'),
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 30,
-                                            color: const Color(0xff000000),
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        );
-                                      } else {
-                                        return Text(
-                                          '00',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 30,
-                                            color: const Color(0xff000000),
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        );
-                                      }
-                                    })
-                              ],
+                          Text(
+                            'Registered Car',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 16,
+                              color: const Color(0xff000000),
                             ),
+                            textAlign: TextAlign.left,
                           ),
-                          SizedBox(
-                            width: size.width / 3,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Personal Car',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 16,
-                                    color: const Color(0xff000000),
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                SizedBox(height: 14),
-                                StreamBuilder(
-                                    stream: FirebaseService(uid: driver.uid)
-                                        .userCars,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        List<Car> carList =
-                                            snapshot.data! as List<Car>;
-                                        List<Car?> carListPersonal = [];
-                                        carList.map((list) {
-                                          if (list.carOwnerType == "Personal") {
-                                            //print(list.carType);
-                                            carListPersonal.add(list);
-                                          }
-                                        }).toList();
-                                        return Text(
-                                          carListPersonal.length
-                                              .toString()
-                                              .padLeft(2, '0'),
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 30,
-                                            color: const Color(0xff000000),
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        );
-                                      }
-                                      {
-                                        return Text(
-                                          '00',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 30,
-                                            color: const Color(0xff000000),
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        );
-                                      }
-                                    })
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: size.width / 3,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Non-Personal Car',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 16,
-                                    color: const Color(0xff000000),
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                SizedBox(height: 14),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: StreamBuilder(
-                                      stream: FirebaseService(uid: driver.uid)
-                                          .userCars,
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          List<Car> carList =
-                                              snapshot.data! as List<Car>;
-                                          List<Car?> carListNonPersonal = [];
-                                          carList.map((list) {
-                                            if (list.carOwnerType ==
-                                                "Non-Personal") {
-                                              carListNonPersonal.add(list);
-                                            }
-                                          }).toList();
-                                          return Text(
-                                            carListNonPersonal.length
-                                                .toString()
-                                                .padLeft(2, '0'),
-                                            style: TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontSize: 30,
-                                              color: const Color(0xff000000),
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          );
-                                        }
-                                        {
-                                          return Text(
-                                            '00',
-                                            style: TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontSize: 30,
-                                              color: const Color(0xff000000),
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          );
-                                        }
-                                      }),
-                                )
-                              ],
-                            ),
-                          )
+                          SizedBox(height: 14),
+                          StreamBuilder(
+                              stream: FirebaseService(uid: driver.uid).userCars,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List<Car> carList =
+                                      snapshot.data! as List<Car>;
+                                  return Text(
+                                    carList.length.toString().padLeft(2, '0'),
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 30,
+                                      color: const Color(0xff000000),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  );
+                                } else {
+                                  return Text(
+                                    '00',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 30,
+                                      color: const Color(0xff000000),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  );
+                                }
+                              })
                         ],
                       ),
                     ),
-                    SizedBox(height: 40),
-                    expansionCarDesign('Personal', driver.uid),
-                    SizedBox(height: 16),
-                    expansionCarDesign('Non-Personal', driver.uid),
-                    Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 1,
-                        thickness: 1,
-                      ),
+                  ),
+                  SizedBox(height: 40),
+                  registerCarDesign(),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Divider(
+                      color: Colors.black,
+                      height: 1,
+                      thickness: 1,
                     ),
-                    registerCarDesign(),
-                    SizedBox(height: 16),
-                    // registerCarDesign('Non-Personal'),
-                    // SizedBox(
-                    //   height: 25,
-                    // )
-                  ],
-                ),
-              )
-            ],
-          ),
+                  ),
+                  StreamBuilder(
+                      stream: FirebaseService(uid: driver.uid).userCars,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          print('hasdata');
+                          return listViewCarDesign(snapshot, driver.uid);
+                        } else {
+                          print('nodata');
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: 1,
+                              itemBuilder: (context, snapshot) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: SizedBox(
+                                      height: 30,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                );
+                              });
+                        }
+                      }),
+                  SizedBox(height: 16),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -400,8 +277,10 @@ class _RegisterCarState extends State<RegisterCar> {
                 stream: FirebaseService(uid: uid).userCars,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return listViewCarDivideDesign(title, snapshot, uid);
+                    print('hasdata');
+                    return listViewCarDesign(snapshot, uid);
                   } else {
+                    print('nodata');
                     return ListView.builder(
                         shrinkWrap: true,
                         itemCount: 1,
@@ -424,49 +303,55 @@ class _RegisterCarState extends State<RegisterCar> {
     );
   }
 
-  ListView listViewCarDivideDesign(
-      String title, AsyncSnapshot snapshot, String uid) {
+  Widget listViewCarDesign(AsyncSnapshot snapshot, String uid) {
     List<Car> carList = snapshot.data! as List<Car>;
-
-    List<Car?> carListPersonal = [];
-    carList.map((list) {
-      if (list.carOwnerType == "Personal") {
-        //print(list.carType);
-        carListPersonal.add(list);
-      }
-    }).toList();
-    List<Car?> carListNonPersonal = [];
-    carList.map((list) {
-      if (list.carOwnerType == "Non-Personal") {
-        carListNonPersonal.add(list);
-      }
-    }).toList();
-    if (title == 'Non-Personal' && carListNonPersonal.length > 0) {
-      return listViewCarDesign(title, carListNonPersonal, uid);
-    } else if (title == 'Personal' && carListPersonal.length > 0) {
-      return listViewCarDesign(title, carListPersonal, uid);
-    } else if (carListNonPersonal.length < 0 || carListPersonal.length < 0) {
-      return ListView.builder(
-          shrinkWrap: true,
-          itemCount: 1,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [dividerListview(), noRegisteredCarDesign()],
-            );
-          });
-    }
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          return Column(
-            children: [dividerListview(), noRegisteredCarDesign()],
-          );
-        });
-    //return listViewCarDesignn(title, carList);
+    //if (carList.length == 0) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0, 1),
+                blurRadius: 3,
+              )
+            ]),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                'LIST CAR REGISTERED',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 12,
+                  color: const Color(0xff000000),
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            carList.length < 1
+                ? listviewNoCarDesignBuilder()
+                : listViewCarDesignBuilder(carList, uid),
+          ],
+        ),
+      ),
+    );
+    // } else {
+    //   return ListView.builder(
+    //       shrinkWrap: true,
+    //       itemCount: 1,
+    //       itemBuilder: (context, snapshot) {
+    //         return noRegisteredCarDesign();
+    //       });
+    // }
   }
 
-  ListView listViewCarDesign(String title, List<Car?> carList, String uid) {
+  ListView listViewCarDesignBuilder(List<Car?> carList, String uid) {
     return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         itemCount: carList.length,
@@ -522,12 +407,11 @@ class _RegisterCarState extends State<RegisterCar> {
                           iconSize: 30,
                           onPressed: () {
                             print(widget.driverInfo);
-                            //_editCarOnPressed();
+
                             Navigator.of(context)
                                 .pushNamed('/registerinputcar', arguments: {
                               "carPlateNum": carList[index]!.carPlateNum,
                               "carBrand": carList[index]!.carBrand,
-                              "carOwnerType": carList[index]!.carOwnerType,
                               "carType": carList[index]!.carType,
                               "appbarTitle": "Edit Car",
                               "driverInfo": widget.driverInfo
@@ -590,7 +474,17 @@ class _RegisterCarState extends State<RegisterCar> {
     );
   }
 
-  ListTile noRegisteredCarDesign() {
+  Widget listviewNoCarDesignBuilder() {
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        dividerListview(),
+        noRegisteredCarDesign(),
+      ],
+    );
+  }
+
+  Widget noRegisteredCarDesign() {
     return ListTile(
       title: Text(
         'No car registered',
@@ -600,7 +494,7 @@ class _RegisterCarState extends State<RegisterCar> {
           color: const Color(0xff707070),
           fontWeight: FontWeight.w700,
         ),
-        textAlign: TextAlign.left,
+        textAlign: TextAlign.center,
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
     );
@@ -671,7 +565,6 @@ class _RegisterCarState extends State<RegisterCar> {
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           splashRadius: 25,
           onPressed: () {
-            //print('clicked');
             return Navigator.of(context).pop();
           },
         ),
@@ -681,13 +574,11 @@ class _RegisterCarState extends State<RegisterCar> {
         image: AssetImage('assets/icons/header.png'),
         fit: BoxFit.fitWidth,
       ),
-      //backgroundColor: Colors.transparent,
       elevation: 1,
     );
   }
 
   void _editCarOnPressed() {
     print('edit car');
-    //Navigator.of(context).pushNamed('/registerinputcar',arguments: {})
   }
 }
