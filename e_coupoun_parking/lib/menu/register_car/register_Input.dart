@@ -45,7 +45,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         ? new TextEditingController(text: widget.argument!["carPlateNum"])
         : new TextEditingController();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final driveruid = Provider.of<Driveruid?>(context);
@@ -190,9 +190,8 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                     ),
                     SizedBox(height: 50),
                     Center(
-                        child: loading
-                            ? CircularProgressIndicator()
-                            : SizedBox())
+                        child:
+                            loading ? CircularProgressIndicator() : SizedBox())
                   ],
                 ),
               ),
@@ -206,12 +205,13 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   Future<void> saveCar(
       Driveruid? driveruid, driverinfo, BuildContext context) async {
     String carPlateNum = carPlateNumcon.text.trim().toUpperCase();
-    if (carBrandcon.text.isNotEmpty &&
+    if (carNamecon.text.isNotEmpty &&
+        carBrandcon.text.isNotEmpty &&
         carTypecon.text.isNotEmpty &&
         carPlateNumcon.text.isNotEmpty) {
       setState(() => loading = true);
       bool carExistFromDriver = await FirebaseService(uid: driveruid!.uid)
-          .checkCarExistFromUser(carPlateNum);
+          .checkCarExistFromDriver(carPlateNum);
       String appbarTitle = widget.argument!["appbarTitle"];
       //if car not exist in driver
       if (!carExistFromDriver || appbarTitle == "Edit Car") {
