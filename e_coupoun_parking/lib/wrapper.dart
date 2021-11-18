@@ -1,3 +1,5 @@
+//ubah screen based on sign in condition
+
 import 'package:e_coupoun_parking/homeScreen.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_Input.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_car.dart';
@@ -17,10 +19,7 @@ class Wrapper extends StatelessWidget {
     final driveruid = Provider.of<Driveruid?>(context);
 
     if (driveruid == null) {
-      //return RegisterCar();
-      //return RegisterCarInput();
       return Authentication();
-      //return HomeScreen();
     } else {
       return MultiProvider(
         providers: [
