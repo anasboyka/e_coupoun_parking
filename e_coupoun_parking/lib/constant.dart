@@ -1,5 +1,3 @@
-//coding untuk constant variable or data nak guna kat file coding lain
-
 import 'package:flutter/material.dart';
 
 const kprimaryColor = Color(0xff15B73E);
