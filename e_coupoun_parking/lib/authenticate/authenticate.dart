@@ -469,12 +469,91 @@ class _AuthenticationState extends State<Authentication> {
                 SizedBox(
                   height: 30,
                 ),
+                // officerLoginLink(),
+                // SizedBox(
+                //   height: 13,
+                // ),
+                // adminLoginLink(),
                 Center(
                   child: loading ? CircularProgressIndicator() : SizedBox(),
                 )
               ],
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Row adminLoginLink() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Administrator? ',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 19,
+            color: const Color(0xff000000),
+          ),
+          textAlign: TextAlign.left,
+        ),
+        InkWell(
+          child: Text(
+            'Click Here',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 19,
+              color: const Color(0xff1F8FEB),
+              fontWeight: FontWeight.w700,
+              decoration: TextDecoration.underline,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          onTap: () {
+            //Navigator.of(context).pushNamed('/loginadmin');
+            //Navigator.of(context).pushReplacementNamed('/loginadmin');
+            Navigator.pushReplacementNamed(
+              context,
+              '/loginadmin',
+            );
+            print("administrator");
+          },
+        ),
+      ],
+    );
+  }
+
+  Row officerLoginLink() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Officer? ',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 19,
+            color: const Color(0xff000000),
+          ),
+          textAlign: TextAlign.left,
+        ),
+        InkWell(
+          child: Text(
+            'Click Here',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 19,
+              color: const Color(0xff1F8FEB),
+              fontWeight: FontWeight.w700,
+              decoration: TextDecoration.underline,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          onTap: () {
+            //Navigator.of(context).pushNamed('/loginofficer');
+            Navigator.of(context).pushReplacementNamed('/loginofficer');
+            print("login as officer");
+          },
         ),
       ],
     );
