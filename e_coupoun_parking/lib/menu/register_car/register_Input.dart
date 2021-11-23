@@ -1,4 +1,9 @@
+import 'dart:math';
+
+import 'package:e_coupoun_parking/constant.dart';
+import 'package:e_coupoun_parking/menu/register_car/car_type_chip.dart';
 import 'package:e_coupoun_parking/models/car.dart';
+import 'package:e_coupoun_parking/models/choiceChipSelection.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
@@ -27,6 +32,10 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   TextEditingController carYrManufactcon = new TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
+  String chipselected = '';
+  var isSelected = false;
+
+  List<ChoiceChipData> choiceChips = ChoiceChips.all;
 
   @override
   void initState() {
@@ -72,7 +81,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                         ? Padding(
                             padding: EdgeInsets.only(bottom: 20),
                             child: Text(
-                              ' Car Name:',
+                              ' Car Plate Number :',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 16,
@@ -83,7 +92,8 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                             ),
                           )
                         : SizedBox(),
-                    textFormInputDesign('Car Name', carNamecon),
+                    textFormInputDesign('Car Plate Number', carPlateNumcon),
+
                     SizedBox(height: 23),
                     widget.argument!["appbarTitle"] == 'Edit Car'
                         ? Padding(
@@ -102,28 +112,28 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                         : SizedBox(),
                     textFormInputDesign('Car Brand', carBrandcon),
                     SizedBox(height: 23),
-                    widget.argument!["appbarTitle"] == 'Edit Car'
-                        ? Padding(
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: Text(
-                              ' Car Type :',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          )
-                        : SizedBox(),
-                    textFormInputDesign('Car Type', carTypecon),
+                    // widget.argument!["appbarTitle"] == 'Edit Car'
+                    //     ?
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        ' Car Type :',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    buildChoiceChips(),
                     SizedBox(height: 23),
                     widget.argument!["appbarTitle"] == 'Edit Car'
                         ? Padding(
                             padding: EdgeInsets.only(bottom: 20),
                             child: Text(
-                              ' Car Plate Number :',
+                              ' Car Name:',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 16,
@@ -134,7 +144,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                             ),
                           )
                         : SizedBox(),
-                    textFormInputDesign('Car Plate Number', carPlateNumcon),
+                    textFormInputDesign('Car Name', carNamecon),
                     SizedBox(height: 16),
                     SizedBox(
                       height: 23,
@@ -391,6 +401,119 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       ),
       //backgroundColor: Colors.transparent,
       elevation: 1,
+    );
+  }
+
+  ChoiceChip choiceChipDesign(String chipTitle) {
+    Color textColor = Colors.black;
+    return ChoiceChip(
+      label: Text(
+        chipTitle,
+        textAlign: TextAlign.center,
+      ),
+      labelStyle: TextStyle(
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        color: textColor,
+        fontWeight: FontWeight.normal,
+      ),
+      selected: isSelected,
+      backgroundColor: Colors.white,
+      elevation: 1,
+      labelPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        //side: BorderSide(color: Colors.grey, width: 1),
+      ),
+      onSelected: (selected) {
+        setState(() {
+          isSelected = selected;
+        });
+      },
+      selectedColor: Color(0xff16AA10),
+    );
+  }
+
+  Widget buildChoiceChips() => Wrap(
+        runSpacing: 3,
+        spacing: 10,
+        children: choiceChips
+            .map((choiceChip) => ChoiceChip(
+                  label: Text(choiceChip.label),
+                  labelStyle: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 16,
+                    color: choiceChip.textColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  onSelected: (isSelected) => setState(() {
+                    choiceChips = choiceChips.map((otherChip) {
+                      final newChip = otherChip.copy(
+                          isSelected: false, textColor: Colors.black);
+                      return choiceChip == newChip
+                          ? newChip.copy(
+                              isSelected: isSelected, textColor: Colors.white)
+                          : newChip;
+                    }).toList();
+                  }),
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    //side: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  labelPadding:
+                      EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  selected: choiceChip.isSelected,
+                  selectedColor: Color(0xff16AA10),
+                  backgroundColor: Colors.white,
+                ))
+            .toList(),
+      );
+}
+
+class ChipWidgetDesign extends StatefulWidget {
+  final String chipTitle;
+  ChipWidgetDesign({Key? key, required this.chipTitle}) : super(key: key);
+
+  @override
+  _ChipWidgetDesignState createState() => _ChipWidgetDesignState();
+}
+
+class _ChipWidgetDesignState extends State<ChipWidgetDesign> {
+  var isSelected = false;
+  Color textColor = Colors.black;
+  @override
+  Widget build(BuildContext context) {
+    return ChoiceChip(
+      label: Text(
+        widget.chipTitle,
+        textAlign: TextAlign.center,
+      ),
+      labelStyle: TextStyle(
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        color: textColor,
+        fontWeight: FontWeight.normal,
+      ),
+      selected: isSelected,
+      backgroundColor: Colors.white,
+      elevation: 1,
+      labelPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        //side: BorderSide(color: Colors.grey, width: 1),
+      ),
+      onSelected: (selected) {
+        setState(() {
+          isSelected = selected;
+          if (isSelected) {
+            textColor = Colors.white;
+          } else {
+            textColor = Colors.black;
+          }
+        });
+      },
+      selectedColor: Color(0xff16AA10),
     );
   }
 }
