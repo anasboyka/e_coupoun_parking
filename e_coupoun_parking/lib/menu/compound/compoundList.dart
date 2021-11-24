@@ -234,7 +234,9 @@ class _CompoundPageState extends State<CompoundPage> {
                       width: 22,
                       height: 22,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.red),
+                          shape: BoxShape.circle,
+                          color:
+                              title == 'Overdue' ? Colors.yellow : Colors.red),
                       child: Text(
                         notification.toString(),
                         style: TextStyle(

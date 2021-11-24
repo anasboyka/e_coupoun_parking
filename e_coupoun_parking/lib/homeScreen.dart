@@ -85,6 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   menuDesign('History', 'assets/icons/historyIcon.png',
                       '/registercar', driverinfo),
+                  menuDesign('Profile', 'assets/icons/profileIcon.png',
+                      '/registercar', driverinfo),
                 ],
               )
             ],
