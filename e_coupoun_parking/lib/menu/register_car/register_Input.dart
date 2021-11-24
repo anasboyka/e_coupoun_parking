@@ -35,22 +35,31 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   String chipselected = '4Wheels';
   var isSelected = false;
 
-  late List<ChoiceChipData> choiceChips = ChoiceChips.all;
+  late List<ChoiceChipData> choiceChips = ChoiceChips().all;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    carNamecon = widget.argument!["carName"] != null
-        ? new TextEditingController(text: widget.argument!["carName"])
-        : new TextEditingController();
+    // carNamecon = widget.argument!["carName"] != null
+    //     ? new TextEditingController(text: widget.argument!["carName"])
+    //     : new TextEditingController();
     carBrandcon = widget.argument!["carBrand"] != null
         ? new TextEditingController(text: widget.argument!["carBrand"])
         : new TextEditingController();
-    carTypecon = widget.argument!["carType"] != null
-        ? new TextEditingController(text: widget.argument!["carType"])
-        : new TextEditingController();
+
+    if (widget.argument!["carType"] != null) {
+      String carTypeInitial = widget.argument!["carType"];
+      chipselected = carTypeInitial;
+      final chipInit =
+          choiceChips.firstWhere((element) => element.label == carTypeInitial);
+      choiceChips = ChoiceChips().geteditedList(chipselected);
+      //print(choiceChips);
+    }
+    // carTypecon = widget.argument!["carType"] != null
+    //     ? new TextEditingController(text: widget.argument!["carType"])
+    //     : new TextEditingController();
     carPlateNumcon = widget.argument!["carPlateNum"] != null
         ? new TextEditingController(text: widget.argument!["carPlateNum"])
         : new TextEditingController();
