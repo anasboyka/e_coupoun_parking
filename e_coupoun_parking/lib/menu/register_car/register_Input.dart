@@ -32,7 +32,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   TextEditingController carYrManufactcon = new TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
-  String chipselected = '';
+  String chipselected = '4Wheels';
   var isSelected = false;
 
   late List<ChoiceChipData> choiceChips = ChoiceChips.all;
@@ -216,10 +216,11 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   Future<void> saveCar(
       Driveruid? driveruid, driverinfo, BuildContext context) async {
     String carPlateNum = carPlateNumcon.text.trim().toUpperCase();
-    if (carNamecon.text.isNotEmpty &&
+    if (
+        //carNamecon.text.isNotEmpty &&
         carBrandcon.text.isNotEmpty &&
-        carTypecon.text.isNotEmpty &&
-        carPlateNumcon.text.isNotEmpty) {
+            //carTypecon.text.isNotEmpty &&
+            carPlateNumcon.text.isNotEmpty) {
       setState(() => loading = true);
       bool carExistFromDriver = await FirebaseService(uid: driveruid!.uid)
           .checkCarExistFromDriver(carPlateNum);
@@ -231,9 +232,10 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         //if car not exist in collection or status is editing
         if (!carExistCollection || appbarTitle == "Edit Car") {
           await FirebaseService().updateCarDataCollection(
-              carNamecon.text.trim().toUpperCase(),
+              //carNamecon.text.trim().toUpperCase(),
               carBrandcon.text.trim().toUpperCase(),
-              carTypecon.text.trim().toUpperCase(),
+              chipselected,
+              //carTypecon.text.trim().toUpperCase(),
               carPlateNum);
           await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
               driverinfo.name,
@@ -243,9 +245,10 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
               driverinfo.icNum!,
               driverinfo.birthDate!);
           await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
-              carNamecon.text.trim().toUpperCase(),
+              //carNamecon.text.trim().toUpperCase(),
               carBrandcon.text.trim().toUpperCase(),
-              carTypecon.text.trim().toUpperCase(),
+              chipselected,
+              //carTypecon.text.trim().toUpperCase(),
               carPlateNum);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -256,9 +259,10 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           Navigator.of(context).pop();
         } else {
           await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
-            carNamecon.text.trim().toUpperCase(),
+            //carNamecon.text.trim().toUpperCase(),
             carBrandcon.text.trim().toUpperCase(),
-            carTypecon.text.trim().toUpperCase(),
+            chipselected,
+            //carTypecon.text.trim().toUpperCase(),
             carPlateNum,
           );
           await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
@@ -448,6 +452,8 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                     fontWeight: FontWeight.normal,
                   ),
                   onSelected: (isSelected) => setState(() {
+                    //print(choiceChip.label);
+                    chipselected = choiceChip.label;
                     choiceChips = choiceChips.map((otherChip) {
                       final newChip = otherChip.copy(
                           isSelected: false, textColor: Colors.black);

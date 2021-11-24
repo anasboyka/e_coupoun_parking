@@ -24,24 +24,28 @@ class FirebaseService {
     });
   }
 
-  Future updateCarDataCollection(String carName, String carBrand,
+  //query untuk cars punya collection untuk new car or existed car*
+  //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
+  Future updateCarDataCollection(/*String carName,*/ String carBrand,
       String carType, String carPlateNum) async {
     return await carCollection.doc(carPlateNum).set({
-      "carName": carName,
+      //"carName": carName,
       "carBrand": carBrand,
       "carType": carType,
       "carPlateNum": carPlateNum
     });
   }
 
-  Future updateCarDataFromDriver(String carName, String carBrand,
+  //query untuk cars punya subcollection from driver punya collection*
+  //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
+  Future updateCarDataFromDriver(/*String carName,*/ String carBrand,
       String carType, String carPlateNum) async {
     return await driverCollection
         .doc(uid)
         .collection('Cars')
         .doc(carPlateNum)
         .set({
-      "carName": carName,
+      //"carName": carName,
       "carBrand": carBrand,
       "carType": carType,
       "carPlateNum": carPlateNum,
@@ -72,7 +76,7 @@ class FirebaseService {
     return snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
       return Car(
-        carName: data['carName'],
+        //carName: data['carName'],
         carBrand: data['carBrand'],
         carPlateNum: data['carPlateNum'],
         carType: data['carType'],
@@ -94,6 +98,14 @@ class FirebaseService {
     }).toList();
   }
 
+  //stream - data dalam bentuk real time xperlu handle
+  //data dalam continous loop
+  //xperlu call bnyak kali, sbb dia sentiasa berjalan dalam loop
+  //slalunya guna untuk update ui tanpa tekan button
+
+  //method untuk dapat stream data untuk cars dalam bentuk list*
+  //List<Car> to Stream<List<Car>>*
+  //data dalam bentuk stream which means data akan realtime update whenever data berubah.
   Stream<List<Car>> get cars {
     return carCollection.snapshots().map(_carListFromSnapshot);
   }
@@ -178,7 +190,7 @@ class FirebaseService {
         .doc(carPlateNum)
         .get()
         .then((data) => Car(
-              carName: data['carName'],
+              // carName: data['carName'],
               carBrand: data['carBrand'],
               carPlateNum: data['carPlateNum'],
               carType: data['carType'],
@@ -201,6 +213,10 @@ class FirebaseService {
     print(docList.length);
     return docList.length;
   }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///test data firebase////
+
   //test data start
   Future testGetData() async {
     var data = await driverCollection.doc(uid).get();
