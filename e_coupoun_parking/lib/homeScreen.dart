@@ -1,5 +1,6 @@
 //homescreen kalau user dah sign in
 import 'dart:async';
+import 'dart:io';
 
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
@@ -46,44 +47,47 @@ class _HomeScreenState extends State<HomeScreen> {
     final driveruid = Provider.of<Driveruid?>(context);
     final driverinfo = Provider.of<Driver?>(context);
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: appBarDesign(context),
-        drawer: Drawer(
-          child: driverinfo == null
-              ? Text('null')
-              : Text('data = ${driverinfo.name}'),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height -
-                appBarDesign(context).preferredSize.height -
-                MediaQuery.of(context).padding.top,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    menuDesign('Parking', 'assets/icons/parkingIcon.png',
-                        '/registercar', driverinfo),
-                    menuDesign('Register Car', 'assets/icons/carIcon.png',
-                        '/registercar', driverinfo)
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    menuDesign('Compound', 'assets/icons/compoundIcon.png',
-                        '/registercar', driverinfo),
-                    menuDesign('E-wallet', 'assets/icons/walletIcon.png',
-                        '/ewallet', driverinfo),
-                  ],
-                ),
-                menuDesign('History', 'assets/icons/historyIcon.png',
-                    '/registercar', driverinfo)
-              ],
-            ),
+    return Scaffold(
+      appBar: appBarDesign(context),
+      drawer: Drawer(
+        child: driverinfo == null
+            ? Text('null')
+            : Text('data = ${driverinfo.name}'),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height -
+              appBarDesign(context).preferredSize.height -
+              MediaQuery.of(context).padding.top,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  menuDesign('Parking', 'assets/icons/parkingIcon.png',
+                      '/registercar', driverinfo),
+                  menuDesign('Register Car', 'assets/icons/carIcon.png',
+                      '/registercar', driverinfo)
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  menuDesign('Compound', 'assets/icons/compoundIcon.png',
+                      '/compound', {"driverInfo": driverinfo}),
+                  menuDesign('E-wallet', 'assets/icons/walletIcon.png',
+                      '/ewallet', driverinfo),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  menuDesign('History', 'assets/icons/historyIcon.png',
+                      '/registercar', driverinfo),
+                ],
+              )
+            ],
           ),
         ),
       ),
@@ -134,7 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar appBarDesign(BuildContext context) {
     return AppBar(
-      toolbarHeight: 190,
+      toolbarHeight: Platform.isAndroid
+          ? 190 - MediaQuery.of(context).padding.top
+          : 172 - MediaQuery.of(context).padding.top,
 
       //title: Text('data'),
       leading: Align(
