@@ -2,6 +2,7 @@
 
 import 'package:e_coupoun_parking/authenticate/loginAdmin.dart';
 import 'package:e_coupoun_parking/authenticate/loginOfficer.dart';
+import 'package:e_coupoun_parking/menu/compound/compoundList.dart';
 import 'package:e_coupoun_parking/menu/e_wallet/e_wallet.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_Input.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_car.dart';
@@ -87,6 +88,11 @@ class RouteGenerator {
                 RegisterCarInput(argument: args as Map<String?, dynamic>));
       case '/ewallet':
         return CupertinoPageRoute(builder: (_) => Ewallet());
+      case '/compound':
+        return CupertinoPageRoute(
+            builder: (_) => CompoundPage(
+                  argument: args as Map<String?, dynamic>,
+                ));
       default:
         return CupertinoPageRoute(builder: (_) => HomeScreen());
     }
