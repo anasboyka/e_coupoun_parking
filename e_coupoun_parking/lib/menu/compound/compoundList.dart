@@ -22,41 +22,55 @@ class _CompoundPageState extends State<CompoundPage> {
     Compound(
         dateTime: DateTime.parse("2021-07-23"),
         location: "Jalan Tun Hussein",
-        status: "problem",
+        status: "warning",
         read: false),
     Compound(
         dateTime: DateTime.parse("2021-03-14"),
         location: "Amanjaya Sport Center",
-        status: "problem",
+        status: "warning",
         read: false),
     Compound(
         dateTime: DateTime.parse("2021-12-28"),
         location: "Village mall",
-        status: "problem",
+        status: "warning",
         read: false),
     Compound(
         dateTime: DateTime.parse("2020-10-11"),
         location: "Hospital Sultan Abdul Halim",
-        status: "problem",
+        status: "warning",
         read: false),
     Compound(
         dateTime: DateTime.parse("2020-08-22"),
         location: "Jalan Ibrahim",
-        status: "problem",
+        status: "warning",
         read: false),
     Compound(
         dateTime: DateTime.parse("2020-07-11"),
         location: "Dataran Amanjaya",
-        status: "problem",
+        status: "safe",
         read: false),
     Compound(
         dateTime: DateTime.parse("2020-05-14"),
         location: "Jalan Taman Pekan Lama",
-        status: "problem",
+        status: "safe",
+        read: false),
+    Compound(
+        dateTime: DateTime.parse("2020-05-14"),
+        location: "Jalan Taman Pekan Lama",
+        status: "safe",
+        read: false),
+    Compound(
+        dateTime: DateTime.parse("2020-05-14"),
+        location: "Jalan Taman Pekan Lama",
+        status: "safe",
         read: false),
   ];
 
-  List<String> tabBtn = ['All', 'Overdue', 'Uncompleted'];
+  List<Map<String, dynamic>> tabBtn = [
+    {'title': 'All', "number": 0},
+    {'title': 'Overdue', 'number': 6},
+    {'title': 'Uncompleted', 'number': 1}
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +84,13 @@ class _CompoundPageState extends State<CompoundPage> {
             color: Color(0xffE1F9E0),
           ),
           SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 15),
-                Padding(
-                  padding: EdgeInsets.only(left: 24.0),
-                  child: Text(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(24, 15, 24, 0),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
                     'Compound list',
                     style: TextStyle(
                       fontFamily: 'Roboto',
@@ -88,11 +101,8 @@ class _CompoundPageState extends State<CompoundPage> {
                     ),
                     textAlign: TextAlign.left,
                   ),
-                ),
-                SizedBox(height: 8),
-                Padding(
-                  padding: EdgeInsets.only(left: 24.0),
-                  child: Text(
+                  SizedBox(height: 8),
+                  Text(
                     'Last modified: 4 Jan 2021',
                     style: TextStyle(
                       fontFamily: 'SFProText-Regular',
@@ -102,52 +112,70 @@ class _CompoundPageState extends State<CompoundPage> {
                     ),
                     textAlign: TextAlign.left,
                   ),
-                ),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: tabBtn.map((e) {
-                    int index = tabBtn.indexOf(e);
-                    return buttonTabDesign(index, e);
-                  }).toList(),
-                ),
-                ListView.builder(
-                    itemCount: compoundList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-                        child: Container(
-                          color: Colors.white,
-                          child: ListTile(
-                            title: // Adobe XD layer: 'Hot Pepper Sauce' (text)
-                                Text(
-                              compoundList[index].location ?? 'null',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 14,
-                                color: const Color(0xff77838f),
-                                letterSpacing: 1.0000000305175782,
-                              ),
-                              textAlign: TextAlign.left,
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: tabBtn.map((e) {
+                      int index = tabBtn.indexOf(e);
+                      return buttonTabDesign(index, e['title'], e['number']);
+                    }).toList(),
+                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: compoundList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white,
                             ),
-                            trailing: // Adobe XD layer: '1kg' (text)
-                                Text(
-                              'due by ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateTime!).toString()}',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 12,
-                                color: const Color(0xffe30c0c),
-                                letterSpacing: 0.8571428833007813,
+                            child: ListTile(
+                              horizontalTitleGap: 0,
+                              leading: Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: compoundList[index].status == "problem"
+                                      ? Colors.red
+                                      : compoundList[index].status == "warning"
+                                          ? Colors.yellow
+                                          : Colors.green,
+                                ),
                               ),
-                              textAlign: TextAlign.right,
+                              title: Text(
+                                compoundList[index].location ?? 'null',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 14,
+                                  color: const Color(0xff77838f),
+                                  letterSpacing: 1.0000000305175782,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                              trailing: Text(
+                                'due by ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateTime!).toString()}',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 12,
+                                  color: compoundList[index].status == "problem"
+                                      ? Color(0xffe30c0c)
+                                      : Color(0xff77838F),
+                                  letterSpacing: 0.8571428833007813,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    })
-              ],
+                        );
+                      })
+                ],
+              ),
             ),
           )
         ],
@@ -155,8 +183,9 @@ class _CompoundPageState extends State<CompoundPage> {
     );
   }
 
-  Container buttonTabDesign(int index, String title) {
+  Container buttonTabDesign(int index, String title, int notification) {
     return Container(
+      margin: EdgeInsets.only(right: 20),
       height: 57,
       constraints: BoxConstraints(maxHeight: 57, minWidth: 57, maxWidth: 400),
       child: IntrinsicWidth(
@@ -197,26 +226,28 @@ class _CompoundPageState extends State<CompoundPage> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                alignment: Alignment.center,
-                width: 22,
-                height: 22,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-                child: Text(
-                  '5',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 12,
-                    color: const Color(0xffffffff),
-                    letterSpacing: 0.6000000000000001,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            )
+            notification != 0
+                ? Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.red),
+                      child: Text(
+                        notification.toString(),
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 12,
+                          color: const Color(0xffffffff),
+                          letterSpacing: 0.6000000000000001,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
       ),
