@@ -24,8 +24,6 @@ class FirebaseService {
     });
   }
 
-  //query untuk cars punya collection untuk new car or existed car*
-  //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
   Future updateCarDataCollection(/*String carName,*/ String carBrand,
       String carType, String carPlateNum) async {
     return await carCollection.doc(carPlateNum).set({
@@ -36,8 +34,6 @@ class FirebaseService {
     });
   }
 
-  //query untuk cars punya subcollection from driver punya collection*
-  //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
   Future updateCarDataFromDriver(/*String carName,*/ String carBrand,
       String carType, String carPlateNum) async {
     return await driverCollection
