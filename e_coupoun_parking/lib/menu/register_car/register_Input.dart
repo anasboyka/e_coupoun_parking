@@ -35,12 +35,13 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
   String chipselected = '';
   var isSelected = false;
 
-  List<ChoiceChipData> choiceChips = ChoiceChips.all;
+  late List<ChoiceChipData> choiceChips = ChoiceChips.all;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     carNamecon = widget.argument!["carName"] != null
         ? new TextEditingController(text: widget.argument!["carName"])
         : new TextEditingController();
@@ -128,24 +129,24 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                       ),
                     ),
                     buildChoiceChips(),
-                    SizedBox(height: 23),
-                    widget.argument!["appbarTitle"] == 'Edit Car'
-                        ? Padding(
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: Text(
-                              ' Car Name:',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          )
-                        : SizedBox(),
-                    textFormInputDesign('Car Name', carNamecon),
-                    SizedBox(height: 16),
+                    // SizedBox(height: 23),
+                    // widget.argument!["appbarTitle"] == 'Edit Car'
+                    //     ? Padding(
+                    //         padding: EdgeInsets.only(bottom: 20),
+                    //         child: Text(
+                    //           ' Car Name:',
+                    //           style: TextStyle(
+                    //             fontFamily: 'Roboto',
+                    //             fontSize: 16,
+                    //             color: Colors.black,
+                    //             fontWeight: FontWeight.w700,
+                    //           ),
+                    //           textAlign: TextAlign.left,
+                    //         ),
+                    //       )
+                    //     : SizedBox(),
+                    // textFormInputDesign('Car Name', carNamecon),
+                    //SizedBox(height: 16),
                     SizedBox(
                       height: 23,
                     ),
@@ -464,7 +465,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                   labelPadding:
                       EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   selected: choiceChip.isSelected,
-                  selectedColor: Color(0xff16AA10),
+                  selectedColor: choiceChip.selectedColor,
                   backgroundColor: Colors.white,
                 ))
             .toList(),
