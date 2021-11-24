@@ -410,7 +410,7 @@ class _RegisterCarState extends State<RegisterCar> {
 
                             Navigator.of(context)
                                 .pushNamed('/registerinputcar', arguments: {
-                              "carName": carList[index]!.carName,
+                              //"carName": carList[index]!.carName,
                               "carPlateNum": carList[index]!.carPlateNum,
                               "carBrand": carList[index]!.carBrand,
                               "carType": carList[index]!.carType,

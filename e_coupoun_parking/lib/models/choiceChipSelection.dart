@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ChoiceChipData {
   final String label;
-  final bool isSelected;
+  bool isSelected;
   Color textColor;
   Color selectedColor;
 
