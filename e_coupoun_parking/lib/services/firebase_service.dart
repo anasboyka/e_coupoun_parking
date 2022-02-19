@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/models/car.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FirebaseService {
@@ -22,8 +23,8 @@ class FirebaseService {
 
   //query untuk drivers punya collection untuk new user or existed user*
   //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
-  Future updateDriverDataCollection(String username, String name,
-      String phoneNum, String icNum, DateTime birthDate) async {
+  Future updateDriverDataCollection(String? username, String? name,
+      String phoneNum, String? icNum, DateTime? birthDate) async {
     return await driverCollection.doc(uid).set({
       "username": username,
       "name": name,
@@ -172,7 +173,8 @@ class FirebaseService {
         uid: this.uid!,
         name: data['name'],
         icNum: data['icNum'],
-        birthDate: data['dateOfBirth'].toDate(),
+        birthDate:
+            data['dateOfBirth']?.toDate() ?? DateTime.parse("1111-11-11"),
         phoneNum: data['phoneNum'],
         username: data['username']));
   }

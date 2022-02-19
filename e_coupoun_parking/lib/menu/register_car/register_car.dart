@@ -5,6 +5,7 @@ import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class RegisterCar extends StatefulWidget {
@@ -33,7 +34,7 @@ class _RegisterCarState extends State<RegisterCar> {
               'Delete Car',
               style: TextStyle(
                 fontFamily: 'Roboto',
-                fontSize: 19,
+                fontSize: 19.sp,
                 color: const Color(0xff131450),
               ),
               textAlign: TextAlign.left,
@@ -42,7 +43,7 @@ class _RegisterCarState extends State<RegisterCar> {
               'Are you sure you want to delete car $carBrand ?',
               style: TextStyle(
                 fontFamily: 'Roboto',
-                fontSize: 19,
+                fontSize: 19.sp,
                 color: const Color(0xff131450),
               ),
               textAlign: TextAlign.left,
@@ -50,8 +51,8 @@ class _RegisterCarState extends State<RegisterCar> {
             actions: [
               InkWell(
                 child: Container(
-                  width: 74,
-                  height: 42,
+                  width: 74.w,
+                  height: 42.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Color(0xff17B95B),
@@ -61,7 +62,7 @@ class _RegisterCarState extends State<RegisterCar> {
                     'Confirm',
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       color: const Color(0xffffffff),
                     ),
                     textAlign: TextAlign.left,
@@ -75,8 +76,8 @@ class _RegisterCarState extends State<RegisterCar> {
               ),
               InkWell(
                 child: Container(
-                  width: 74,
-                  height: 42,
+                  width: 74.w,
+                  height: 42.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Color(0xffF04437),
@@ -86,7 +87,7 @@ class _RegisterCarState extends State<RegisterCar> {
                     'Cancel',
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       color: const Color(0xffffffff),
                     ),
                     textAlign: TextAlign.left,
@@ -100,11 +101,11 @@ class _RegisterCarState extends State<RegisterCar> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(23),
             ),
-            actionsPadding: EdgeInsets.fromLTRB(0, 43, 9, 15),
-            buttonPadding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-            contentPadding: EdgeInsets.fromLTRB(27, 20, 15, 0),
-            insetPadding: EdgeInsets.fromLTRB(55, 0, 55, 0),
-            titlePadding: EdgeInsets.fromLTRB(27, 27, 27, 0),
+            actionsPadding: EdgeInsets.fromLTRB(0, 43.h, 9.w, 15.h),
+            buttonPadding: EdgeInsets.fromLTRB(8.w, 0.h, 8.w, 0),
+            contentPadding: EdgeInsets.fromLTRB(27.w, 20.h, 15.w, 0),
+            insetPadding: EdgeInsets.fromLTRB(55.w, 0, 55.w, 0),
+            titlePadding: EdgeInsets.fromLTRB(27.w, 27.h, 27, 0),
           );
         });
   }
@@ -161,12 +162,12 @@ class _RegisterCarState extends State<RegisterCar> {
                             'Registered Car',
                             style: TextStyle(
                               fontFamily: 'Roboto',
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               color: const Color(0xff000000),
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          SizedBox(height: 14),
+                          SizedBox(height: 14.h),
                           StreamBuilder(
                               stream: FirebaseService(uid: driver.uid).userCars,
                               builder: (context, snapshot) {
@@ -177,7 +178,7 @@ class _RegisterCarState extends State<RegisterCar> {
                                     carList.length.toString().padLeft(2, '0'),
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
-                                      fontSize: 30,
+                                      fontSize: 30.sp,
                                       color: const Color(0xff000000),
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -188,7 +189,7 @@ class _RegisterCarState extends State<RegisterCar> {
                                     '00',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
-                                      fontSize: 30,
+                                      fontSize: 30.sp,
                                       color: const Color(0xff000000),
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -200,10 +201,10 @@ class _RegisterCarState extends State<RegisterCar> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 40.h),
                   registerCarDesign(),
                   Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20.w),
                     child: Divider(
                       color: Colors.black,
                       height: 1,
@@ -223,10 +224,10 @@ class _RegisterCarState extends State<RegisterCar> {
                               itemCount: 1,
                               itemBuilder: (context, snapshot) {
                                 return Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.all(8.w),
                                   child: Center(
                                     child: SizedBox(
-                                      height: 30,
+                                      height: 30.h,
                                       child: CircularProgressIndicator(),
                                     ),
                                   ),
@@ -234,7 +235,7 @@ class _RegisterCarState extends State<RegisterCar> {
                               });
                         }
                       }),
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                 ],
               ),
             )
@@ -246,10 +247,10 @@ class _RegisterCarState extends State<RegisterCar> {
 
   Widget expansionCarDesign(String title, String uid) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0),
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
@@ -259,12 +260,12 @@ class _RegisterCarState extends State<RegisterCar> {
               )
             ]),
         child: ExpansionTile(
-          tilePadding: EdgeInsets.fromLTRB(20, 7, 20, 7),
+          tilePadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
           title: Text(
             '$title Car',
             style: TextStyle(
               fontFamily: 'Roboto',
-              fontSize: 16,
+              fontSize: 16.sp,
               color: const Color(0xff707070),
               fontWeight: FontWeight.w700,
             ),
@@ -286,10 +287,10 @@ class _RegisterCarState extends State<RegisterCar> {
                         itemCount: 1,
                         itemBuilder: (context, snapshot) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.w),
                             child: Center(
                               child: SizedBox(
-                                height: 30,
+                                height: 30.h,
                                 child: CircularProgressIndicator(),
                               ),
                             ),
@@ -307,11 +308,11 @@ class _RegisterCarState extends State<RegisterCar> {
     List<Car> carList = snapshot.data! as List<Car>;
     //if (carList.length == 0) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20.w),
       child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey,
@@ -322,12 +323,12 @@ class _RegisterCarState extends State<RegisterCar> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
               child: Text(
                 'LIST CAR REGISTERED',
                 style: TextStyle(
                   fontFamily: 'Roboto',
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   color: const Color(0xff000000),
                   fontWeight: FontWeight.w700,
                 ),
@@ -362,33 +363,33 @@ class _RegisterCarState extends State<RegisterCar> {
               dividerListview(),
               ListTile(
                 leading: SizedBox(
-                  height: 36,
-                  width: 36,
+                  height: 36.h,
+                  width: 36.w,
                   child: Icon(
                     Icons.directions_car,
-                    size: 36,
+                    size: 36.w,
                     color: Color(0xff17B95B),
                   ),
                 ),
                 dense: true,
-                horizontalTitleGap: 8,
+                horizontalTitleGap: 8.w,
                 title: Text(
                   '${carList[index]!.carBrand}',
                   style: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: const Color(0xff000000),
                     fontWeight: FontWeight.w700,
                   ),
                   textAlign: TextAlign.left,
                 ),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    EdgeInsets.symmetric(horizontal: 20.w, vertical: 0),
                 subtitle: Text(
                   '${carList[index]!.carPlateNum}',
                   style: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: const Color(0xff808080),
                   ),
                   textAlign: TextAlign.left,
@@ -397,14 +398,14 @@ class _RegisterCarState extends State<RegisterCar> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      width: 30,
-                      height: 30,
+                      width: 30.w,
+                      height: 30.h,
                       child: Material(
                         shape: CircleBorder(),
                         child: IconButton(
                           highlightColor: Colors.transparent,
                           padding: EdgeInsets.all(0),
-                          iconSize: 30,
+                          iconSize: 30.w,
                           onPressed: () {
                             print(widget.driverInfo);
 
@@ -426,22 +427,22 @@ class _RegisterCarState extends State<RegisterCar> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 6),
+                    SizedBox(width: 6.w),
                     SizedBox(
-                      width: 30,
-                      height: 30,
+                      width: 30.w,
+                      height: 30.h,
                       child: Material(
                         shape: CircleBorder(),
                         child: IconButton(
                           padding: EdgeInsets.all(0),
-                          iconSize: 30,
+                          iconSize: 30.w,
                           onPressed: () {
                             _deleteCarOnPressed(context, carList, index, uid);
                           },
                           icon: Icon(
                             Icons.delete,
                             color: Color(0xff17B95B),
-                            size: 30,
+                            size: 30.w,
                           ),
                         ),
                       ),
@@ -466,7 +467,7 @@ class _RegisterCarState extends State<RegisterCar> {
 
   Padding dividerListview() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Divider(
         thickness: 1,
         height: 1,
@@ -491,22 +492,22 @@ class _RegisterCarState extends State<RegisterCar> {
         'No car registered',
         style: TextStyle(
           fontFamily: 'Roboto',
-          fontSize: 16,
+          fontSize: 16.sp,
           color: const Color(0xff707070),
           fontWeight: FontWeight.w700,
         ),
         textAlign: TextAlign.center,
       ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
     );
   }
 
   Widget registerCarDesign() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0),
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
@@ -516,18 +517,18 @@ class _RegisterCarState extends State<RegisterCar> {
               )
             ]),
         child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           leading: Icon(
             Icons.add,
-            size: 35,
+            size: 35.w,
             color: Color(0xff17B95B),
           ),
-          horizontalTitleGap: 4,
+          horizontalTitleGap: 4.w,
           title: Text(
             'Register New Car',
             style: TextStyle(
               fontFamily: 'Roboto',
-              fontSize: 16,
+              fontSize: 16.sp,
               color: const Color(0xff000000),
               fontWeight: FontWeight.w700,
             ),
@@ -550,7 +551,7 @@ class _RegisterCarState extends State<RegisterCar> {
         'Register Car',
         style: TextStyle(
           fontFamily: 'Roboto',
-          fontSize: 22,
+          fontSize: 22.sp,
           color: const Color(0xff707070),
           fontWeight: FontWeight.w700,
         ),
@@ -558,7 +559,7 @@ class _RegisterCarState extends State<RegisterCar> {
       ),
       leading: Builder(
         builder: (context) => IconButton(
-          iconSize: 35,
+          iconSize: 35.w,
           icon: Icon(
             Icons.chevron_left,
             color: Color(0xff17B95B),

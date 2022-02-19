@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginOfficerPage extends StatefulWidget {
   const LoginOfficerPage({Key? key}) : super(key: key);
@@ -19,13 +20,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
   final Shader linearGradient = LinearGradient(
     colors: <Color>[
       Color(0xff0D7919),
-      //Color(0xff0E9D1D),
-      //Color(0xff0FBA20),
-      //Color(0xff10DA24),
       Color(0xff11E726),
-      //Color(0xff1BE732),
-      //Color(0xff33E84D),
-      //Color(0xff53EA73),
       Color(0xff78EC9D),
     ],
   ).createShader(Rect.fromLTWH(80.0, 0.0, 270.0, 60.0));
@@ -46,7 +41,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                   padding: EdgeInsets.only(top: 0.05 * size.height),
                   child: Image.asset(
                     'assets/icons/logo1.png',
-                    height: 185,
+                    height: 185.h,
                   ),
                 ),
                 SizedBox(
@@ -56,7 +51,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                   'Officer Login',
                   style: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: 45,
+                    fontSize: 45.sp,
                     //color: const Color(0xffffffff),
                     fontWeight: FontWeight.w700,
                     foreground: Paint()..shader = linearGradient,
@@ -99,7 +94,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                 InkWell(
                   child: Container(
                     alignment: Alignment.center,
-                    height: 60,
+                    height: 60.h,
                     width: 0.5 * size.width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -117,7 +112,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                       'Login',
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 29,
+                        fontSize: 29.sp,
                         color: const Color(0xffffffff),
                       ),
                       textAlign: TextAlign.left,
@@ -162,7 +157,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                       'User? ',
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 19,
+                        fontSize: 19.sp,
                         color: const Color(0xff000000),
                       ),
                       textAlign: TextAlign.left,
@@ -172,7 +167,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                         'Click Here',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 19,
+                          fontSize: 19.sp,
                           color: const Color(0xff1F8FEB),
                           fontWeight: FontWeight.w700,
                           decoration: TextDecoration.underline,
@@ -186,7 +181,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                   ],
                 ),
                 SizedBox(
-                  height: 13,
+                  height: 13.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -195,7 +190,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                       'Admin? ',
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 19,
+                        fontSize: 19.sp,
                         color: const Color(0xff000000),
                       ),
                       textAlign: TextAlign.left,
@@ -205,7 +200,7 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                         'Click Here',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 19,
+                          fontSize: 19.sp,
                           color: const Color(0xff1F8FEB),
                           fontWeight: FontWeight.w700,
                           decoration: TextDecoration.underline,
@@ -241,21 +236,21 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Image.asset(
             imageasset,
-            height: 26,
-            width: 26,
+            height: 26.h,
+            width: 26.w,
           ),
         ),
-        prefixIconConstraints: BoxConstraints(maxHeight: 26, minHeight: 26),
+        prefixIconConstraints: BoxConstraints(maxHeight: 26.h, minHeight: 26.h),
         suffixIcon: hintText == "Password"
             ? Padding(
-                padding: EdgeInsets.only(right: 5),
+                padding: EdgeInsets.only(right: 5.w),
                 child: IconButton(
                   icon: Icon(
                     isHidden ? Icons.visibility : Icons.visibility_off,
-                    size: 26,
+                    size: 26.w,
                     color: Colors.black,
                   ),
                   alignment: Alignment.center,
@@ -269,17 +264,17 @@ class _LoginOfficerPageState extends State<LoginOfficerPage> {
                 ),
               )
             : SizedBox(
-                height: 20,
-                width: 20,
+                height: 20.h,
+                width: 20.w,
               ),
-        contentPadding: EdgeInsets.symmetric(vertical: 22, horizontal: 0),
+        contentPadding: EdgeInsets.symmetric(vertical: 22.h, horizontal: 0),
         hintStyle: TextStyle(
           fontFamily: 'Roboto',
-          fontSize: 19,
+          fontSize: 19.sp,
           color: const Color(0xffa8a8a8),
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(width: 0.2, color: Colors.black),
         ),
         enabledBorder: OutlineInputBorder(

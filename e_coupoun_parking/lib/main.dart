@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 //test explaination
@@ -29,13 +30,17 @@ class MyApp extends StatelessWidget {
             value: AuthService().user,
             initialData: null),
       ],
-      child: MaterialApp(
-        title: 'E-Coupoun Parking',
-        debugShowCheckedModeBanner: false,
-        //theme: ThemeData(primaryColor: kprimaryColor),
-        initialRoute: '/',
-        onGenerateRoute: RouteGenerator.generateRoute,
-      ),
+      child: ScreenUtilInit(
+          designSize: const Size(432, 816),
+          builder: () {
+            return MaterialApp(
+              title: 'E-Coupoun Parking',
+              debugShowCheckedModeBanner: false,
+              //theme: ThemeData(primaryColor: kprimaryColor),
+              initialRoute: '/',
+              onGenerateRoute: RouteGenerator.generateRoute,
+            );
+          }),
     );
   }
 }

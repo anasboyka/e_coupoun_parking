@@ -4,6 +4,11 @@ import 'package:e_coupoun_parking/authenticate/loginAdmin.dart';
 import 'package:e_coupoun_parking/authenticate/loginOfficer.dart';
 import 'package:e_coupoun_parking/menu/compound/compoundList.dart';
 import 'package:e_coupoun_parking/menu/e_wallet/e_wallet.dart';
+import 'package:e_coupoun_parking/menu/history/history.dart';
+import 'package:e_coupoun_parking/menu/parking/car_selection.dart';
+import 'package:e_coupoun_parking/menu/parking/location_selection.dart';
+import 'package:e_coupoun_parking/menu/parking/parking.dart';
+import 'package:e_coupoun_parking/menu/profile/profile.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_Input.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_car.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
@@ -87,12 +92,43 @@ class RouteGenerator {
             builder: (_) =>
                 RegisterCarInput(argument: args as Map<String?, dynamic>));
       case '/ewallet':
-        return CupertinoPageRoute(builder: (_) => Ewallet());
+        return CupertinoPageRoute(
+            builder: (_) => Ewallet(argument: args as Map<String?, dynamic>));
       case '/compound':
         return CupertinoPageRoute(
             builder: (_) => CompoundPage(
                   argument: args as Map<String?, dynamic>,
                 ));
+      case '/history':
+        return CupertinoPageRoute(
+          builder: (_) => HistoryPage(
+            argument: args as Map<String?, dynamic>,
+          ),
+        );
+      case '/parking':
+        return CupertinoPageRoute(
+          builder: (_) => ParkingPage(
+            argument: args as Map<String?, dynamic>,
+          ),
+        );
+      case '/profile':
+        return CupertinoPageRoute(
+          builder: (_) => ProfilePage(
+            argument: args as Map<String?, dynamic>,
+          ),
+        );
+      case '/locationSelection':
+        return CupertinoPageRoute(
+          builder: (_) => LocationSelection(
+            args: args as Map<String?, dynamic>,
+          ),
+        );
+      case '/carSelection':
+        return CupertinoPageRoute(
+          builder: (_) => CarSelection(
+            args: args as Map<String?, dynamic>,
+          ),
+        );
       default:
         return CupertinoPageRoute(builder: (_) => HomeScreen());
     }

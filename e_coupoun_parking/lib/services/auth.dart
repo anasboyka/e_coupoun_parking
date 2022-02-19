@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthService {
-
   //declare instance untuk firebase authentication
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -28,11 +27,11 @@ class AuthService {
   Future registerWithEmailAndPassword(
       String email,
       String password,
-      String username,
-      String name,
+      String? username,
+      String? name,
       String phoneNum,
-      String icNum,
-      DateTime dateOfbirth) async {
+      String? icNum,
+      DateTime? dateOfbirth) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);

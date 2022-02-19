@@ -1,5 +1,6 @@
 import 'package:e_coupoun_parking/models/compound.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class CompoundPage extends StatefulWidget {
@@ -75,132 +76,125 @@ class _CompoundPageState extends State<CompoundPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: registerCarAppbarDesign(),
-      body: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height,
-            color: Color(0xffE1F9E0),
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(24, 15, 24, 0),
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Compound list',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 20,
-                      color: const Color(0xff1e2022),
-                      letterSpacing: 1,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Last modified: 4 Jan 2021',
-                    style: TextStyle(
-                      fontFamily: 'SFProText-Regular',
-                      fontSize: 14,
-                      color: const Color(0xff77838f),
-                      letterSpacing: 1.0000000305175782,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: tabBtn.map((e) {
-                      int index = tabBtn.indexOf(e);
-                      return buttonTabDesign(index, e['title'], e['number']);
-                    }).toList(),
-                  ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: compoundList.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                          child: Container(
-                            width: double.infinity,
+      appBar: compoundListAppbarDesign(),
+      backgroundColor: Color(0xffE1F9E0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(24.w, 15.h, 24.w, 0),
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Compound list',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 20.sp,
+                  color: const Color(0xff1e2022),
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                'Last modified: 4 Jan 2021',
+                style: TextStyle(
+                  fontFamily: 'SFProText-Regular',
+                  fontSize: 14.sp,
+                  color: const Color(0xff77838f),
+                  letterSpacing: 1.0000000305175782,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 8.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: tabBtn.map((e) {
+                  int index = tabBtn.indexOf(e);
+                  return buttonTabDesign(index, e['title'], e['number']);
+                }).toList(),
+              ),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: compoundList.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10.h, horizontal: 0),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                        ),
+                        child: ListTile(
+                          horizontalTitleGap: 0,
+                          leading: Container(
+                            height: 20,
+                            width: 20,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.white,
-                            ),
-                            child: ListTile(
-                              horizontalTitleGap: 0,
-                              leading: Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: compoundList[index].status == "problem"
-                                      ? Colors.red
-                                      : compoundList[index].status == "warning"
-                                          ? Colors.yellow
-                                          : Colors.green,
-                                ),
-                              ),
-                              title: Text(
-                                compoundList[index].location ?? 'null',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 14,
-                                  color: const Color(0xff77838f),
-                                  letterSpacing: 1.0000000305175782,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              trailing: Text(
-                                'due by ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateTime!).toString()}',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 12,
-                                  color: compoundList[index].status == "problem"
-                                      ? Color(0xffe30c0c)
-                                      : Color(0xff77838F),
-                                  letterSpacing: 0.8571428833007813,
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
+                              shape: BoxShape.circle,
+                              color: compoundList[index].status == "problem"
+                                  ? Colors.red
+                                  : compoundList[index].status == "warning"
+                                      ? Colors.yellow
+                                      : Colors.green,
                             ),
                           ),
-                        );
-                      })
-                ],
-              ),
-            ),
-          )
-        ],
+                          title: Text(
+                            compoundList[index].location ?? 'null',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              color: const Color(0xff77838f),
+                              letterSpacing: 1.0000000305175782,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          trailing: Text(
+                            'due by ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateTime!).toString()}',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 12,
+                              color: compoundList[index].status == "problem"
+                                  ? Color(0xffe30c0c)
+                                  : Color(0xff77838F),
+                              letterSpacing: 0.8571428833007813,
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ),
+                    );
+                  })
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Container buttonTabDesign(int index, String title, int notification) {
     return Container(
-      margin: EdgeInsets.only(right: 20),
-      height: 57,
-      constraints: BoxConstraints(maxHeight: 57, minWidth: 57, maxWidth: 400),
+      margin: EdgeInsets.only(right: 20.w),
+      height: 57.h,
+      constraints:
+          BoxConstraints(maxHeight: 57.h, minWidth: 57.w, maxWidth: 400.w),
       child: IntrinsicWidth(
         child: Stack(
           children: [
             Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 8.w),
                 child: ElevatedButton(
                   child: Text(
                     title,
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       color: index == currentBtnIndex
                           ? Color(0xffffffff)
                           : Color(0xff77838f),
@@ -216,8 +210,8 @@ class _CompoundPageState extends State<CompoundPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      minimumSize: Size(53, 46),
-                      maximumSize: Size(200, 46)),
+                      minimumSize: Size(53.w, 46.h),
+                      maximumSize: Size(200.w, 46.h)),
                   onPressed: () {
                     setState(() {
                       currentBtnIndex = index;
@@ -231,8 +225,8 @@ class _CompoundPageState extends State<CompoundPage> {
                     alignment: Alignment.topRight,
                     child: Container(
                       alignment: Alignment.center,
-                      width: 22,
-                      height: 22,
+                      width: 22.w,
+                      height: 22.w,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color:
@@ -241,7 +235,7 @@ class _CompoundPageState extends State<CompoundPage> {
                         notification.toString(),
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: const Color(0xffffffff),
                           letterSpacing: 0.6000000000000001,
                           fontWeight: FontWeight.w700,
@@ -256,13 +250,13 @@ class _CompoundPageState extends State<CompoundPage> {
     );
   }
 
-  AppBar registerCarAppbarDesign() {
+  AppBar compoundListAppbarDesign() {
     return AppBar(
       title: Text(
         'Compound',
         style: TextStyle(
           fontFamily: 'Roboto',
-          fontSize: 22,
+          fontSize: 22.sp,
           color: const Color(0xff707070),
           fontWeight: FontWeight.w700,
         ),

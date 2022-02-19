@@ -9,6 +9,7 @@ import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class RegisterCarInput extends StatefulWidget {
@@ -79,22 +80,22 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           ),
           SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0),
               child: Form(
                 key: _formkey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     widget.argument!["appbarTitle"] == 'Edit Car'
                         ? Padding(
-                            padding: EdgeInsets.only(bottom: 20),
+                            padding: EdgeInsets.only(bottom: 20.h),
                             child: Text(
                               ' Car Plate Number :',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -104,15 +105,15 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                         : SizedBox(),
                     textFormInputDesign('Car Plate Number', carPlateNumcon),
 
-                    SizedBox(height: 23),
+                    SizedBox(height: 23.h),
                     widget.argument!["appbarTitle"] == 'Edit Car'
                         ? Padding(
-                            padding: EdgeInsets.only(bottom: 20),
+                            padding: EdgeInsets.only(bottom: 20.h),
                             child: Text(
                               ' Car Name :',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -121,16 +122,16 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                           )
                         : SizedBox(),
                     textFormInputDesign('Car Brand', carBrandcon),
-                    SizedBox(height: 23),
+                    SizedBox(height: 23.h),
                     // widget.argument!["appbarTitle"] == 'Edit Car'
                     //     ?
                     Padding(
-                      padding: EdgeInsets.only(bottom: 20),
+                      padding: EdgeInsets.only(bottom: 20.h),
                       child: Text(
                         ' Car Type :',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
                         ),
@@ -157,7 +158,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                     // textFormInputDesign('Car Name', carNamecon),
                     //SizedBox(height: 16),
                     SizedBox(
-                      height: 23,
+                      height: 23.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -166,9 +167,9 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                           style: ElevatedButton.styleFrom(
                               primary: Color(0xff16AA10),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
-                              fixedSize: Size(190, 70)),
+                              fixedSize: Size(190.w, 70.h)),
                           onPressed: () async {
                             await saveCar(driveruid, driverinfo, context);
                           },
@@ -176,7 +177,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                             'Save',
                             style: TextStyle(
                               fontFamily: 'Roboto',
-                              fontSize: 25,
+                              fontSize: 25.sp,
                               color: const Color(0xffffffff),
                               fontWeight: FontWeight.w700,
                             ),
@@ -187,9 +188,9 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                           style: ElevatedButton.styleFrom(
                               primary: Color(0xffffffff),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
-                              fixedSize: Size(190, 70)),
+                              fixedSize: Size(190.w, 70.h)),
                           onPressed: () async {
                             carBrandcon.text = '';
                             carPlateNumcon.text = '';
@@ -199,7 +200,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                             'Clear',
                             style: TextStyle(
                               fontFamily: 'Roboto',
-                              fontSize: 25,
+                              fontSize: 25.sp,
                               color: const Color(0xffBEBEBE),
                               fontWeight: FontWeight.w700,
                             ),
@@ -208,7 +209,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                         )
                       ],
                     ),
-                    SizedBox(height: 50),
+                    SizedBox(height: 50.h),
                     Center(
                         child:
                             loading ? CircularProgressIndicator() : SizedBox())
@@ -312,9 +313,9 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       String hintText, TextEditingController controller) {
     return Container(
       alignment: Alignment.center,
-      height: 70,
+      height: 70.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
         color: Colors.white,
         boxShadow: [
           BoxShadow(color: Colors.grey, blurRadius: 2),
@@ -338,7 +339,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
 
         style: TextStyle(
             fontFamily: 'Roboto',
-            fontSize: 16,
+            fontSize: 16.sp,
             color: Colors.black,
             decoration: TextDecoration.none),
         decoration: InputDecoration(
@@ -348,10 +349,11 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                   : false
               : false,
           fillColor: Colors.grey[200],
-          contentPadding: EdgeInsets.all(27),
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 27.h, horizontal: 27.w),
           hintStyle: TextStyle(
             fontFamily: 'Roboto',
-            fontSize: 16,
+            fontSize: 16.sp,
             color: const Color(0xffa8a8a8),
           ),
           hintText: hintText,
@@ -387,7 +389,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         titleAppbar,
         style: TextStyle(
           fontFamily: 'Roboto',
-          fontSize: 22,
+          fontSize: 22.sp,
           color: const Color(0xff707070),
           fontWeight: FontWeight.w700,
         ),
@@ -395,7 +397,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       ),
       leading: Builder(
         builder: (context) => IconButton(
-          iconSize: 35,
+          iconSize: 35.w,
           icon: Icon(
             Icons.chevron_left,
             color: Color(0xff17B95B),
@@ -403,7 +405,6 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           splashRadius: 25,
           onPressed: () {
-            print('line 425');
             return Navigator.of(context).pop();
           },
         ),
@@ -427,16 +428,16 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       ),
       labelStyle: TextStyle(
         fontFamily: 'Roboto',
-        fontSize: 16,
+        fontSize: 16.sp,
         color: textColor,
         fontWeight: FontWeight.normal,
       ),
       selected: isSelected,
       backgroundColor: Colors.white,
       elevation: 1,
-      labelPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      labelPadding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 15.w),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
         //side: BorderSide(color: Colors.grey, width: 1),
       ),
       onSelected: (selected) {
@@ -456,7 +457,7 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                   label: Text(choiceChip.label),
                   labelStyle: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     color: choiceChip.textColor,
                     fontWeight: FontWeight.normal,
                   ),
@@ -474,11 +475,11 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
                   }),
                   elevation: 1,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                     //side: BorderSide(color: Colors.grey, width: 1),
                   ),
                   labelPadding:
-                      EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                      EdgeInsets.symmetric(vertical: 5.h, horizontal: 15.w),
                   selected: choiceChip.isSelected,
                   selectedColor: choiceChip.selectedColor,
                   backgroundColor: Colors.white,
@@ -507,16 +508,16 @@ class _ChipWidgetDesignState extends State<ChipWidgetDesign> {
       ),
       labelStyle: TextStyle(
         fontFamily: 'Roboto',
-        fontSize: 16,
+        fontSize: 16.sp,
         color: textColor,
         fontWeight: FontWeight.normal,
       ),
       selected: isSelected,
       backgroundColor: Colors.white,
       elevation: 1,
-      labelPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      labelPadding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 15.w),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
         //side: BorderSide(color: Colors.grey, width: 1),
       ),
       onSelected: (selected) {

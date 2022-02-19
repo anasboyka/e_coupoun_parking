@@ -104,7 +104,6 @@ class ChoiceChips {
 
   List<ChoiceChipData> geteditedList(String label) {
     List<ChoiceChipData> newChoice = [];
-    print(this.allList[3].label);
     this.allList.forEach((e) {
       if (e.label == label) {
         newChoice.add(ChoiceChipData(

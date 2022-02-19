@@ -8,6 +8,7 @@ import 'package:e_coupoun_parking/services/auth.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:e_coupoun_parking/services/mysql_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   menuDesign('Parking', 'assets/icons/parkingIcon.png',
-                      '/registercar', driverinfo),
+                      '/parking', {"driverInfo": driverinfo}),
                   menuDesign('Register Car', 'assets/icons/carIcon.png',
                       '/registercar', driverinfo)
                 ],
@@ -77,16 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   menuDesign('Compound', 'assets/icons/compoundIcon.png',
                       '/compound', {"driverInfo": driverinfo}),
                   menuDesign('E-wallet', 'assets/icons/walletIcon.png',
-                      '/ewallet', driverinfo),
+                      '/ewallet', {"driverInfo": driverinfo}),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   menuDesign('History', 'assets/icons/historyIcon.png',
-                      '/registercar', driverinfo),
+                      '/history', {"driverInfo": driverinfo}),
                   menuDesign('Profile', 'assets/icons/profileIcon.png',
-                      '/registercar', driverinfo),
+                      '/profile', {"driverInfo": driverinfo}),
                 ],
               )
             ],
@@ -105,8 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
           splashColor: Colors.green,
           child: Container(
             alignment: Alignment.center,
-            height: 100,
-            width: 100,
+            height: 100.h,
+            width: 100.w,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xffCBF0C1),
@@ -123,13 +124,13 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         SizedBox(
-          height: 12,
+          height: 12.h,
         ),
         Text(
           title,
           style: TextStyle(
             fontFamily: 'Roboto',
-            fontSize: 20,
+            fontSize: 20.sp,
             color: const Color(0xff000000),
           ),
           textAlign: TextAlign.left,
@@ -143,8 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
       toolbarHeight: Platform.isAndroid
           ? 190 - MediaQuery.of(context).padding.top
           : 172 - MediaQuery.of(context).padding.top,
-
-      //title: Text('data'),
       leading: Align(
         alignment: Alignment.topLeft,
         child: Builder(
@@ -182,6 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       backgroundColor: Colors.transparent,
       flexibleSpace: Stack(
+        alignment: Alignment.topCenter,
+        fit: StackFit.expand,
         children: [
           Image(
             image: AssetImage('assets/icons/header.png'),

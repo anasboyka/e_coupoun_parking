@@ -1,7 +1,10 @@
 import 'package:e_coupoun_parking/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Ewallet extends StatefulWidget {
+  Map? argument = {};
+  Ewallet({Key? key, this.argument}) : super(key: key);
   @override
   State<Ewallet> createState() => _EwalletState();
 }
@@ -25,14 +28,14 @@ class _EwalletState extends State<Ewallet> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 children: [
-                  SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Hello User!',
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         color: const Color(0xff1e2022),
                         letterSpacing: 1,
                         fontWeight: FontWeight.w700,
@@ -40,18 +43,18 @@ class _EwalletState extends State<Ewallet> {
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 25.h),
                   Container(
-                    height: 220,
-                    width: 314,
+                    height: 220.h,
+                    width: 314.w,
                     child: Stack(
                       children: [
                         Align(
                           alignment: Alignment.topCenter,
                           child: Container(
-                            height: 200,
+                            height: 200.h,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10.r),
                               color: Colors.white,
                             ),
                             child: Center(
@@ -60,13 +63,13 @@ class _EwalletState extends State<Ewallet> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 2),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10.h, horizontal: 2.w),
                                     child: Text(
                                       'RM',
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
-                                        fontSize: 28,
+                                        fontSize: 28.sp,
                                         color: const Color(0xff8392a7),
                                       ),
                                       textAlign: TextAlign.center,
@@ -76,7 +79,7 @@ class _EwalletState extends State<Ewallet> {
                                     '23.00',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
-                                      fontSize: 72,
+                                      fontSize: 72.sp,
                                       color: const Color(0xff16aa32),
                                     ),
                                     textAlign: TextAlign.left,
@@ -90,13 +93,16 @@ class _EwalletState extends State<Ewallet> {
                           alignment: Alignment.bottomCenter,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                elevation: 6,
-                                primary: Color(0xff16AA32),
-                                minimumSize: Size(142, 62),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(44))),
+                              elevation: 6,
+                              primary: Color(0xff16AA32),
+                              minimumSize: Size(142.w, 62.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(44.r),
+                              ),
+                            ),
                             onPressed: () {
-                              showBottomPopup(context, "wallet").whenComplete(() {
+                              showBottomPopup(context, "wallet")
+                                  .whenComplete(() {
                                 setState(() {
                                   hightlightText = '0';
                                 });
@@ -107,7 +113,7 @@ class _EwalletState extends State<Ewallet> {
                               'TOP UP',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: 19,
+                                fontSize: 19.sp,
                                 color: const Color(0xffffffff),
                                 letterSpacing: 1.3571428985595704,
                                 fontWeight: FontWeight.w500,
@@ -119,7 +125,7 @@ class _EwalletState extends State<Ewallet> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 40.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -129,7 +135,7 @@ class _EwalletState extends State<Ewallet> {
                           context, 'Transfer', 'assets/icons/transferIcon.png'),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -152,8 +158,8 @@ class _EwalletState extends State<Ewallet> {
       BuildContext context, String title, String assetPath) {
     return InkWell(
       child: Container(
-        height: 110,
-        width: 175,
+        height: 110.h,
+        width: 175.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
@@ -169,12 +175,12 @@ class _EwalletState extends State<Ewallet> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(assetPath),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Text(
               title,
               style: TextStyle(
                 fontFamily: 'Montserrat-Regular',
-                fontSize: 13,
+                fontSize: 13.sp,
                 color: const Color(0xff8392a7),
               ),
               textAlign: TextAlign.center,
@@ -201,7 +207,7 @@ class _EwalletState extends State<Ewallet> {
     return showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r)),
         ),
         isScrollControlled: true,
         //isDismissible: true,
@@ -211,7 +217,7 @@ class _EwalletState extends State<Ewallet> {
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 35, 20, 30),
+                padding: EdgeInsets.fromLTRB(20.w, 35.h, 20.w, 30.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -220,35 +226,35 @@ class _EwalletState extends State<Ewallet> {
                       'Payment Via',
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 19,
+                        fontSize: 19.sp,
                         color: const Color(0xff000000),
                         fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     Text(
                       title,
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 19,
+                        fontSize: 19.sp,
                         color: const Color(0xff35c642),
                         fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    SizedBox(height: 25),
+                    SizedBox(height: 25.h),
                     Text(
                       'One-Time Top Up',
                       style: TextStyle(
                         fontFamily: 'Roboto',
-                        fontSize: 19,
+                        fontSize: 19.sp,
                         color: const Color(0xff000000),
                         fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -266,7 +272,7 @@ class _EwalletState extends State<Ewallet> {
                         btnAmountDesign('200', setModalState)
                       ],
                     ),
-                    SizedBox(height: 35),
+                    SizedBox(height: 35.h),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -274,13 +280,13 @@ class _EwalletState extends State<Ewallet> {
                           'RM',
                           style: TextStyle(
                             fontFamily: 'Roboto',
-                            fontSize: 28,
+                            fontSize: 28.sp,
                             color: const Color(0xff0c7516),
                             fontWeight: FontWeight.w500,
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 10.w),
                         Expanded(
                           child: Form(
                             child: TextFormField(
@@ -288,7 +294,7 @@ class _EwalletState extends State<Ewallet> {
                               keyboardType: TextInputType.number,
                               style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: 28,
+                                fontSize: 28.sp,
                                 color: Colors.black,
                               ),
                               decoration: InputDecoration(
@@ -297,7 +303,7 @@ class _EwalletState extends State<Ewallet> {
                                 isDense: true,
                                 hintStyle: TextStyle(
                                   fontFamily: 'Roboto',
-                                  fontSize: 28,
+                                  fontSize: 28.sp,
                                   color: const Color(0xffc8c8c8),
                                 ),
                                 border: InputBorder.none,
@@ -322,15 +328,15 @@ class _EwalletState extends State<Ewallet> {
                         )
                       ],
                     ),
-                    SizedBox(height: 35),
+                    SizedBox(height: 35.h),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                           primary: Color(0xff16AA32),
                           fixedSize:
-                              Size(MediaQuery.of(context).size.width, 60)),
+                              Size(MediaQuery.of(context).size.width, 60.h)),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -338,7 +344,7 @@ class _EwalletState extends State<Ewallet> {
                         'Pay Now',
                         style: TextStyle(
                           fontFamily: 'Roboto',
-                          fontSize: 19,
+                          fontSize: 19.sp,
                           color: const Color(0xffffffff),
                           letterSpacing: 1.3571428985595704,
                           fontWeight: FontWeight.w500,
@@ -358,8 +364,8 @@ class _EwalletState extends State<Ewallet> {
     return InkWell(
       child: Container(
         alignment: Alignment.center,
-        width: 120,
-        height: 60,
+        width: 120.w,
+        height: 60.h,
         decoration: BoxDecoration(
           border: Border.all(
             color: Color(0xff35C642),
@@ -370,7 +376,7 @@ class _EwalletState extends State<Ewallet> {
           amount,
           style: TextStyle(
             fontFamily: 'Roboto',
-            fontSize: 25,
+            fontSize: 25.sp,
             color: const Color(0xff000000),
             fontWeight: FontWeight.w500,
           ),
@@ -394,7 +400,7 @@ class _EwalletState extends State<Ewallet> {
         'Reload',
         style: TextStyle(
           fontFamily: 'Roboto',
-          fontSize: 22,
+          fontSize: 22.sp,
           color: const Color(0xff707070),
           fontWeight: FontWeight.w700,
         ),
