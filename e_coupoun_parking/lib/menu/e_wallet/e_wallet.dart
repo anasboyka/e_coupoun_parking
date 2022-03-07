@@ -416,7 +416,7 @@ class _EwalletState extends State<Ewallet> {
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           splashRadius: 25,
           onPressed: () {
-            print('clicked');
+            //print('clicked');
             return Navigator.of(context).pop();
           },
         ),
