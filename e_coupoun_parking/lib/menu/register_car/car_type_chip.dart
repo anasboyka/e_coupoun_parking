@@ -1,4 +1,4 @@
-import 'package:e_coupoun_parking/models/choiceChipSelection.dart';
+import '../../models/choiceChipSelection.dart';
 import 'package:flutter/material.dart';
 
 class ChoiceChips {

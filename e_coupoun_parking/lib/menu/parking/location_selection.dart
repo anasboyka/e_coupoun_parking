@@ -1,3 +1,4 @@
+import 'package:e_coupoun_parking/models/location_parking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,30 +7,61 @@ class LocationSelection extends StatelessWidget {
   LocationSelection({Key? key, this.args}) : super(key: key);
   TextEditingController searchcon = new TextEditingController();
 
-  List<Map<String, String>> location = [
-    {
-      'location': 'Kawasan Parkir Bateri',
-      'subLocation': 'Airport Camp, Taman Patani Jaya.'
-    },
-    {'location': 'Hentian Tikam Batu', 'subLocation': 'RNR Tikam Batu.'},
-    {
-      'location': 'Padang Merpati Lot 88',
-      'subLocation': 'Lorong 2/3, Padang Merpati.'
-    },
-    {
-      'location': 'Tapak Parking Jam Besar',
-      'subLocation': '69, Jalan Ibrahim.'
-    },
-    {
-      'location': 'Amanjaya Mall',
-      'subLocation': 'Car Park, Amanjaya Mall, Bandar Amanjaya.'
-    },
-    {'location': 'Taman Melor Food Court', 'subLocation': 'Taman Melor'},
-    {
-      'location': 'Kawasan Parkir KTM',
-      'subLocation': 'Bangunan MPSP, 3, Jalan Market.'
-    }
+  List<LocationParking> locationParkings = [
+    LocationParking(
+      locationName: 'Kawasan Parkir Bateri',
+      locationSubname: 'Airport Camp, Taman Patani Jaya.',
+    ),
+    LocationParking(
+      locationName: 'Hentian Tikam Batu',
+      locationSubname: 'RNR Tikam Batu.',
+    ),
+    LocationParking(
+      locationName: 'Padang Merpati Lot 88',
+      locationSubname: 'Lorong 2/3, Padang Merpati.',
+    ),
+    LocationParking(
+      locationName: 'Tapak Parking Jam Besar',
+      locationSubname: '69, Jalan Ibrahim.',
+    ),
+    LocationParking(
+      locationName: 'Amanjaya Mall',
+      locationSubname: 'Car Park, Amanjaya Mall, Bandar Amanjaya.',
+    ),
+    LocationParking(
+      locationName: 'Taman Melor Food Court',
+      locationSubname: 'Taman Melor',
+    ),
+    LocationParking(
+      locationName: 'Kawasan Parkir KTM',
+      locationSubname: 'Bangunan MPSP, 3, Jalan Market.',
+    ),
   ];
+
+  // List<Map<String, String>> location = [
+  //   {
+  //     'location': 'Kawasan Parkir Bateri',
+  //     'subLocation': 'Airport Camp, Taman Patani Jaya.'
+  //   },
+  //   {'location': 'Hentian Tikam Batu', 'subLocation': 'RNR Tikam Batu.'},
+  //   {
+  //     'location': 'Padang Merpati Lot 88',
+  //     'subLocation': 'Lorong 2/3, Padang Merpati.'
+  //   },
+  //   {
+  //     'location': 'Tapak Parking Jam Besar',
+  //     'subLocation': '69, Jalan Ibrahim.'
+  //   },
+  //   {
+  //     'location': 'Amanjaya Mall',
+  //     'subLocation': 'Car Park, Amanjaya Mall, Bandar Amanjaya.'
+  //   },
+  //   {'location': 'Taman Melor Food Court', 'subLocation': 'Taman Melor'},
+  //   {
+  //     'location': 'Kawasan Parkir KTM',
+  //     'subLocation': 'Bangunan MPSP, 3, Jalan Market.'
+  //   }
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +98,9 @@ class LocationSelection extends StatelessWidget {
                     prefixIcon: Icon(Icons.search),
                     suffixIcon: IconButton(
                       icon: Icon(Icons.clear),
-                      onPressed: () {},
+                      onPressed: () {
+                        searchcon.clear();
+                      },
                     ),
                     border: InputBorder.none,
                     filled: true,
@@ -122,7 +156,7 @@ class LocationSelection extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(
-                              location[index]['location'] ?? '',
+                              locationParkings[index].locationName, //?? '',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 18,
@@ -132,7 +166,7 @@ class LocationSelection extends StatelessWidget {
                               textAlign: TextAlign.left,
                             ),
                             subtitle: Text(
-                              location[index]['subLocation'] ?? '',
+                              locationParkings[index].locationSubname, //?? '',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 15,
@@ -160,7 +194,7 @@ class LocationSelection extends StatelessWidget {
                             ),
                           );
                         },
-                        itemCount: location.length,
+                        itemCount: locationParkings.length,
                         shrinkWrap: true,
                       ),
                       SizedBox(height: 30.h)

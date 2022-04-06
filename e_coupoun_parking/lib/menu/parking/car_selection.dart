@@ -20,50 +20,50 @@ class CarSelection extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
           child: Column(children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              elevation: 2,
-              child: TextFormField(
-                controller: searchCarCon,
-                textAlignVertical: TextAlignVertical.center,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 18,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                ),
-                decoration: InputDecoration(
-                  hintText: "Search Location",
-                  hintStyle: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 18,
-                    color: const Color(0xffbebebe),
-                    fontWeight: FontWeight.w700,
-                  ),
-                  prefixIcon: Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {},
-                  ),
-                  border: InputBorder.none,
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 30.h),
+            // Card(
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(10.r),
+            //   ),
+            //   elevation: 2,
+            //   child: TextFormField(
+            //     controller: searchCarCon,
+            //     textAlignVertical: TextAlignVertical.center,
+            //     style: TextStyle(
+            //       fontFamily: 'Roboto',
+            //       fontSize: 18,
+            //       color: Colors.black,
+            //       fontWeight: FontWeight.w700,
+            //     ),
+            //     decoration: InputDecoration(
+            //       hintText: "Search Location",
+            //       hintStyle: TextStyle(
+            //         fontFamily: 'Roboto',
+            //         fontSize: 18,
+            //         color: const Color(0xffbebebe),
+            //         fontWeight: FontWeight.w700,
+            //       ),
+            //       prefixIcon: Icon(Icons.search),
+            //       suffixIcon: IconButton(
+            //         icon: Icon(Icons.clear),
+            //         onPressed: () {},
+            //       ),
+            //       border: InputBorder.none,
+            //       filled: true,
+            //       fillColor: Colors.white,
+            //       contentPadding:
+            //           EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
+            //       focusedBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(10.r),
+            //         borderSide: BorderSide.none,
+            //       ),
+            //       enabledBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(10.r),
+            //         borderSide: BorderSide.none,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 30.h),
             Container(
               width: double.infinity,
               child: Card(
@@ -74,7 +74,7 @@ class CarSelection extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0),
                       child: Text(
-                        'Location List',
+                        'Car List',
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 16,

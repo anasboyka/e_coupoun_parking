@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_coupoun_parking/constant.dart';
-import 'package:e_coupoun_parking/models/driver.dart';
-import 'package:e_coupoun_parking/models/driveruid.dart';
-import 'package:e_coupoun_parking/route_generator.dart';
-import 'package:e_coupoun_parking/services/auth.dart';
-import 'package:e_coupoun_parking/services/firebase_service.dart';
+import 'constant.dart';
+import 'models/driver.dart';
+import 'models/driveruid.dart';
+import 'route_generator.dart';
+import 'services/auth.dart';
+import 'services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             initialData: null),
       ],
       child: ScreenUtilInit(
-          designSize: const Size(432, 816),
+          designSize: const Size(428, 926),
           builder: () {
             return MaterialApp(
               title: 'E-Coupoun Parking',

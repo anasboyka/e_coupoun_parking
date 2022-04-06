@@ -38,6 +38,7 @@ dependencies:
   http: ^0.13.4
   flutter_screenutil: ^5.0.1
   google_maps_flutter: ^2.1.1
+  custom_sliding_segmented_control: ^1.5.0
 
 dev_dependencies:
   flutter_test:

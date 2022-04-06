@@ -1,11 +1,10 @@
-import 'package:e_coupoun_parking/constant.dart';
-import 'package:e_coupoun_parking/services/auth.dart';
-import 'package:e_coupoun_parking/services/mysql_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
+import '../constant.dart';
+import '../services/auth.dart';
+import 'login.dart';
+import 'register.dart';
 
 class Authentication extends StatefulWidget {
   @override
@@ -142,8 +141,6 @@ class _AuthenticationState extends State<Authentication> {
           height: size.height,
           child: ListView(
             shrinkWrap: true,
-            //mainAxisAlignment: MainAxisAlignment.start,
-            //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
                 padding: EdgeInsets.only(top: 0.05 * size.height),
@@ -153,11 +150,12 @@ class _AuthenticationState extends State<Authentication> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(
-                    ((size.width - (size.width * 0.77)) / 2),
-                    0.02 * size.height,
-                    ((size.width - (size.width * 0.77)) / 2),
-                    0),
+                padding: EdgeInsets.fromLTRB(50.w, 10.h, 50.w, 0),
+                // ((size.width - (size.width * 0.77)) / 2),
+                // 0.02 * size.height,
+                // ((size.width - (size.width * 0.77)) / 2),
+                // 0,
+                // ),
                 child: Container(
                   //alignment: Alignment.center,
                   height: 60,
@@ -175,7 +173,50 @@ class _AuthenticationState extends State<Authentication> {
                       ],
                     ),
                   ),
-                  child: LayoutBuilder(
+                  child:
+                      //     CustomSlidingSegmentedControl(
+                      //   //clipBehavior: Clip.antiAliasWithSaveLayer,
+                      //   //fromMax: true,
+                      //   duration: Duration(milliseconds: 300),
+                      //   height: 60.h,
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(30),
+                      //     gradient: LinearGradient(
+                      //       colors: [
+                      //         kdarkGreen,
+                      //         kdarkMediumGreen,
+                      //         kmediumGreen,
+                      //         kmediumlightGreen,
+                      //         klightGreen,
+                      //       ],
+                      //     ),
+                      //   ),
+                      //   thumbDecoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(40),
+                      //       color: Colors.white),
+                      //   isStretch: true,
+                      //   //fixedWidth: double.infinity,
+                      //   padding: 0,
+                      //   innerPadding: 4,
+                      //   //duration: Duration(milliseconds: 200),
+                      //   //highlightColor: Colors.black,
+                      //   //height: 60,
+                      //   //padding: 0,
+
+                      //   // backgroundColor: Colors.transparent,
+                      //   // padding: EdgeInsets.all(4),
+                      //   // groupValue: currentIndex,
+                      //   children: {
+                      //     0: buildSegment('Login'),
+                      //     1: buildSegment('New User'),
+                      //   },
+                      //   onValueChanged: (groupValue) {
+                      //     setState(() {
+                      //       currentIndex = groupValue as int;
+                      //     });
+                      //   },
+                      // )
+                      LayoutBuilder(
                     builder: (context, constraint) {
                       double gap = 1 / 6 / 2 * constraint.maxHeight;
                       double toRight =
@@ -305,405 +346,420 @@ class _AuthenticationState extends State<Authentication> {
               Container(
                 width: size.width,
                 height: 563 + 80 + (0.015 * size.height),
-                child: Form(
-                  key: _formkey,
-                  child: PageView(
-                    onPageChanged: (index) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    },
-                    controller: pagecon,
-                    children: [
-                      loginInputDesign(size),
-                      registerInputDesign(size),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget loginInputDesign(Size size) {
-    return Column(
-      //mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(((size.width - (size.width * 0.77)) / 2),
-              0.015 * size.height, ((size.width - (size.width * 0.77)) / 2), 0),
-          child: Stack(
-            children: [
-              Container(
-                height: 262,
-                child: Card(
-                  margin: EdgeInsets.only(bottom: 48),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(28, 38, 28, 0),
-                    child: LayoutBuilder(
-                      builder: (context, constraint) {
-                        //print(constraint.maxWidth);
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          //crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            inputDesign(constraint, 'Username/e-mail',
-                                loginEmailcon, 'assets/icons/nameIcon.png'),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 38, 0, 38),
-                              child: Divider(
-                                color: kgreycolor1,
-                                thickness: 1.5,
-                                height: 0,
-                              ),
-                            ),
-                            inputDesign(constraint, 'Password', loginpasscon,
-                                'assets/icons/passwordIcon.png'),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: InkWell(
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 60,
-                      width: 0.5 * size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xff54A059),
-                            Color(0xff40B74B),
-                            Color(0xff2CD23C),
-                            Color(0xff1EE332),
-                            Color(0xff0BFD24),
-                          ],
-                        ),
-                      ),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 29,
-                          color: const Color(0xffffffff),
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    onTap: () async {
-                      print("login");
-                      if (_formkey.currentState!.validate()) {
-                        if (loginFormValidation()) {
-                          setState(() => loading = true);
-                          dynamic result = await AuthService()
-                              .signInWithEmailAndPassword(
-                                  loginEmailcon.text, loginpasscon.text);
-                          //setState(() => loading = false);
-                          if (result == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('No User found')));
-                            setState(() => loading = false);
-                          }
-                          //Navigator.of(context).pushReplacementNamed('/home');
-                        }
-                      }
-                    },
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(top: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child:
+                    //Form(
+                    // key: _formkey,
+                    // child:
+                    PageView(
+                  onPageChanged: (index) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  },
+                  controller: pagecon,
                   children: [
-                    Container(
-                      height: 48,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Remember Me',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 19,
-                          color: const Color(0xff131450),
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    Switch(
-                      value: valSwitch,
-                      activeColor: Color(0xff2AD53A),
-                      activeTrackColor: Color(0xffADF3C4),
-                      splashRadius: 20,
-                      onChanged: (val) {
-                        print(val);
-                        setState(() {
-                          valSwitch = val;
-                        });
-                      },
-                    ),
+                    LoginPage(),
+                    RegisterPage(),
+                    //loginInputDesign(size),
+                    //registerInputDesign(size),
                   ],
                 ),
-                SizedBox(
-                  height: 30,
-                ),
-                // officerLoginLink(),
-                // SizedBox(
-                //   height: 13,
-                // ),
-                // adminLoginLink(),
-                Center(
-                  child: loading ? CircularProgressIndicator() : SizedBox(),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row adminLoginLink() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Administrator? ',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 19,
-            color: const Color(0xff000000),
-          ),
-          textAlign: TextAlign.left,
-        ),
-        InkWell(
-          child: Text(
-            'Click Here',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 19,
-              color: const Color(0xff1F8FEB),
-              fontWeight: FontWeight.w700,
-              decoration: TextDecoration.underline,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            //Navigator.of(context).pushNamed('/loginadmin');
-            //Navigator.of(context).pushReplacementNamed('/loginadmin');
-            Navigator.pushReplacementNamed(
-              context,
-              '/loginadmin',
-            );
-            print("administrator");
-          },
-        ),
-      ],
-    );
-  }
-
-  Row officerLoginLink() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Officer? ',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 19,
-            color: const Color(0xff000000),
-          ),
-          textAlign: TextAlign.left,
-        ),
-        InkWell(
-          child: Text(
-            'Click Here',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 19,
-              color: const Color(0xff1F8FEB),
-              fontWeight: FontWeight.w700,
-              decoration: TextDecoration.underline,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            //Navigator.of(context).pushNamed('/loginofficer');
-            Navigator.of(context).pushReplacementNamed('/loginofficer');
-            print("login as officer");
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget registerInputDesign(Size size) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(((size.width - (size.width * 0.77)) / 2),
-          0.015 * size.height, ((size.width - (size.width * 0.77)) / 2), 80),
-      child: Column(
-        children: [
-          Container(
-            //height: 563.h,
-            child: Card(
-              margin: EdgeInsets.only(bottom: 48.h),
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
               ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(28.w, 20.h, 28.w, 0),
-                child: LayoutBuilder(
-                  builder: (context, constraint) {
-                    //print(constraint.maxWidth);
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      //crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // inputDesign(constraint, 'Username', usernamecon,
-                        //     'assets/icons/usernameIcon.png'),
-                        // Padding(
-                        //   padding: EdgeInsets.fromLTRB(0, 17.h, 0, 18.h),
-                        //   child: Divider(
-                        //     color: kgreycolor1,
-                        //     thickness: 1.5,
-                        //     height: 0,
-                        //   ),
-                        // ),
-                        // inputDesign(constraint, 'Name', namecon,
-                        //     'assets/icons/nameIcon.png'),
-                        // Padding(
-                        //   padding: EdgeInsets.fromLTRB(0, 17.h, 0, 18.h),
-                        //   child: Divider(
-                        //     color: kgreycolor1,
-                        //     thickness: 1.5,
-                        //     height: 0,
-                        //   ),
-                        // ),
-
-                        inputDesign(constraint, 'E-mail Address', emailcon,
-                            'assets/icons/emailIcon.png'),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                          child: Divider(
-                            color: kgreycolor1,
-                            thickness: 1.5,
-                            height: 0,
-                          ),
-                        ),
-                        inputDesign(constraint, 'Password', passcon,
-                            'assets/icons/passwordIcon.png'),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                          child: Divider(
-                            color: kgreycolor1,
-                            thickness: 1.5,
-                            height: 0,
-                          ),
-                        ),
-                        inputDesign(constraint, 'Password Confirmation',
-                            confirmpasscon, 'assets/icons/passwordIcon.png'),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                          child: Divider(
-                            color: kgreycolor1,
-                            thickness: 1.5,
-                            height: 0,
-                          ),
-                        ),
-                        inputDesign(constraint, 'Phone Number', phoneNumcon,
-                            'assets/icons/phoneNumberIcon.png'),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                          child: Divider(
-                            color: kgreycolor1,
-                            thickness: 1.5,
-                            height: 0,
-                          ),
-                        ),
-                        // inputDesign(constraint, 'IC Number', icNumcon,
-                        //     'assets/icons/icNumberIcon.png'),
-                        // Padding(
-                        //   padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
-                        //   child: Divider(
-                        //     color: kgreycolor1,
-                        //     thickness: 1.5,
-                        //     height: 0,
-                        //   ),
-                        // ),
-                        // inputDesign(constraint, 'Date of Birth', dateOfBirthcon,
-                        //     'assets/icons/birthDateIcon.png'),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
+              // )
+            ],
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: InkWell(
-              child: Container(
-                alignment: Alignment.center,
-                height: 60,
-                width: 0.5 * size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xff50A356),
-                      Color(0xff40B74B),
-                      Color(0xff2CD23C),
-                      Color(0xff1EE332),
-                      Color(0xff0BFD24),
-                    ],
-                  ),
-                ),
-                child: Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 29,
-                    color: const Color(0xffffffff),
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              onTap: registerUser,
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: loading ? CircularProgressIndicator() : SizedBox(),
-          )
-        ],
+        ),
       ),
     );
   }
+
+  Widget buildSegment(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontFamily: 'Roboto',
+        fontSize: 19,
+        //color:
+      ),
+    );
+  }
+
+  // Widget loginInputDesign(Size size) {
+  //   return Column(
+  //     //mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       Padding(
+  //         padding: EdgeInsets.fromLTRB(((size.width - (size.width * 0.77)) / 2),
+  //             0.015 * size.height, ((size.width - (size.width * 0.77)) / 2), 0),
+  //         child: Stack(
+  //           children: [
+  //             Container(
+  //               height: 262,
+  //               child: Card(
+  //                 margin: EdgeInsets.only(bottom: 48),
+  //                 elevation: 3,
+  //                 shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(10),
+  //                 ),
+  //                 child: Padding(
+  //                   padding: EdgeInsets.fromLTRB(28, 38, 28, 0),
+  //                   child: LayoutBuilder(
+  //                     builder: (context, constraint) {
+  //                       //print(constraint.maxWidth);
+  //                       return Column(
+  //                         mainAxisAlignment: MainAxisAlignment.start,
+  //                         //crossAxisAlignment: CrossAxisAlignment.stretch,
+  //                         mainAxisSize: MainAxisSize.min,
+  //                         children: [
+  //                           inputDesign(constraint, 'Username/e-mail',
+  //                               loginEmailcon, 'assets/icons/nameIcon.png'),
+  //                           Padding(
+  //                             padding: EdgeInsets.fromLTRB(0, 38, 0, 38),
+  //                             child: Divider(
+  //                               color: kgreycolor1,
+  //                               thickness: 1.5,
+  //                               height: 0,
+  //                             ),
+  //                           ),
+  //                           inputDesign(constraint, 'Password', loginpasscon,
+  //                               'assets/icons/passwordIcon.png'),
+  //                         ],
+  //                       );
+  //                     },
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //             Positioned.fill(
+  //               child: Align(
+  //                 alignment: Alignment.bottomCenter,
+  //                 child: InkWell(
+  //                   child: Container(
+  //                     alignment: Alignment.center,
+  //                     height: 60,
+  //                     width: 0.5 * size.width,
+  //                     decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(6),
+  //                       gradient: LinearGradient(
+  //                         colors: [
+  //                           Color(0xff54A059),
+  //                           Color(0xff40B74B),
+  //                           Color(0xff2CD23C),
+  //                           Color(0xff1EE332),
+  //                           Color(0xff0BFD24),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     child: Text(
+  //                       'Login',
+  //                       style: TextStyle(
+  //                         fontFamily: 'Roboto',
+  //                         fontSize: 29,
+  //                         color: const Color(0xffffffff),
+  //                       ),
+  //                       textAlign: TextAlign.left,
+  //                     ),
+  //                   ),
+  //                   onTap: () async {
+  //                     print("login");
+  //                     if (_formkey.currentState!.validate()) {
+  //                       if (loginFormValidation()) {
+  //                         setState(() => loading = true);
+  //                         dynamic result = await AuthService()
+  //                             .signInWithEmailAndPassword(
+  //                                 loginEmailcon.text, loginpasscon.text);
+  //                         //setState(() => loading = false);
+  //                         if (result == null) {
+  //                           ScaffoldMessenger.of(context).showSnackBar(
+  //                               SnackBar(content: Text('No User found')));
+  //                           setState(() => loading = false);
+  //                         }
+  //                         //Navigator.of(context).pushReplacementNamed('/home');
+  //                       }
+  //                     }
+  //                   },
+  //                 ),
+  //               ),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //       Expanded(
+  //         child: Padding(
+  //           padding: EdgeInsets.only(top: 30),
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             crossAxisAlignment: CrossAxisAlignment.center,
+  //             children: [
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Container(
+  //                     height: 48,
+  //                     alignment: Alignment.centerLeft,
+  //                     child: Text(
+  //                       'Remember Me',
+  //                       style: TextStyle(
+  //                         fontFamily: 'Roboto',
+  //                         fontSize: 19,
+  //                         color: const Color(0xff131450),
+  //                         fontWeight: FontWeight.w500,
+  //                       ),
+  //                       textAlign: TextAlign.left,
+  //                     ),
+  //                   ),
+  //                   Switch(
+  //                     value: valSwitch,
+  //                     activeColor: Color(0xff2AD53A),
+  //                     activeTrackColor: Color(0xffADF3C4),
+  //                     splashRadius: 20,
+  //                     onChanged: (val) {
+  //                       print(val);
+  //                       setState(() {
+  //                         valSwitch = val;
+  //                       });
+  //                     },
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 30,
+  //               ),
+  //               // officerLoginLink(),
+  //               // SizedBox(
+  //               //   height: 13,
+  //               // ),
+  //               // adminLoginLink(),
+  //               Center(
+  //                 child: loading ? CircularProgressIndicator() : SizedBox(),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Row adminLoginLink() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Text(
+  //         'Administrator? ',
+  //         style: TextStyle(
+  //           fontFamily: 'Roboto',
+  //           fontSize: 19,
+  //           color: const Color(0xff000000),
+  //         ),
+  //         textAlign: TextAlign.left,
+  //       ),
+  //       InkWell(
+  //         child: Text(
+  //           'Click Here',
+  //           style: TextStyle(
+  //             fontFamily: 'Roboto',
+  //             fontSize: 19,
+  //             color: const Color(0xff1F8FEB),
+  //             fontWeight: FontWeight.w700,
+  //             decoration: TextDecoration.underline,
+  //           ),
+  //           textAlign: TextAlign.left,
+  //         ),
+  //         onTap: () {
+  //           //Navigator.of(context).pushNamed('/loginadmin');
+  //           //Navigator.of(context).pushReplacementNamed('/loginadmin');
+  //           Navigator.pushReplacementNamed(
+  //             context,
+  //             '/loginadmin',
+  //           );
+  //           print("administrator");
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Row officerLoginLink() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Text(
+  //         'Officer? ',
+  //         style: TextStyle(
+  //           fontFamily: 'Roboto',
+  //           fontSize: 19,
+  //           color: const Color(0xff000000),
+  //         ),
+  //         textAlign: TextAlign.left,
+  //       ),
+  //       InkWell(
+  //         child: Text(
+  //           'Click Here',
+  //           style: TextStyle(
+  //             fontFamily: 'Roboto',
+  //             fontSize: 19,
+  //             color: const Color(0xff1F8FEB),
+  //             fontWeight: FontWeight.w700,
+  //             decoration: TextDecoration.underline,
+  //           ),
+  //           textAlign: TextAlign.left,
+  //         ),
+  //         onTap: () {
+  //           //Navigator.of(context).pushNamed('/loginofficer');
+  //           Navigator.of(context).pushReplacementNamed('/loginofficer');
+  //           print("login as officer");
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Widget registerInputDesign(Size size) {
+  //   return Padding(
+  //     padding: EdgeInsets.fromLTRB(((size.width - (size.width * 0.77)) / 2),
+  //         0.015 * size.height, ((size.width - (size.width * 0.77)) / 2), 80),
+  //     child: Column(
+  //       children: [
+  //         Container(
+  //           //height: 563.h,
+  //           child: Card(
+  //             margin: EdgeInsets.only(bottom: 48.h),
+  //             elevation: 3,
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(10.r),
+  //             ),
+  //             child: Padding(
+  //               padding: EdgeInsets.fromLTRB(28.w, 20.h, 28.w, 0),
+  //               child: LayoutBuilder(
+  //                 builder: (context, constraint) {
+  //                   //print(constraint.maxWidth);
+  //                   return Column(
+  //                     mainAxisAlignment: MainAxisAlignment.start,
+  //                     //crossAxisAlignment: CrossAxisAlignment.stretch,
+  //                     mainAxisSize: MainAxisSize.min,
+  //                     children: [
+  //                       // inputDesign(constraint, 'Username', usernamecon,
+  //                       //     'assets/icons/usernameIcon.png'),
+  //                       // Padding(
+  //                       //   padding: EdgeInsets.fromLTRB(0, 17.h, 0, 18.h),
+  //                       //   child: Divider(
+  //                       //     color: kgreycolor1,
+  //                       //     thickness: 1.5,
+  //                       //     height: 0,
+  //                       //   ),
+  //                       // ),
+  //                       // inputDesign(constraint, 'Name', namecon,
+  //                       //     'assets/icons/nameIcon.png'),
+  //                       // Padding(
+  //                       //   padding: EdgeInsets.fromLTRB(0, 17.h, 0, 18.h),
+  //                       //   child: Divider(
+  //                       //     color: kgreycolor1,
+  //                       //     thickness: 1.5,
+  //                       //     height: 0,
+  //                       //   ),
+  //                       // ),
+
+  //                       inputDesign(constraint, 'E-mail Address', emailcon,
+  //                           'assets/icons/emailIcon.png'),
+  //                       Padding(
+  //                         padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+  //                         child: Divider(
+  //                           color: kgreycolor1,
+  //                           thickness: 1.5,
+  //                           height: 0,
+  //                         ),
+  //                       ),
+  //                       inputDesign(constraint, 'Password', passcon,
+  //                           'assets/icons/passwordIcon.png'),
+  //                       Padding(
+  //                         padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+  //                         child: Divider(
+  //                           color: kgreycolor1,
+  //                           thickness: 1.5,
+  //                           height: 0,
+  //                         ),
+  //                       ),
+  //                       inputDesign(constraint, 'Password Confirmation',
+  //                           confirmpasscon, 'assets/icons/passwordIcon.png'),
+  //                       Padding(
+  //                         padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+  //                         child: Divider(
+  //                           color: kgreycolor1,
+  //                           thickness: 1.5,
+  //                           height: 0,
+  //                         ),
+  //                       ),
+  //                       inputDesign(constraint, 'Phone Number', phoneNumcon,
+  //                           'assets/icons/phoneNumberIcon.png'),
+  //                       Padding(
+  //                         padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+  //                         child: Divider(
+  //                           color: kgreycolor1,
+  //                           thickness: 1.5,
+  //                           height: 0,
+  //                         ),
+  //                       ),
+  //                       // inputDesign(constraint, 'IC Number', icNumcon,
+  //                       //     'assets/icons/icNumberIcon.png'),
+  //                       // Padding(
+  //                       //   padding: EdgeInsets.fromLTRB(0, 17, 0, 18),
+  //                       //   child: Divider(
+  //                       //     color: kgreycolor1,
+  //                       //     thickness: 1.5,
+  //                       //     height: 0,
+  //                       //   ),
+  //                       // ),
+  //                       // inputDesign(constraint, 'Date of Birth', dateOfBirthcon,
+  //                       //     'assets/icons/birthDateIcon.png'),
+  //                     ],
+  //                   );
+  //                 },
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         Align(
+  //           alignment: Alignment.bottomCenter,
+  //           child: InkWell(
+  //             child: Container(
+  //               alignment: Alignment.center,
+  //               height: 60,
+  //               width: 0.5 * size.width,
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(6),
+  //                 gradient: LinearGradient(
+  //                   colors: [
+  //                     Color(0xff50A356),
+  //                     Color(0xff40B74B),
+  //                     Color(0xff2CD23C),
+  //                     Color(0xff1EE332),
+  //                     Color(0xff0BFD24),
+  //                   ],
+  //                 ),
+  //               ),
+  //               child: Text(
+  //                 'Sign Up',
+  //                 style: TextStyle(
+  //                   fontFamily: 'Roboto',
+  //                   fontSize: 29,
+  //                   color: const Color(0xffffffff),
+  //                 ),
+  //                 textAlign: TextAlign.left,
+  //               ),
+  //             ),
+  //             onTap: registerUser,
+  //           ),
+  //         ),
+  //         Align(
+  //           alignment: Alignment.center,
+  //           child: loading ? CircularProgressIndicator() : SizedBox(),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void registerUser() async {
     print("register");

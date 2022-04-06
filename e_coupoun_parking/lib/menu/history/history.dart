@@ -1,4 +1,4 @@
-import 'package:e_coupoun_parking/models/history.dart';
+import '../../models/history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';

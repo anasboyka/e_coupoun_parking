@@ -1,4 +1,4 @@
-import 'package:e_coupoun_parking/constant.dart';
+import '../../constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

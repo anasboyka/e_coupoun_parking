@@ -1,6 +1,6 @@
-import 'package:e_coupoun_parking/models/car.dart';
-import 'package:e_coupoun_parking/models/driver.dart';
-import 'package:e_coupoun_parking/services/firebase_service.dart';
+import '../models/car.dart';
+import '../models/driver.dart';
+import '../services/firebase_service.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseProvider with ChangeNotifier {

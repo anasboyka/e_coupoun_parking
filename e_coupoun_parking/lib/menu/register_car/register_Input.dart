@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:e_coupoun_parking/constant.dart';
-import 'package:e_coupoun_parking/menu/register_car/car_type_chip.dart';
-import 'package:e_coupoun_parking/models/car.dart';
-import 'package:e_coupoun_parking/models/choiceChipSelection.dart';
-import 'package:e_coupoun_parking/models/driver.dart';
-import 'package:e_coupoun_parking/models/driveruid.dart';
-import 'package:e_coupoun_parking/services/firebase_service.dart';
+import '../../constant.dart';
+import 'car_type_chip.dart';
+import '../../models/car.dart';
+import '../../models/choiceChipSelection.dart';
+import '../../models/driver.dart';
+import '../../models/driveruid.dart';
+import '../../services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -247,19 +247,26 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
               chipselected,
               //carTypecon.text.trim().toUpperCase(),
               carPlateNum);
-          await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
-              driverinfo.name,
-              driverinfo.username,
-              carPlateNum,
-              driverinfo.phoneNum!,
-              driverinfo.icNum!,
-              driverinfo.birthDate!);
-          await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
-              //carNamecon.text.trim().toUpperCase(),
-              carBrandcon.text.trim().toUpperCase(),
-              chipselected,
-              //carTypecon.text.trim().toUpperCase(),
-              carPlateNum);
+          await FirebaseService(uid: driveruid.uid)
+              .updateDriverDataInCarCollection(
+                  driverinfo.name,
+                  driverinfo.username,
+                  carPlateNum,
+                  driverinfo.phoneNum!,
+                  driverinfo.icNum!,
+                  driverinfo.birthDate!);
+
+          await FirebaseService(uid: driveruid.uid)
+              .updateCarDataInDriverCollection(
+                  //carNamecon.text.trim().toUpperCase(),
+                  carBrandcon.text.trim().toUpperCase(),
+                  chipselected,
+                  //carTypecon.text.trim().toUpperCase(),
+                  carPlateNum);
+          // await FirebaseService(uid: driveruid.uid)
+          //     .updateDriverPathInCarCollection(carPlateNum);
+          // await FirebaseService(uid: driveruid.uid)
+          //     .updateCarPathInDriverCollection(carPlateNum);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Car Registered Successfully'),
@@ -268,20 +275,22 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           );
           Navigator.of(context).pop();
         } else {
-          await FirebaseService(uid: driveruid.uid).updateCarDataFromDriver(
+          await FirebaseService(uid: driveruid.uid)
+              .updateCarDataInDriverCollection(
             //carNamecon.text.trim().toUpperCase(),
             carBrandcon.text.trim().toUpperCase(),
             chipselected,
             //carTypecon.text.trim().toUpperCase(),
             carPlateNum,
           );
-          await FirebaseService(uid: driveruid.uid).updateDriverDataFromCar(
-              driverinfo.name,
-              driverinfo.username,
-              carPlateNum,
-              driverinfo.phoneNum!,
-              driverinfo.icNum!,
-              driverinfo.birthDate!);
+          await FirebaseService(uid: driveruid.uid)
+              .updateDriverDataInCarCollection(
+                  driverinfo.name,
+                  driverinfo.username,
+                  carPlateNum,
+                  driverinfo.phoneNum!,
+                  driverinfo.icNum!,
+                  driverinfo.birthDate!);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Car Registered Successfully'),

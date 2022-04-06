@@ -1,4 +1,4 @@
-import 'package:e_coupoun_parking/models/compound.dart';
+import '../../models/compound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -16,61 +16,81 @@ class _CompoundPageState extends State<CompoundPage> {
 
   List<Compound> compoundList = [
     Compound(
-        dateTime: DateTime.parse("2021-09-20"),
-        location: "Jalan Mahkota Lama",
-        status: "problem",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2021-09-20"),
+        dateCompoundEnd: DateTime.parse("2021-09-30"),
+        documentID: "Jalan Mahkota Lama",
+        status: "uncompleted",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2021-07-23"),
-        location: "Jalan Tun Hussein",
-        status: "warning",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2021-07-23"),
+        dateCompoundEnd: DateTime.parse("2021-08-03"),
+        documentID: "Jalan Tun Hussein",
+        status: "uncompleted",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2021-03-14"),
-        location: "Amanjaya Sport Center",
-        status: "warning",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2021-03-14"),
+        dateCompoundEnd: DateTime.parse("2021-03-24"),
+        documentID: "Amanjaya Sport Center",
+        status: "uncompleted",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2021-12-28"),
-        location: "Village mall",
-        status: "warning",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2021-12-28"),
+        dateCompoundEnd: DateTime.parse("2022-01-08"),
+        documentID: "Village mall",
+        status: "paid",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2020-10-11"),
-        location: "Hospital Sultan Abdul Halim",
-        status: "warning",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2020-10-11"),
+        dateCompoundEnd: DateTime.parse("2020-10-21"),
+        documentID: "Hospital Sultan Abdul Halim",
+        status: "paid",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2020-08-22"),
-        location: "Jalan Ibrahim",
-        status: "warning",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2020-08-22"),
+        dateCompoundEnd: DateTime.parse("2020-09-02"),
+        documentID: "Jalan Ibrahim",
+        status: "uncompleted",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2020-07-11"),
-        location: "Dataran Amanjaya",
-        status: "safe",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2020-07-11"),
+        dateCompoundEnd: DateTime.parse("2020-07-21"),
+        documentID: "Dataran Amanjaya",
+        status: "paid",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2020-05-14"),
-        location: "Jalan Taman Pekan Lama",
-        status: "safe",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2020-06-16"),
+        dateCompoundEnd: DateTime.parse("2020-06-26"),
+        documentID: "Jalan Taman Pekan Lama",
+        status: "paid",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2020-05-14"),
-        location: "Jalan Taman Pekan Lama",
-        status: "safe",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2020-05-14"),
+        dateCompoundEnd: DateTime.parse("2020-05-24"),
+        documentID: "Jalan Taman Pekan Lama",
+        status: "paid",
         read: false),
     Compound(
-        dateTime: DateTime.parse("2020-05-14"),
-        location: "Jalan Taman Pekan Lama",
-        status: "safe",
+        amount: 2000,
+        dateCompoundStart: DateTime.parse("2020-03-18"),
+        dateCompoundEnd: DateTime.parse("2020-03-28"),
+        documentID: "Jalan Taman Pekan Lama",
+        status: "paid",
         read: false),
   ];
 
   List<Map<String, dynamic>> tabBtn = [
     {'title': 'All', "number": 0},
-    {'title': 'Overdue', 'number': 6},
-    {'title': 'Uncompleted', 'number': 1}
+    // {'title': 'Overdue', 'number': 6},
+    {'title': 'Uncompleted', 'number': 4}
   ];
 
   @override
@@ -136,15 +156,13 @@ class _CompoundPageState extends State<CompoundPage> {
                             width: 20,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: compoundList[index].status == "problem"
+                              color: compoundList[index].status == "uncompleted"
                                   ? Colors.red
-                                  : compoundList[index].status == "warning"
-                                      ? Colors.yellow
-                                      : Colors.green,
+                                  : Colors.green,
                             ),
                           ),
                           title: Text(
-                            compoundList[index].location ?? 'null',
+                            compoundList[index].documentID ?? 'null',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,
@@ -154,11 +172,11 @@ class _CompoundPageState extends State<CompoundPage> {
                             textAlign: TextAlign.left,
                           ),
                           trailing: Text(
-                            'due by ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateTime!).toString()}',
+                            'due by ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateCompoundEnd).toString()}',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 12,
-                              color: compoundList[index].status == "problem"
+                              color: compoundList[index].status == "uncompleted"
                                   ? Color(0xffe30c0c)
                                   : Color(0xff77838F),
                               letterSpacing: 0.8571428833007813,
