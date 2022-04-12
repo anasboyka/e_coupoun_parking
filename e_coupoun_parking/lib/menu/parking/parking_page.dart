@@ -291,9 +291,13 @@ class _ParkingPageState extends State<ParkingPage> {
                               Navigator.of(context)
                                   .pushNamed('/locationSelection')
                                   .then((value) {
-                                locationParking =
-                                    (value as Map)['locationParking'];
-                                print(locationParking!.documentID);
+                                if (value != null) {
+                                  locationParking =
+                                      (value as Map)['locationParking'];
+                                } else {
+                                  locationParking = null;
+                                }
+                                //print(locationParking!.documentID);
                                 return locationParking;
                               });
                             },
@@ -342,7 +346,11 @@ class _ParkingPageState extends State<ParkingPage> {
                               Navigator.of(context)
                                   .pushNamed('/carSelection')
                                   .then((value) {
-                                car = (value as Map)['car'];
+                                if (value != null) {
+                                  car = (value as Map)['car'];
+                                } else {
+                                  car = null;
+                                }
                                 return car;
                               });
                             },
