@@ -3,6 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/models/car.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
+import 'package:e_coupoun_parking/models/location_parking.dart';
+import 'package:e_coupoun_parking/models/parking.dart';
+import 'package:e_coupoun_parking/models/transaction_history.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseService {
   //untuk assign user id siap2 bila call untuk buat query
@@ -17,22 +21,40 @@ class FirebaseService {
   final CollectionReference carCollection =
       FirebaseFirestore.instance.collection('cars');
 
-  final CollectionReference carDriverCollection =
-      FirebaseFirestore.instance.collection('cars_drivers');
+  // final CollectionReference carDriverCollection =
+  //     FirebaseFirestore.instance.collection('cars_drivers');
+
+  final CollectionReference locationParkCollection =
+      FirebaseFirestore.instance.collection('locations');
+
+  final CollectionReference parkingCollection =
+      FirebaseFirestore.instance.collection('parkings');
 
   //method untuk CRUD query
 
   //query untuk drivers punya collection untuk new user or existed user*
   //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
-  Future updateDriverDataCollection(String? username, String? name,
-      String phoneNum, String? icNum, DateTime? birthDate) async {
-    return await driverCollection.doc(uid).set({
-      "username": username,
-      "name": name,
-      "phoneNum": phoneNum,
-      "icNum": icNum,
-      "dateOfBirth": birthDate
-    });
+  // Future updateDriverDataCollection(
+  //     String? username,
+  //     String? name,
+  //     String? phoneNum,
+  //     String? icNum,
+  //     DateTime? birthDate,
+  //     bool? profileComplete,
+  //     bool? parkingStatus) async {
+  //   return await driverCollection.doc(uid).set({
+  //     "username": username,
+  //     "name": name,
+  //     "phoneNum": phoneNum,
+  //     "icNum": icNum,
+  //     "dateOfBirth": birthDate,
+  //     "profileComplete": profileComplete,
+  //     "parkingStatus": parkingStatus
+  //   });
+  // }
+
+  Future updateDriverDataCollection(Driver driver) async {
+    return await driverCollection.doc(uid).set(driver.toMap());
   }
 
   //query untuk cars punya collection untuk new car or existed car*
@@ -47,16 +69,34 @@ class FirebaseService {
     });
   }
 
+  // Future updateLocationDataCollection(LocationParking locationParking) async {
+  //   return await LocationParkCollection.add(locationParking.toMap());
+  // }
+
+  Future updateParkingDataCollection(Parking parking) async {
+    return await parkingCollection.add(parking.toMap());
+  }
+
+  Future updateUserTransactionHistory(
+      TransactionHistory transactionHistory) async {
+    return await driverCollection.doc(uid).collection('transactions').add(
+          transactionHistory.toMap(),
+        );
+  }
+
   //query untuk cars punya subcollection from driver punya collection*
   //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
   Future updateCarDataInDriverCollection(/*String carName,*/ String carBrand,
       String carType, String carPlateNum) async {
     DocumentReference docRef = driverCollection.doc('$uid/Cars/$carPlateNum');
+    DocumentSnapshot docSnap = await carCollection.doc(carPlateNum).get();
     docRef.set({
       "carBrand": carBrand,
       "carType": carType,
       "carPlateNum": carPlateNum,
-      "carRef": docRef
+      "carRef": carCollection.doc(carPlateNum),
+      "documentID": carPlateNum,
+      // "snapsot": docSnap
     });
 
     // return await driverCollection
@@ -86,21 +126,24 @@ class FirebaseService {
   //query untuk driver punya subcollection from cars punya collection*
   //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
   Future updateDriverDataInCarCollection(
-      String? name,
-      String? username,
+      // String? name,
+      // String? username,
       String? carPlateNum,
-      String? phoneNum,
-      String? icNum,
-      DateTime? birthDate) async {
+      // String? phoneNum,
+      // String? icNum,
+      // DateTime? birthDate,
+      Driver driver) async {
     DocumentReference docRef = carCollection.doc('$carPlateNum/Drivers/$uid');
-    return await docRef.set({
-      "username": username,
-      "name": name,
-      "phoneNum": phoneNum,
-      "icNum": icNum,
-      "dateOfBirth": birthDate,
-      "driverRef": docRef
-    });
+    return await docRef.set(driver.toMap()
+        //   {
+        //   "username": username ?? null,
+        //   "name": name ?? null,
+        //   "phoneNum": phoneNum ?? null,
+        //   "icNum": icNum ?? null,
+        //   "dateOfBirth": birthDate ?? null,
+        //   "driverRef": driverCollection.doc(uid),
+        // }
+        );
   }
 
   // Future updateDriverPathInCarCollection(String? carPlateNum) async {
@@ -125,7 +168,32 @@ class FirebaseService {
         carBrand: data['carBrand'],
         carPlateNum: data['carPlateNum'],
         carType: data['carType'],
+        documentID: data['documentID'],
+        reference: data['carRef'],
+        //snapshot: data['snapshot'],
       );
+    }).toList();
+  }
+
+  List<LocationParking> _locationListFromSnapshot(QuerySnapshot snapshot) {
+    //print(snapshot.docs[0].id);
+    return snapshot.docs.map((doc) {
+      return LocationParking.fromFirestore(doc);
+    }).toList();
+  }
+
+  List<Parking> _parkingListFromSnapshot(QuerySnapshot snapshot) {
+    //print(snapshot.docs[0].id);
+    return snapshot.docs.map((doc) {
+      return Parking.fromFirestore(doc);
+    }).toList();
+  }
+
+  List<TransactionHistory> _transactionListFromSnapshot(
+      QuerySnapshot snapshot) {
+    //print(snapshot.docs[0].id);
+    return snapshot.docs.map((doc) {
+      return TransactionHistory.fromFirestore(doc);
     }).toList();
   }
 
@@ -158,6 +226,17 @@ class FirebaseService {
     return carCollection.snapshots().map(_carListFromSnapshot);
   }
 
+  Stream<List<LocationParking>> get locations {
+    return locationParkCollection.snapshots().map(_locationListFromSnapshot);
+  }
+
+  Stream<List<Parking>> get parkings {
+    return locationParkCollection
+        .orderBy('date')
+        .snapshots()
+        .map(_parkingListFromSnapshot);
+  }
+
   //method untuk dapat stream data untuk drivers dalam bentuk list*
   //List<Driver> to Stream<List<Driver>>*
   //data dalam bentuk stream which means data akan realtime update whenever data berubah.
@@ -169,28 +248,6 @@ class FirebaseService {
   //List<Car> to Stream<List<Car>>*
   //data dalam bentuk stream which means data akan realtime update whenever data berubah.
 
-  // Future<List<Car>> get userCarsJuncf async {
-  //   var data = carDriverCollection.where('driverId', isEqualTo: this.uid);
-  //   List<Car> cars = [];
-  //   data.get().then((value) => value.docs.forEach((doc) {
-  //         var data = doc.data() as Map<String, dynamic>;
-  //         cars.add(Car(
-  //             carBrand: data['carBrand'],
-  //             carType: data['carBrand'],
-  //             carPlateNum: data['carPlateNum']));
-  //       }));
-  //   return cars;
-  // }
-
-  // //TODO
-  // Stream<List<Car>> get userCarsJuncs {
-  //   return driverCollection
-  //       .doc(this.uid)
-  //       .collection('Cars')
-  //       .snapshots()
-  //       .map(_carListFromSnapshot);
-  // }
-
   Stream<List<Car>> get userCars {
     return driverCollection
         .doc(this.uid)
@@ -199,18 +256,51 @@ class FirebaseService {
         .map(_carListFromSnapshot);
   }
 
+  Stream<List<Parking>> get userParkingList {
+    return parkingCollection
+        .where('driverId', isEqualTo: uid)
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map(_parkingListFromSnapshot);
+  }
+
+  Stream<List<TransactionHistory>> get userTransactionHistory {
+    return driverCollection
+        .doc(uid)
+        .collection('transactions')
+        .snapshots()
+        .map(_transactionListFromSnapshot);
+  }
+
+  Stream<Parking> get userCurrentParking {
+    var snap = parkingCollection
+        .where('driverId', isEqualTo: uid)
+        .orderBy('startTime', descending: true)
+        .limit(1)
+        .snapshots();
+    return snap.map(
+      (event) {
+        return Parking.fromFirestore(event.docs.first);
+      },
+    );
+  }
+
   //method untuk dapat stream data untuk sorang driver sahaja from firestore based on current user id*
   Stream<Driver?> get driver {
     return driverCollection.doc(this.uid).snapshots().map((doc) {
-      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-      print(data['name']);
-      return Driver(
-          uid: this.uid!,
-          name: data['name'],
-          username: data['username'],
-          phoneNum: data['phoneNum'],
-          birthDate: data['dateOfBirth'].toDate(),
-          icNum: data['icNum']);
+      return Driver.fromFirestore(doc);
+    });
+  }
+
+  Stream<Car?> getCarById(String id) {
+    return carCollection.doc(id).snapshots().map((doc) {
+      return Car.fromFirestore(doc);
+    });
+  }
+
+  Stream<LocationParking?> getLocationById(String id) {
+    return locationParkCollection.doc(id).snapshots().map((doc) {
+      return LocationParking.fromFirestore(doc);
     });
   }
 
@@ -230,6 +320,18 @@ class FirebaseService {
             data['dateOfBirth']?.toDate() ?? DateTime.parse("1111-11-11"),
         phoneNum: data['phoneNum'],
         username: data['username']));
+  }
+
+  Future updateDriverParkingStatus(bool status) async {
+    return await driverCollection.doc(uid).update({
+      'parkingStatus': status,
+    });
+  }
+
+  Future updateDriverWalletBalance(double amount) async {
+    return await driverCollection.doc(uid).update({
+      'walletBalance': FieldValue.increment(amount),
+    });
   }
 
   //method untuk delete data kat firestore which is from cars collection
@@ -258,6 +360,36 @@ class FirebaseService {
         .get()
         .then((snapshot) {
       if (snapshot.exists) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  Future<bool> checkDriverInfoComplete() {
+    return driverCollection.doc(this.uid).get().then((snapshot) {
+      if ((snapshot.data() as Map)['profileComplete']) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  Future<bool> checkParkingStatus() {
+    return driverCollection.doc(this.uid).get().then((snapshot) {
+      if ((snapshot.data() as Map)['parkingStatus']) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  Stream<bool> streamParkingStatus() {
+    return driverCollection.doc(this.uid).snapshots().map((snapshot) {
+      if ((snapshot.data() as Map)['parkingStatus']) {
         return true;
       } else {
         return false;
@@ -302,6 +434,11 @@ class FirebaseService {
           carPlateNum: data['carPlateNum'],
           carType: data['carType'],
         ));
+  }
+
+  Future<double> getWalletBalance() async {
+    return driverCollection.doc(uid).get().then(
+        (snapshot) => (snapshot.data() as Map)['walletBalance'].toDouble());
   }
 
   //method untuk get data number of cars for current driver from driver collection*

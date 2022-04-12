@@ -4,10 +4,11 @@ import 'package:e_coupoun_parking/authenticate/loginAdmin.dart';
 import 'package:e_coupoun_parking/authenticate/loginOfficer.dart';
 import 'package:e_coupoun_parking/menu/compound/compoundList.dart';
 import 'package:e_coupoun_parking/menu/e_wallet/e_wallet.dart';
-import 'package:e_coupoun_parking/menu/history/history.dart';
+import 'package:e_coupoun_parking/menu/history/parking_history.dart';
 import 'package:e_coupoun_parking/menu/parking/car_selection.dart';
 import 'package:e_coupoun_parking/menu/parking/location_selection.dart';
-import 'package:e_coupoun_parking/menu/parking/parking.dart';
+import 'package:e_coupoun_parking/menu/parking/parking_page.dart';
+import 'package:e_coupoun_parking/menu/parking/parking_wrapper.dart';
 import 'package:e_coupoun_parking/menu/profile/profile.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_Input.dart';
 import 'package:e_coupoun_parking/menu/register_car/register_car.dart';
@@ -107,9 +108,7 @@ class RouteGenerator {
         );
       case '/parking':
         return CupertinoPageRoute(
-          builder: (_) => ParkingPage(
-            argument: args as Map<String?, dynamic>,
-          ),
+          builder: (_) => ParkingWrapper(),
         );
       case '/profile':
         return CupertinoPageRoute(

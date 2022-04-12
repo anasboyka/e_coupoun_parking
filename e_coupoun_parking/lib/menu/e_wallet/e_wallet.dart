@@ -1,3 +1,9 @@
+import 'package:e_coupoun_parking/models/driver.dart';
+import 'package:e_coupoun_parking/models/driveruid.dart';
+import 'package:e_coupoun_parking/models/transaction_history.dart';
+import 'package:e_coupoun_parking/services/firebase_service.dart';
+import 'package:provider/provider.dart';
+
 import '../../constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,9 +17,66 @@ class Ewallet extends StatefulWidget {
 
 class _EwalletState extends State<Ewallet> {
   String hightlightText = '0';
+
   TextEditingController amountcon = new TextEditingController();
+
+  // List<TransactionHistory> transactionList = [
+  //   TransactionHistory(
+  //     amount: 0.6,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 0.3,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 1.2,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 0.6,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 1.2,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 0.9,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 1.5,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 0.3,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 1.2,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  //   TransactionHistory(
+  //     amount: 0.9,
+  //     date: DateTime.now(),
+  //     isPaid: true,
+  //   ),
+  // ];
+
   @override
   Widget build(BuildContext context) {
+    Driveruid driveruid = Provider.of<Driveruid>(context);
+    //bool isPaid = true;
     return SafeArea(
       child: Scaffold(
         appBar: eWalletAppbarDesign(),
@@ -24,130 +87,245 @@ class _EwalletState extends State<Ewallet> {
               width: double.infinity,
               color: bgColor,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                children: [
-                  SizedBox(height: 20.h),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Hello User!',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 20.sp,
-                        color: const Color(0xff1e2022),
-                        letterSpacing: 1,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  SizedBox(height: 25.h),
-                  Container(
-                    height: 220.h,
-                    width: 314.w,
-                    child: Stack(
+            StreamBuilder(
+                stream: FirebaseService(uid: driveruid.uid).driver,
+                builder: (_, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    Driver driver = snapshot.data;
+                    return Column(
                       children: [
+                        gaph(),
                         Align(
-                          alignment: Alignment.topCenter,
-                          child: Container(
-                            height: 200.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: Colors.white,
-                            ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10.h, horizontal: 2.w),
-                                    child: Text(
-                                      'RM',
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto',
-                                        fontSize: 28.sp,
-                                        color: const Color(0xff8392a7),
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  Text(
-                                    '23.00',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 72.sp,
-                                      color: const Color(0xff16aa32),
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              elevation: 6,
-                              primary: Color(0xff16AA32),
-                              minimumSize: Size(142.w, 62.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(44.r),
-                              ),
-                            ),
-                            onPressed: () {
-                              showBottomPopup(context, "wallet")
-                                  .whenComplete(() {
-                                setState(() {
-                                  hightlightText = '0';
-                                });
-                                return print(hightlightText);
-                              });
-                            },
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20.w),
                             child: Text(
-                              'TOP UP',
+                              'Hello ${driver.name}',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: 19.sp,
-                                color: const Color(0xffffffff),
-                                letterSpacing: 1.3571428985595704,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 20.sp,
+                                color: const Color(0xff1e2022),
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.w700,
                               ),
                               textAlign: TextAlign.left,
                             ),
+                          ), //;
+                          // } else {
+                          //   return Center(
+                          //       child: CircularProgressIndicator.adaptive());
+                          // }
+                          //}
+                          //),
+                        ),
+                        gaph(h: 25.w),
+                        Container(
+                          height: 220.h,
+                          width: 314.w,
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Container(
+                                  height: 200.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.h, horizontal: 2.w),
+                                          child: Text(
+                                            'RM',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto',
+                                              fontSize: 28.sp,
+                                              color: const Color(0xff8392a7),
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Text(
+                                          driver.walletBalance
+                                                  ?.toStringAsFixed(2) ??
+                                              '0.00', //'23.00',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 72.sp,
+                                            color: const Color(0xff16aa32),
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 6,
+                                    primary: Color(0xff16AA32),
+                                    minimumSize: Size(142.w, 62.h),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(44.r),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    showBottomPopup(context, "wallet")
+                                        .whenComplete(() {
+                                      setState(() {
+                                        hightlightText = '0';
+                                      });
+                                      return print(hightlightText);
+                                    });
+                                  },
+                                  child: Text(
+                                    'TOP UP',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 19.sp,
+                                      color: const Color(0xffffffff),
+                                      letterSpacing: 1.3571428985595704,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                        )
+                        ),
+                        gaph(h: 40),
+                        Expanded(
+                          child: Container(
+                            color: Colors.white,
+                            height: double.infinity,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                gaph(),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20.w),
+                                    child: Text(
+                                      'Latest Transaction',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xff707070),
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
+                                gaph(),
+                                Divider(
+                                  thickness: 1.5,
+                                  endIndent: 0,
+                                  height: 0,
+                                  indent: 0,
+                                ),
+                                Expanded(
+                                  child: StreamBuilder<
+                                          List<TransactionHistory>>(
+                                      stream:
+                                          FirebaseService(uid: driveruid.uid)
+                                              .userTransactionHistory,
+                                      builder: (_, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData) {
+                                          List<TransactionHistory>
+                                              transactionList = snapshot.data;
+                                          return ListView.separated(
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.zero,
+                                            itemBuilder: (context, index) {
+                                              TransactionHistory transaction =
+                                                  transactionList[index];
+                                              return ListTile(
+                                                horizontalTitleGap: 20,
+                                                leading: Image.asset(
+                                                  'assets/icons/${transaction.isPaid ? 'cashOutIcon.png' : 'cashInIcon.png'}',
+                                                  height: 45.h,
+                                                ),
+                                                title: Text(
+                                                  '${transaction.description?['title'] ?? '${transaction.isPaid ? 'Cash Out' : 'Topup'}'}',
+                                                ),
+                                                subtitle:
+                                                    transaction.description![
+                                                                'subtitle'] !=
+                                                            null
+                                                        ? Text(
+                                                            '${transaction.description?['subtitle'] ?? null}',
+                                                          )
+                                                        : null,
+                                                trailing: Text(
+                                                  '${transaction.isPaid ? '-' : '+'} RM ${transaction.amount.toStringAsFixed(2)}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: transaction.isPaid
+                                                          ? Colors.red
+                                                          : Colors.green),
+                                                ),
+                                              );
+                                            },
+                                            separatorBuilder: (_, index) {
+                                              return Divider(
+                                                endIndent: 0,
+                                                height: 0,
+                                                indent: 0,
+                                              );
+                                            },
+                                            itemCount: transactionList.length,
+                                          );
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator
+                                                .adaptive(),
+                                          );
+                                        }
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: [
+                        //     buttonWalletDesign(
+                        //         context, 'Scan', 'assets/icons/BarcodeScanIcon.png'),
+                        //     buttonWalletDesign(
+                        //         context, 'Transfer', 'assets/icons/transferIcon.png'),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 20.h),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: [
+                        //     buttonWalletDesign(
+                        //         context, 'Reload', 'assets/icons/reloadIcon.png'),
+                        //     buttonWalletDesign(context, 'Debit Card',
+                        //         'assets/icons/debitCardIcon.png'),
+                        //   ],
+                        // )
                       ],
-                    ),
-                  ),
-                  SizedBox(height: 40.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buttonWalletDesign(
-                          context, 'Scan', 'assets/icons/BarcodeScanIcon.png'),
-                      buttonWalletDesign(
-                          context, 'Transfer', 'assets/icons/transferIcon.png'),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buttonWalletDesign(
-                          context, 'Reload', 'assets/icons/reloadIcon.png'),
-                      buttonWalletDesign(context, 'Debit Card',
-                          'assets/icons/debitCardIcon.png'),
-                    ],
-                  )
-                ],
-              ),
-            ),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator.adaptive());
+                  }
+                }),
           ],
         ),
       ),
@@ -189,16 +367,16 @@ class _EwalletState extends State<Ewallet> {
         ),
       ),
       onTap: () {
-        if (title == 'Reload') {
-          showBottomPopup(context, 'Wallet').whenComplete(() {
-            setState(() {
-              hightlightText = '0';
-            });
-            return print(hightlightText);
+        // if (title == 'Reload') {
+        showBottomPopup(context, 'Wallet').whenComplete(() {
+          setState(() {
+            hightlightText = '0';
           });
-        } else {
-          print('tbd');
-        }
+          return print(hightlightText);
+        });
+        // } else {
+        //   print('tbd');
+        // }
       },
     );
   }
@@ -213,6 +391,7 @@ class _EwalletState extends State<Ewallet> {
         //isDismissible: true,
         context: context,
         builder: (context) {
+          Driveruid driveruid = Provider.of<Driveruid>(context);
           return StatefulBuilder(builder: (context, setModalState) {
             return Padding(
               padding: MediaQuery.of(context).viewInsets,
@@ -337,7 +516,24 @@ class _EwalletState extends State<Ewallet> {
                           primary: Color(0xff16AA32),
                           fixedSize:
                               Size(MediaQuery.of(context).size.width, 60.h)),
-                      onPressed: () {
+                      onPressed: () async {
+                        print(amountcon.text);
+                        TransactionHistory transactionHistory =
+                            TransactionHistory(
+                          amount: double.parse(amountcon.text),
+                          date: DateTime.now(),
+                          isPaid: false,
+                          description: {'title': 'Top Up', 'subtitle': null},
+                        );
+                        await FirebaseService(uid: driveruid.uid)
+                            .updateUserTransactionHistory(transactionHistory
+                                //-10.00,
+                                );
+                        await FirebaseService(uid: driveruid.uid)
+                            .updateDriverWalletBalance(
+                          double.parse(amountcon.text),
+                          //-10.00,
+                        );
                         Navigator.of(context).pop();
                       },
                       child: Text(

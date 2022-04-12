@@ -1,3 +1,6 @@
+import 'package:e_coupoun_parking/services/firebase_service.dart';
+import 'package:provider/provider.dart';
+
 import '../../models/driver.dart';
 import '../../models/driveruid.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +48,8 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
     DateTime? _datePicker = await showDatePicker(
       context: context,
       initialDate: _date,
-      firstDate: DateTime(1992),
-      lastDate: DateTime(2030),
+      firstDate: DateTime(1970),
+      lastDate: DateTime(2025),
     );
 
     if (_datePicker != null && _datePicker != _date) {
@@ -60,11 +63,13 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
     }
   }
 
-  createAlertDialog(BuildContext context, String inputData, String title) {
+  createAlertDialog(
+      BuildContext context, String inputData, String title, Driver? driver) {
     Size size = MediaQuery.of(context).size;
+
     return showDialog(
         context: context,
-        builder: (context) {
+        builder: (_) {
           return AlertDialog(
             title: Text(
               title,
@@ -128,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                onTap: () {
+                onTap: () async {
                   if (title == 'Clear') {
                     namecon.clear();
                     phoneNumcon.clear();
@@ -138,6 +143,16 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
                         .format(DateTime.parse("1111-11-11"));
                     Navigator.of(context).pop();
                   } else if (title == 'Save') {
+                    await FirebaseService(uid: driver!.uid)
+                        .updateDriverDataCollection(driver
+                            // driver.username,
+                            // driver.name,
+                            // driver.phoneNum,
+                            // driver.icNum,
+                            // driver.birthDate,
+                            // driver.profileComplete,
+                            // driver.parkingStatus,
+                            );
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   } else {
                     Navigator.of(context).pop();
@@ -169,6 +184,7 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
 
   @override
   Widget build(BuildContext context) {
+    Driveruid driveruid = Provider.of<Driveruid>(context);
     return Scaffold(
       appBar: profileAppbarDesign('Profile'),
       backgroundColor: Color(0xffE1F9E0),
@@ -218,34 +234,51 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (!isNameValid(namecon.text)) {
                               print('name');
-                              createAlertDialog(
-                                  context, 'Name cannot be empty', 'Name');
+                              createAlertDialog(context, 'Name cannot be empty',
+                                  'Name', null);
                             } else if (!isPhoneNumValid(phoneNumcon.text)) {
                               print('phone');
                               createAlertDialog(
                                   context,
                                   'Phone Number cannot be empty',
-                                  'Phone Number');
+                                  'Phone Number',
+                                  null);
                             } else if (!isUserNameValid(usernamecon.text)) {
                               print('username');
                               createAlertDialog(context,
-                                  'username cannot be empty', 'username');
+                                  'username cannot be empty', 'username', null);
                             } else if (!isIcNumValid(icNumcon.text)) {
                               print('Ic num');
-                              createAlertDialog(context,
-                                  'IC Number cannot be empty', 'IC Number');
+                              createAlertDialog(
+                                  context,
+                                  'IC Number cannot be empty',
+                                  'IC Number',
+                                  null);
                             } else if (!isDateBirthValid(dateOfBirthcon.text)) {
                               print('date');
                               createAlertDialog(
                                   context,
                                   'Date of birth cannot be empty or invalid',
-                                  'Date of birth');
+                                  'Date of birth',
+                                  null);
                             } else {
-                              createAlertDialog(
-                                  context, 'Save all credential?', 'Save');
+                              bool parkingStatus =
+                                  await FirebaseService(uid: driveruid.uid)
+                                      .checkParkingStatus();
+                              Driver driver = Driver(
+                                  uid: driveruid.uid,
+                                  name: namecon.text,
+                                  birthDate: _date,
+                                  icNum: icNumcon.text,
+                                  parkingStatus: parkingStatus,
+                                  phoneNum: phoneNumcon.text,
+                                  profileComplete: true,
+                                  username: usernamecon.text);
+                              createAlertDialog(context, 'Save all credential?',
+                                  'Save', driver);
                             }
                           },
                         ),
@@ -284,7 +317,8 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
                             createAlertDialog(
                                 context,
                                 'Are you sure you want to clear all credential?',
-                                'Clear');
+                                'Clear',
+                                null);
                           },
                         ),
                       ),

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
+import 'package:e_coupoun_parking/provider/firebaseProvider.dart';
 import 'package:e_coupoun_parking/services/auth.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:e_coupoun_parking/services/mysql_service.dart';
@@ -45,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final driveruid = Provider.of<Driveruid?>(context);
+    // final driveruid = Provider.of<Driveruid?>(context);
+    //final firebaseProvider = Provider.of<FirebaseProvider?>(context);
+
     final driverinfo = Provider.of<Driver?>(context);
 
     return Scaffold(

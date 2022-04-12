@@ -25,20 +25,32 @@ class AuthService {
 
   //register guna email and password, skali dgn bwak masuk data lain dalam firestore
   Future registerWithEmailAndPassword(
-      String email,
-      String password,
-      String? username,
-      String? name,
-      String phoneNum,
-      String? icNum,
-      DateTime? dateOfbirth) async {
+    String email,
+    String password,
+    String? username,
+    String? name,
+    String phoneNum,
+    String? icNum,
+    DateTime? dateOfbirth,
+    bool? profileComplete,
+    bool? parkingStatus,
+  ) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = credential.user;
-      print(credential.user);
-      await FirebaseService(uid: user!.uid).updateDriverDataCollection(
-          username, name, phoneNum, icNum, dateOfbirth);
+      //print(credential.user);
+      Driver driver = Driver(
+        username: username,
+        name: name,
+        phoneNum: phoneNum,
+        icNum: icNum,
+        birthDate: dateOfbirth,
+        profileComplete: profileComplete,
+        parkingStatus: parkingStatus,
+        //walletBalance: 0.00,
+      );
+      await FirebaseService(uid: user!.uid).updateDriverDataCollection(driver);
       if (credential.user == null) {
         return null;
       } else {

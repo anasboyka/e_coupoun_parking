@@ -1,67 +1,19 @@
 import 'package:e_coupoun_parking/models/location_parking.dart';
+import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LocationSelection extends StatelessWidget {
+class LocationSelection extends StatefulWidget {
   Map? args = {};
   LocationSelection({Key? key, this.args}) : super(key: key);
+
+  @override
+  State<LocationSelection> createState() => _LocationSelectionState();
+}
+
+class _LocationSelectionState extends State<LocationSelection> {
   TextEditingController searchcon = new TextEditingController();
-
-  List<LocationParking> locationParkings = [
-    LocationParking(
-      locationName: 'Kawasan Parkir Bateri',
-      locationSubname: 'Airport Camp, Taman Patani Jaya.',
-    ),
-    LocationParking(
-      locationName: 'Hentian Tikam Batu',
-      locationSubname: 'RNR Tikam Batu.',
-    ),
-    LocationParking(
-      locationName: 'Padang Merpati Lot 88',
-      locationSubname: 'Lorong 2/3, Padang Merpati.',
-    ),
-    LocationParking(
-      locationName: 'Tapak Parking Jam Besar',
-      locationSubname: '69, Jalan Ibrahim.',
-    ),
-    LocationParking(
-      locationName: 'Amanjaya Mall',
-      locationSubname: 'Car Park, Amanjaya Mall, Bandar Amanjaya.',
-    ),
-    LocationParking(
-      locationName: 'Taman Melor Food Court',
-      locationSubname: 'Taman Melor',
-    ),
-    LocationParking(
-      locationName: 'Kawasan Parkir KTM',
-      locationSubname: 'Bangunan MPSP, 3, Jalan Market.',
-    ),
-  ];
-
-  // List<Map<String, String>> location = [
-  //   {
-  //     'location': 'Kawasan Parkir Bateri',
-  //     'subLocation': 'Airport Camp, Taman Patani Jaya.'
-  //   },
-  //   {'location': 'Hentian Tikam Batu', 'subLocation': 'RNR Tikam Batu.'},
-  //   {
-  //     'location': 'Padang Merpati Lot 88',
-  //     'subLocation': 'Lorong 2/3, Padang Merpati.'
-  //   },
-  //   {
-  //     'location': 'Tapak Parking Jam Besar',
-  //     'subLocation': '69, Jalan Ibrahim.'
-  //   },
-  //   {
-  //     'location': 'Amanjaya Mall',
-  //     'subLocation': 'Car Park, Amanjaya Mall, Bandar Amanjaya.'
-  //   },
-  //   {'location': 'Taman Melor Food Court', 'subLocation': 'Taman Melor'},
-  //   {
-  //     'location': 'Kawasan Parkir KTM',
-  //     'subLocation': 'Bangunan MPSP, 3, Jalan Market.'
-  //   }
-  // ];
+  String query = '';
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +31,7 @@ class LocationSelection extends StatelessWidget {
                 ),
                 elevation: 2,
                 child: TextFormField(
+                  onChanged: (value) => setState(() => query = value),
                   controller: searchcon,
                   textAlignVertical: TextAlignVertical.center,
                   style: TextStyle(
@@ -150,53 +103,8 @@ class LocationSelection extends StatelessWidget {
                           indent: 0,
                         ),
                       ),
-                      SizedBox(height: 25.h),
-                      ListView.separated(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
-                              locationParkings[index].locationName, //?? '',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 18,
-                                color: const Color(0xff000000),
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            subtitle: Text(
-                              locationParkings[index].locationSubname, //?? '',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 15,
-                                color: const Color(0xffbebebe),
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            dense: true,
-                            //horizontalTitleGap: 0,
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 20.w),
-                            onTap: () {},
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            child: Divider(
-                              color: Color(0xffC8C8C8),
-                              thickness: 1,
-                              height: 0,
-                              endIndent: 0,
-                              indent: 0,
-                            ),
-                          );
-                        },
-                        itemCount: locationParkings.length,
-                        shrinkWrap: true,
-                      ),
+                      // SizedBox(height: 25.h),
+                      listLocationParkingBuilder(query),
                       SizedBox(height: 30.h)
                       // ListTile(
                       //   title: Text(
@@ -232,6 +140,99 @@ class LocationSelection extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  StreamBuilder<List<LocationParking>> listLocationParkingBuilder(
+      String query) {
+    //print(query);
+    return StreamBuilder(
+      stream: FirebaseService().locations,
+      builder: (_, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          List<LocationParking> locationParkings = snapshot.data;
+          if (query.isNotEmpty) {
+            List<LocationParking> locationParkingsTemp = [];
+            for (var i = 0; i < locationParkings.length; i++) {
+              if (locationParkings[i]
+                  .locationName
+                  .toLowerCase()
+                  .startsWith(query.toLowerCase())) {
+                locationParkingsTemp.add(locationParkings[i]);
+              }
+            }
+            locationParkings = locationParkingsTemp;
+          }
+
+          if (locationParkings.length != 0) {
+            return ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                //print(locationParkings.length);
+                return ListTile(
+                  title: Text(
+                    locationParkings[index].locationName, //?? '',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 18,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  subtitle: Text(
+                    locationParkings[index].locationSubname, //?? '',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 15,
+                      color: const Color(0xffbebebe),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  dense: true,
+                  //horizontalTitleGap: 0,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pop({'locationParking': locationParkings[index]});
+                  },
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Divider(
+                    color: Color(0xffC8C8C8),
+                    thickness: 1,
+                    height: 0,
+                    endIndent: 0,
+                    indent: 0,
+                  ),
+                );
+              },
+              itemCount: locationParkings.length,
+              shrinkWrap: true,
+            );
+          } else {
+            return ListTile(
+              title: Text(
+                'Location not found',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 16.sp,
+                  color: const Color(0xff707070),
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+        } else {
+          print('loading');
+          return CircularProgressIndicator.adaptive();
+        }
+      },
     );
   }
 

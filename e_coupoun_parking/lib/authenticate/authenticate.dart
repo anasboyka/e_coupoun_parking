@@ -770,13 +770,16 @@ class _AuthenticationState extends State<Authentication> {
         print(emailcon.text);
         print(passcon.text);
         dynamic result = await _auth.registerWithEmailAndPassword(
-            emailcon.text,
-            passcon.text,
-            usernamecon.text,
-            namecon.text,
-            phoneNumcon.text,
-            icNumcon.text,
-            _date);
+          emailcon.text,
+          passcon.text,
+          usernamecon.text,
+          namecon.text,
+          phoneNumcon.text,
+          icNumcon.text,
+          _date,
+          false,
+          false,
+        );
         if (result == null) {
           setState(() => error = "please supply a valid email");
           ScaffoldMessenger.of(context).showSnackBar(

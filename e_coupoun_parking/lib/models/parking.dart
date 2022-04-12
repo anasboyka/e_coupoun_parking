@@ -6,9 +6,13 @@ class Parking {
   final int duration;
   final DateTime startTime;
   final DateTime endTime;
-  final DocumentReference? carId;
-  final DocumentReference? driverId;
-  final DocumentReference? locationId;
+  final String? carId;
+  //final DocumentReference? carRef;
+  final String? driverId;
+  //final DocumentReference? driverRef;
+  final String? locationId;
+  //final DocumentReference? locationRef;
+  final String? locationName;
   final DocumentSnapshot? snapshot;
   final DocumentReference? reference;
   final String? documentID;
@@ -20,8 +24,12 @@ class Parking {
     required this.startTime,
     required this.endTime,
     this.carId,
+    //this.carRef,
     this.driverId,
+    //this.driverRef,
     this.locationId,
+    //this.locationRef,
+    this.locationName,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -38,8 +46,12 @@ class Parking {
       startTime: map['startTime']?.toDate(),
       endTime: map['endTime']?.toDate(),
       carId: map['carId'] ?? null,
+      //carRef: map['carRef'] ?? null,
       driverId: map['driverId'] ?? null,
+      //driverRef: map['drverRef'] ?? null,
       locationId: map['locationId'] ?? null,
+      //locationRef: map['locationRef'] ?? null,
+      locationName: map['locationName'] ?? null,
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -56,8 +68,12 @@ class Parking {
       startTime: map['startTime']?.toDate(),
       endTime: map['endTime']?.toDate(),
       carId: map['carId'] ?? null,
+      //carRef: map['carRef'] ?? null,
       driverId: map['driverId'] ?? null,
+      //driverRef: map['drverRef'] ?? null,
       locationId: map['locationId'] ?? null,
+      //locationRef: map['locationRef'] ?? null,
+      locationName: map['locationName'] ?? null,
     );
   }
 
@@ -68,8 +84,12 @@ class Parking {
         'startTime': startTime,
         'endTime': endTime,
         'carId': carId,
+        //'carRef': carRef,
         'driverId': driverId,
+        //'driverRef': driverRef,
         'locationId': locationId,
+        //'locationRef': locationRef,
+        'locationName': locationName,
       };
 
   Parking copyWith({
@@ -78,20 +98,21 @@ class Parking {
     required int duration,
     required DateTime startTime,
     required DateTime endTime,
-    DocumentReference? carId,
-    DocumentReference? driverId,
-    DocumentReference? locationId,
+    String? carId,
+    String? driverId,
+    String? locationId,
+    String? locationName,
   }) {
     return Parking(
-      cost: cost,
-      date: date,
-      duration: duration,
-      startTime: startTime,
-      endTime: endTime,
-      carId: carId ?? this.carId,
-      driverId: driverId ?? this.driverId,
-      locationId: locationId ?? this.locationId,
-    );
+        cost: cost,
+        date: date,
+        duration: duration,
+        startTime: startTime,
+        endTime: endTime,
+        carId: carId ?? this.carId,
+        driverId: driverId ?? this.driverId,
+        locationId: locationId ?? this.locationId,
+        locationName: locationName ?? this.locationName);
   }
 
   @override

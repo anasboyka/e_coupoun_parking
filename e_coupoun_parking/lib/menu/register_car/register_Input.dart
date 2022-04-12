@@ -248,13 +248,14 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
               //carTypecon.text.trim().toUpperCase(),
               carPlateNum);
           await FirebaseService(uid: driveruid.uid)
-              .updateDriverDataInCarCollection(
-                  driverinfo.name,
-                  driverinfo.username,
-                  carPlateNum,
-                  driverinfo.phoneNum!,
-                  driverinfo.icNum!,
-                  driverinfo.birthDate!);
+              .updateDriverDataInCarCollection(carPlateNum, driverinfo
+                  // driverinfo.name,
+                  // driverinfo.username,
+
+                  // driverinfo.phoneNum!,
+                  // driverinfo.icNum!,
+                  // driverinfo.birthDate!,
+                  );
 
           await FirebaseService(uid: driveruid.uid)
               .updateCarDataInDriverCollection(
@@ -285,12 +286,14 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           );
           await FirebaseService(uid: driveruid.uid)
               .updateDriverDataInCarCollection(
-                  driverinfo.name,
-                  driverinfo.username,
                   carPlateNum,
-                  driverinfo.phoneNum!,
-                  driverinfo.icNum!,
-                  driverinfo.birthDate!);
+                  // driverinfo.name,
+                  // driverinfo.username,
+
+                  // driverinfo.phoneNum!,
+                  // driverinfo.icNum!,
+                  // driverinfo.birthDate!,
+                  driverinfo);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Car Registered Successfully'),

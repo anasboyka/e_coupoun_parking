@@ -24,15 +24,26 @@ class Wrapper extends StatelessWidget {
     } else {
       //final firebaseService = FirebaseService(uid: driveruid.uid);
       // final firebaseProvider = FirebaseProvider(uid: driveruid.uid);
+      //FirebaseProvider firebaseProvider = FirebaseProvider(uid: driveruid.uid);
 
       return MultiProvider(
         providers: [
-          FutureProvider<Driver?>(
-              create: (context) =>
-                  FirebaseService(uid: driveruid.uid).driverinfo,
-              initialData: null),
-          ChangeNotifierProvider.value(
-              value: FirebaseProvider(uid: driveruid.uid))
+          //ChangeNotifierProvider(create:(context)=> FirebaseProvider(uid: driveruid.uid).driverInfo),
+          // FutureProvider<Driver?>(
+          //     create: (context) =>
+          //         FirebaseService(uid: driveruid.uid).driverinfo,
+          //     initialData: null),
+          // ChangeNotifierProvider<FirebaseProvider>.value(
+          //   value: FirebaseProvider(uid: driveruid.uid),
+          // )
+          // ChangeNotifierProvider<FirebaseProvider>.value(
+          //   value: FirebaseProvider(
+          //       uid: driveruid.uid, driverInfo: Provider.of<Driver?>(context)),
+          // ),
+          StreamProvider<Driver?>(
+            create: (context) => FirebaseService(uid: driveruid.uid).driver,
+            initialData: null,
+          ),
         ],
         child: HomeScreen(),
       );

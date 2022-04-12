@@ -1,9 +1,18 @@
 import 'dart:async';
 
+import 'package:e_coupoun_parking/constant.dart';
+import 'package:e_coupoun_parking/models/car.dart';
+import 'package:e_coupoun_parking/models/driver.dart';
+import 'package:e_coupoun_parking/models/driveruid.dart';
+import 'package:e_coupoun_parking/models/location_parking.dart';
+import 'package:e_coupoun_parking/models/parking.dart';
+import 'package:e_coupoun_parking/models/transaction_history.dart';
+import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ParkingPage extends StatefulWidget {
   Map? argument = {};
@@ -18,13 +27,19 @@ class _ParkingPageState extends State<ParkingPage> {
   double price = 0.3;
   DateTime _dateTime = DateTime.now();
   Timer? _timer;
+  Car? car;
+  LocationParking? locationParking;
 
-  // GoogleMapController? mapController;
+  GoogleMapController? mapController;
+  BitmapDescriptor? sourceIcon;
+  Set<Marker> _markers = Set<Marker>();
 
-  // static final CameraPosition _kGooglePlex = CameraPosition(
-  //   target: LatLng(37.42796133580664, -122.085749655962),
-  //   zoom: 14.4746,
-  // );
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14,
+  );
+
+  LatLng? currentLocation;
 
   @override
   void initState() {
@@ -39,28 +54,33 @@ class _ParkingPageState extends State<ParkingPage> {
     // TODO: implement dispose
     _timer!.cancel();
     super.dispose();
-    // mapController!.dispose();
+    mapController!.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //print(startTime);
+    //Car? car = data1?['car'] ?? null; //widget.argument?['car'] ?? null;
+    //print(car?.carPlateNum ?? 'null');
+    Driveruid driveruid = Provider.of<Driveruid>(context);
     return Scaffold(
-      appBar: parkingAppbarDesign('Parking'),
+      extendBodyBehindAppBar: true,
+      appBar: parkingAppbarDesign('Parking', driveruid.uid),
       backgroundColor: Color(0xffE1F9E0),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              height: 230.h,
-              width: double.infinity,
-              // child: GoogleMap(
-              //   mapType: MapType.normal,
-              //   initialCameraPosition: _kGooglePlex,
-              //   onMapCreated: onMapCreated,
-              // )
-              //color: Colors.blue,
-            ),
+                height: 350.h,
+                width: double.infinity,
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: _kGooglePlex,
+                  onMapCreated: onMapCreated,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                )
+                //color: Colors.blue,
+                ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
               child: Column(
@@ -73,7 +93,7 @@ class _ParkingPageState extends State<ParkingPage> {
                           setState(() {
                             if (duration > 30) {
                               duration -= 30;
-                              price -= 0.3;
+                              price -= 0.30;
                             }
                           });
                         },
@@ -111,7 +131,7 @@ class _ParkingPageState extends State<ParkingPage> {
                         onPressed: () {
                           setState(() {
                             duration += 30;
-                            price += 0.3;
+                            price += 0.30;
                           });
                         },
                         icon: Icon(
@@ -250,7 +270,9 @@ class _ParkingPageState extends State<ParkingPage> {
                           child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: Text(
-                              'Jam Besar, Sungai Petani',
+                              locationParking != null
+                                  ? '${locationParking!.locationName}'
+                                  : 'Select Location',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 19,
@@ -259,9 +281,21 @@ class _ParkingPageState extends State<ParkingPage> {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            onTap: () {
+                            subtitle: locationParking != null
+                                ? Text(
+                                    '${locationParking!.locationSubname}',
+                                    textAlign: TextAlign.left,
+                                  )
+                                : null,
+                            onTap: () async {
                               Navigator.of(context)
-                                  .pushNamed('/locationSelection');
+                                  .pushNamed('/locationSelection')
+                                  .then((value) {
+                                locationParking =
+                                    (value as Map)['locationParking'];
+                                print(locationParking!.documentID);
+                                return locationParking;
+                              });
                             },
                           ),
                         )
@@ -289,7 +323,7 @@ class _ParkingPageState extends State<ParkingPage> {
                           child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: Text(
-                              'ABC 9876 (DDL)',
+                              car != null ? '${car!.carBrand}' : 'Select Car',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 19,
@@ -298,8 +332,19 @@ class _ParkingPageState extends State<ParkingPage> {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/carSelection');
+                            subtitle: car != null
+                                ? Text(
+                                    '${car!.carPlateNum}',
+                                    textAlign: TextAlign.left,
+                                  )
+                                : null,
+                            onTap: () async {
+                              Navigator.of(context)
+                                  .pushNamed('/carSelection')
+                                  .then((value) {
+                                car = (value as Map)['car'];
+                                return car;
+                              });
                             },
                           ),
                         )
@@ -326,7 +371,7 @@ class _ParkingPageState extends State<ParkingPage> {
                         ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xff16AA32),
+                        primary: kbtnColor,
                         elevation: 3,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
@@ -343,8 +388,62 @@ class _ParkingPageState extends State<ParkingPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      onPressed: () {
-                        print(_dateTime.add(Duration(minutes: duration)));
+                      onPressed: () async {
+                        if (car != null && locationParking != null) {
+                          double balance =
+                              await FirebaseService(uid: driveruid.uid)
+                                  .getWalletBalance();
+                          if (balance >= price) {
+                            Parking parking = Parking(
+                              carId: car!.documentID,
+                              driverId: driveruid.uid,
+                              locationId: locationParking!.documentID,
+                              locationName: locationParking!.locationName,
+                              cost: (price * 100).round() / 100,
+                              date: _dateTime,
+                              duration: duration,
+                              startTime: _dateTime,
+                              endTime: _dateTime.add(
+                                Duration(minutes: duration),
+                              ),
+                            );
+                            TransactionHistory transactionHistory =
+                                TransactionHistory(
+                              amount: (price * 100).round() / 100,
+                              date: _dateTime,
+                              isPaid: true,
+                              description: {
+                                'title': 'Parking',
+                                'subtitle': locationParking!.locationName
+                              },
+                            );
+
+                            await FirebaseService()
+                                .updateParkingDataCollection(parking);
+                            await FirebaseService(uid: driveruid.uid)
+                                .updateDriverParkingStatus(true);
+                            await FirebaseService(uid: driveruid.uid)
+                                .updateUserTransactionHistory(
+                                    transactionHistory);
+                            await FirebaseService(uid: driveruid.uid)
+                                .updateDriverWalletBalance(
+                                    (price * -1 * 100).round() / 100);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Insufficient Wallet Balance'),
+                              ),
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Please fill in all the information needed'),
+                            ),
+                          );
+                        }
+                        //print(_dateTime.add(Duration(minutes: duration)));
                       },
                     ),
                   ),
@@ -366,14 +465,14 @@ class _ParkingPageState extends State<ParkingPage> {
     });
   }
 
-  AppBar parkingAppbarDesign(String titleAppbar) {
+  AppBar parkingAppbarDesign(String titleAppbar, String uid) {
     return AppBar(
       title: Text(
         titleAppbar,
         style: TextStyle(
           fontFamily: 'Roboto',
           fontSize: 22.sp,
-          color: const Color(0xff707070),
+          color: const Color(0xff17B95B),
           fontWeight: FontWeight.w700,
         ),
         textAlign: TextAlign.left,
@@ -392,20 +491,60 @@ class _ParkingPageState extends State<ParkingPage> {
           },
         ),
       ),
-      actions: [],
-      flexibleSpace: Image(
-        image: AssetImage('assets/icons/header.png'),
-        fit: BoxFit.fitWidth,
-      ),
-      //backgroundColor: Colors.transparent,
-      elevation: 1,
+      actions: [
+        InkWell(
+          onTap: () => Navigator.of(context).pushNamed('/ewallet'),
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              color: Colors.green.shade300.withOpacity(0.75),
+              borderRadius: BorderRadius.circular(30.r),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.monetization_on,
+                  size: 24,
+                ),
+                gapw(w: 5),
+                StreamBuilder(
+                    stream: FirebaseService(uid: uid).driver,
+                    builder: (_, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        Driver driver = snapshot.data;
+                        return Text(
+                          'RM ${driver.walletBalance?.toStringAsFixed(2) ?? '0.00'}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                          ),
+                        );
+                      } else {
+                        return CircularProgressIndicator.adaptive();
+                      }
+                    }),
+                gapw(w: 5),
+              ],
+            ),
+          ),
+        ),
+        gapw(w: 10),
+      ],
+      // flexibleSpace: Image(
+      //   image: AssetImage('assets/icons/header.png'),
+      //   fit: BoxFit.fitWidth,
+      // ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
     );
   }
 
-  // void onMapCreated(GoogleMapController controller) async {
-  //   final LatLngBounds visibleRegion = await controller.getVisibleRegion();
-  //   setState(() {
-  //     mapController = controller;
-  //   });
-  // }
+  void onMapCreated(GoogleMapController controller) async {
+    final LatLngBounds visibleRegion = await controller.getVisibleRegion();
+    setState(() {
+      mapController = controller;
+    });
+  }
 }

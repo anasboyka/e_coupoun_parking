@@ -150,21 +150,24 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void registerUser() async {
-    print("register");
+    //print("register");
     if (_formkey.currentState!.validate()) {
       if (registerFormValidation()) {
         setState(() => loading = true);
-        print("start firebase");
-        print(emailcon.text);
-        print(passcon.text);
+        // print("start firebase");
+        // print(emailcon.text);
+        // print(passcon.text);
         dynamic result = await _auth.registerWithEmailAndPassword(
-            emailcon.text,
-            passcon.text,
-            usernamecon.text,
-            namecon.text,
-            phoneNumcon.text,
-            icNumcon.text,
-            _date);
+          emailcon.text,
+          passcon.text,
+          usernamecon.text,
+          namecon.text,
+          phoneNumcon.text,
+          icNumcon.text,
+          _date,
+          false,
+          false,
+        );
         if (result == null) {
           setState(() => error = "please supply a valid email");
           ScaffoldMessenger.of(context).showSnackBar(
