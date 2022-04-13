@@ -1,3 +1,8 @@
+import 'package:e_coupoun_parking/constant.dart';
+import 'package:e_coupoun_parking/models/driveruid.dart';
+import 'package:e_coupoun_parking/services/firebase_service.dart';
+import 'package:provider/provider.dart';
+
 import '../../models/compound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,79 +17,73 @@ class CompoundPage extends StatefulWidget {
 }
 
 class _CompoundPageState extends State<CompoundPage> {
+  final searchCon = TextEditingController();
   int currentBtnIndex = 0;
 
   List<Compound> compoundList = [
     Compound(
         amount: 2000,
-        dateCompoundStart: DateTime.parse("2021-09-20"),
-        dateCompoundEnd: DateTime.parse("2021-09-30"),
-        documentID: "Jalan Mahkota Lama",
-        status: "uncompleted",
-        read: false),
+        dateIssued: DateTime.parse("2021-09-20"),
+        datePaid: DateTime.parse("2021-09-30"),
+        locationId: "locationId",
+        locationName: 'Jalan Tanduk',
+        carId: 'ABC1234',
+        officerId: 'officer_Id',
+        isPaid: false),
     Compound(
         amount: 2000,
-        dateCompoundStart: DateTime.parse("2021-07-23"),
-        dateCompoundEnd: DateTime.parse("2021-08-03"),
-        documentID: "Jalan Tun Hussein",
-        status: "uncompleted",
-        read: false),
+        dateIssued: DateTime.parse("2021-09-20"),
+        datePaid: DateTime.parse("2021-09-30"),
+        locationId: "locationId",
+        locationName: 'Central Squuare',
+        carId: 'ABC1234',
+        officerId: 'officer_Id',
+        isPaid: true),
     Compound(
         amount: 2000,
-        dateCompoundStart: DateTime.parse("2021-03-14"),
-        dateCompoundEnd: DateTime.parse("2021-03-24"),
-        documentID: "Amanjaya Sport Center",
-        status: "uncompleted",
-        read: false),
+        dateIssued: DateTime.parse("2021-09-20"),
+        datePaid: DateTime.parse("2021-09-30"),
+        locationId: "locationId",
+        locationName: 'Jalan Tanduk',
+        carId: 'ABC1234',
+        officerId: 'officer_Id',
+        isPaid: true),
     Compound(
         amount: 2000,
-        dateCompoundStart: DateTime.parse("2021-12-28"),
-        dateCompoundEnd: DateTime.parse("2022-01-08"),
-        documentID: "Village mall",
-        status: "paid",
-        read: false),
+        dateIssued: DateTime.parse("2021-09-20"),
+        datePaid: DateTime.parse("2021-09-30"),
+        locationId: "locationId",
+        locationName: 'Amanjaya mall',
+        carId: 'ABC1234',
+        officerId: 'officer_Id',
+        isPaid: false),
     Compound(
         amount: 2000,
-        dateCompoundStart: DateTime.parse("2020-10-11"),
-        dateCompoundEnd: DateTime.parse("2020-10-21"),
-        documentID: "Hospital Sultan Abdul Halim",
-        status: "paid",
-        read: false),
+        dateIssued: DateTime.parse("2021-09-20"),
+        datePaid: DateTime.parse("2021-09-30"),
+        locationId: "locationId",
+        locationName: 'Laguna',
+        carId: 'ABC1234',
+        officerId: 'officer_Id',
+        isPaid: true),
     Compound(
         amount: 2000,
-        dateCompoundStart: DateTime.parse("2020-08-22"),
-        dateCompoundEnd: DateTime.parse("2020-09-02"),
-        documentID: "Jalan Ibrahim",
-        status: "uncompleted",
-        read: false),
+        dateIssued: DateTime.parse("2021-09-20"),
+        datePaid: DateTime.parse("2021-09-30"),
+        locationId: "locationId",
+        locationName: 'Car park central',
+        carId: 'ABC1234',
+        officerId: 'officer_Id',
+        isPaid: false),
     Compound(
         amount: 2000,
-        dateCompoundStart: DateTime.parse("2020-07-11"),
-        dateCompoundEnd: DateTime.parse("2020-07-21"),
-        documentID: "Dataran Amanjaya",
-        status: "paid",
-        read: false),
-    Compound(
-        amount: 2000,
-        dateCompoundStart: DateTime.parse("2020-06-16"),
-        dateCompoundEnd: DateTime.parse("2020-06-26"),
-        documentID: "Jalan Taman Pekan Lama",
-        status: "paid",
-        read: false),
-    Compound(
-        amount: 2000,
-        dateCompoundStart: DateTime.parse("2020-05-14"),
-        dateCompoundEnd: DateTime.parse("2020-05-24"),
-        documentID: "Jalan Taman Pekan Lama",
-        status: "paid",
-        read: false),
-    Compound(
-        amount: 2000,
-        dateCompoundStart: DateTime.parse("2020-03-18"),
-        dateCompoundEnd: DateTime.parse("2020-03-28"),
-        documentID: "Jalan Taman Pekan Lama",
-        status: "paid",
-        read: false),
+        dateIssued: DateTime.parse("2021-09-20"),
+        datePaid: DateTime.parse("2021-09-30"),
+        locationId: "locationId",
+        locationName: 'Village Mall',
+        carId: 'ABC1234',
+        officerId: 'officer_Id',
+        isPaid: true),
   ];
 
   List<Map<String, dynamic>> tabBtn = [
@@ -95,6 +94,7 @@ class _CompoundPageState extends State<CompoundPage> {
 
   @override
   Widget build(BuildContext context) {
+    Driveruid driveruid = Provider.of<Driveruid>(context);
     return Scaffold(
       appBar: compoundListAppbarDesign(),
       backgroundColor: Color(0xffE1F9E0),
@@ -103,90 +103,201 @@ class _CompoundPageState extends State<CompoundPage> {
           padding: EdgeInsets.fromLTRB(24.w, 15.h, 24.w, 0),
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Compound list',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20.sp,
-                  color: const Color(0xff1e2022),
-                  letterSpacing: 1,
-                  fontWeight: FontWeight.w700,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Search by vechicle plate',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 16.sp,
+                    color: const Color(0xff1e2022),
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                textAlign: TextAlign.left,
               ),
-              SizedBox(height: 8.h),
-              Text(
-                'Last modified: 4 Jan 2021',
-                style: TextStyle(
-                  fontFamily: 'SFProText-Regular',
-                  fontSize: 14.sp,
-                  color: const Color(0xff77838f),
-                  letterSpacing: 1.0000000305175782,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              SizedBox(height: 8.h),
+              gaph(h: 15),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: tabBtn.map((e) {
-                  int index = tabBtn.indexOf(e);
-                  return buttonTabDesign(index, e['title'], e['number']);
-                }).toList(),
-              ),
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: compoundList.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10.h, horizontal: 0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.white,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchCon,
+                      //inputFormatters: [UpperCaseTextFormatter()],
+                      textCapitalization: TextCapitalization.characters,
+                      cursorColor: kprimaryColor,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                      ),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: kbtnColor,
                         ),
-                        child: ListTile(
-                          horizontalTitleGap: 0,
-                          leading: Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: compoundList[index].status == "uncompleted"
-                                  ? Colors.red
-                                  : Colors.green,
+                        suffixIcon: Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            splashRadius: 15,
+                            icon: Icon(
+                              Icons.clear,
+                              color: kbtnColor,
                             ),
+                            onPressed: () {
+                              searchCon.clear();
+                              setState(() {});
+                            },
                           ),
-                          title: Text(
-                            compoundList[index].documentID ?? 'null',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 14,
-                              color: const Color(0xff77838f),
-                              letterSpacing: 1.0000000305175782,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          trailing: Text(
-                            'due by ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateCompoundEnd).toString()}',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 12,
-                              color: compoundList[index].status == "uncompleted"
-                                  ? Color(0xffe30c0c)
-                                  : Color(0xff77838F),
-                              letterSpacing: 0.8571428833007813,
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
+                        ),
+                        hintStyle:
+                            TextStyle(fontSize: 16.sp, color: Colors.grey),
+                        hintText: 'Car Plate Number',
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                        constraints:
+                            BoxConstraints(maxHeight: 40, minHeight: 40),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(color: kprimaryColor),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(color: kprimaryColor),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(color: kprimaryColor),
                         ),
                       ),
-                    );
-                  })
+                    ),
+                  ),
+                  gapw(w: 10),
+                  MaterialButton(
+                    height: 40,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    color: kbtnColor,
+                    child: Text(
+                      'Search',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                  )
+                ],
+              ),
+
+              // Text(
+              //   'Last modified: 4 Jan 2021',
+              //   style: TextStyle(
+              //     fontFamily: 'SFProText-Regular',
+              //     fontSize: 14.sp,
+              //     color: const Color(0xff77838f),
+              //     letterSpacing: 1.0000000305175782,
+              //   ),
+              //   textAlign: TextAlign.left,
+              // ),
+              SizedBox(height: 8.h),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: tabBtn.map((e) {
+              //     int index = tabBtn.indexOf(e);
+              //     return buttonTabDesign(index, e['title'], e['number']);
+              //   }).toList(),
+              // ),
+              searchCon.text.isNotEmpty
+                  ? FutureBuilder(
+                      future: FirebaseService(uid: driveruid.uid)
+                          .getCarCompoundListById(searchCon.text),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          print(snapshot.data);
+                          List<Compound> compoundList = snapshot.data;
+                          if (compoundList.length > 0) {
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: compoundList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10.h, horizontal: 0),
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.white,
+                                      ),
+                                      child: ListTile(
+                                        horizontalTitleGap: 0,
+                                        leading: Container(
+                                          height: 20,
+                                          width: 20,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: compoundList[index].isPaid
+                                                ? Colors.green
+                                                : Colors.red,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          compoundList[index].locationName,
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 14,
+                                            color: const Color(0xff77838f),
+                                            letterSpacing: 1.0000000305175782,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        trailing: Text(
+                                          'Date Issued ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateIssued).toString()}',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 12,
+                                            color: compoundList[index].isPaid
+                                                ? Color(0xff77838F)
+                                                : Color(0xffe30c0c),
+                                            letterSpacing: 0.8571428833007813,
+                                          ),
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                          } else {
+                            return ListTile(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              tileColor: Colors.white,
+                              horizontalTitleGap: 0,
+                              title: Text(
+                                'No Compound Issued for this car',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 14,
+                                  color: const Color(0xff77838f),
+                                  letterSpacing: 1.0000000305175782,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            );
+                          }
+                        } else {
+                          return CircularProgressIndicator.adaptive();
+                        }
+                      })
+                  : SizedBox()
             ],
           ),
         ),

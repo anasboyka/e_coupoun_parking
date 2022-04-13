@@ -37,7 +37,7 @@ class Driver {
       name: map['name'] ?? null,
       username: map['username'] ?? null,
       phoneNum: map['phoneNum'] ?? null,
-      birthDate: map['dateOfBirth'].toDate() ?? null,
+      birthDate: map['dateOfBirth'].toDate() ?? DateTime.parse("1111-11-11"),
       icNum: map['icNum'] ?? null,
       parkingStatus: map['parkingStatus'] ?? null,
       profileComplete: map['profileComplete'] ?? null,

@@ -179,29 +179,29 @@ class ParkingStatus extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Row(
                       children: [
-                        Expanded(
-                          child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            height: 67.h,
-                            minWidth: double.infinity,
-                            elevation: 3,
-                            color: kbtnColor,
-                            child: Text(
-                              'Extend',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 25,
-                                color: const Color(0xffffffff),
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                        gapw(w: 12),
+                        // Expanded(
+                        //   child: MaterialButton(
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(10.r),
+                        //     ),
+                        //     height: 67.h,
+                        //     minWidth: double.infinity,
+                        //     elevation: 3,
+                        //     color: kbtnColor,
+                        //     child: Text(
+                        //       'Extend',
+                        //       style: TextStyle(
+                        //         fontFamily: 'Roboto',
+                        //         fontSize: 25,
+                        //         color: const Color(0xffffffff),
+                        //         fontWeight: FontWeight.w700,
+                        //       ),
+                        //       textAlign: TextAlign.center,
+                        //     ),
+                        //     onPressed: () {},
+                        //   ),
+                        // ),
+                        // gapw(w: 12),
                         Expanded(
                           child: MaterialButton(
                             shape: RoundedRectangleBorder(
@@ -225,6 +225,9 @@ class ParkingStatus extends StatelessWidget {
                               Navigator.of(context).pop();
                               await FirebaseService(uid: driveruid.uid)
                                   .updateDriverParkingStatus(false);
+                              await FirebaseService(uid: driveruid.uid)
+                                  .updateCarParkingStatus(
+                                      parking.carId!, false);
                             },
                           ),
                         )

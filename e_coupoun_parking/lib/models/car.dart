@@ -7,6 +7,7 @@ class Car {
   final String carBrand;
   final String carType;
   final String carPlateNum;
+  final bool parkingStatus;
   final DocumentSnapshot? snapshot;
   final DocumentReference? reference;
   final String? documentID;
@@ -16,6 +17,7 @@ class Car {
     required this.carBrand,
     required this.carType,
     required this.carPlateNum,
+    required this.parkingStatus,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -29,36 +31,38 @@ class Car {
       carBrand: map['carBrand'],
       carType: map['carType'],
       carPlateNum: map['carPlateNum'],
+      parkingStatus: map['parkingStatus'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
     );
   }
 
-  Car copyWith({
-    String? carBrand,
-    String? carType,
-    String? carPlateNum,
-  }) {
+  Car copyWith(
+      {String? carBrand,
+      String? carType,
+      String? carPlateNum,
+      bool? parkingStatus}) {
     return Car(
-      carBrand: carBrand ?? this.carBrand,
-      carType: carType ?? this.carType,
-      carPlateNum: carPlateNum ?? this.carPlateNum,
-    );
+        carBrand: carBrand ?? this.carBrand,
+        carType: carType ?? this.carType,
+        carPlateNum: carPlateNum ?? this.carPlateNum,
+        parkingStatus: parkingStatus ?? this.parkingStatus);
   }
 
   Map<String, dynamic> toMap() => {
         'carBrand': carBrand,
         'carType': carType,
         'carPlateNum': carPlateNum,
+        'parkingStatus': parkingStatus
       };
 
   factory Car.fromMap(Map<String, dynamic> map) {
     return Car(
-      carBrand: map['carBrand'] ?? '',
-      carType: map['carType'] ?? '',
-      carPlateNum: map['carPlateNum'] ?? '',
-    );
+        carBrand: map['carBrand'] ?? '',
+        carType: map['carType'] ?? '',
+        carPlateNum: map['carPlateNum'] ?? '',
+        parkingStatus: map['parkingStatus'] ?? '');
   }
 
   String toJson() => json.encode(toMap());

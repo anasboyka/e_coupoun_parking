@@ -239,14 +239,20 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
       if (!carExistFromDriver || appbarTitle == "Edit Car") {
         bool carExistCollection =
             await FirebaseService().checkCarExistCollection(carPlateNum);
+        Car car = Car(
+            carBrand: carBrandcon.text.trim().toUpperCase(),
+            carType: chipselected,
+            carPlateNum: carPlateNum,
+            parkingStatus: false);
         //if car not exist in collection or status is editing
         if (!carExistCollection || appbarTitle == "Edit Car") {
           await FirebaseService().updateCarDataCollection(
               //carNamecon.text.trim().toUpperCase(),
-              carBrandcon.text.trim().toUpperCase(),
-              chipselected,
+              // carBrandcon.text.trim().toUpperCase(),
+              // chipselected,
               //carTypecon.text.trim().toUpperCase(),
-              carPlateNum);
+              // carPlateNum,
+              car);
           await FirebaseService(uid: driveruid.uid)
               .updateDriverDataInCarCollection(carPlateNum, driverinfo
                   // driverinfo.name,
@@ -260,10 +266,11 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
           await FirebaseService(uid: driveruid.uid)
               .updateCarDataInDriverCollection(
                   //carNamecon.text.trim().toUpperCase(),
-                  carBrandcon.text.trim().toUpperCase(),
-                  chipselected,
+                  //carBrandcon.text.trim().toUpperCase(),
+                  //chipselected,
                   //carTypecon.text.trim().toUpperCase(),
-                  carPlateNum);
+                  //carPlateNum,
+                  car);
           // await FirebaseService(uid: driveruid.uid)
           //     .updateDriverPathInCarCollection(carPlateNum);
           // await FirebaseService(uid: driveruid.uid)
@@ -278,12 +285,12 @@ class _RegisterCarInputState extends State<RegisterCarInput> {
         } else {
           await FirebaseService(uid: driveruid.uid)
               .updateCarDataInDriverCollection(
-            //carNamecon.text.trim().toUpperCase(),
-            carBrandcon.text.trim().toUpperCase(),
-            chipselected,
-            //carTypecon.text.trim().toUpperCase(),
-            carPlateNum,
-          );
+                  //carNamecon.text.trim().toUpperCase(),
+                  //carBrandcon.text.trim().toUpperCase(),
+                  //chipselected,
+                  //carTypecon.text.trim().toUpperCase(),
+                  //carPlateNum,
+                  car);
           await FirebaseService(uid: driveruid.uid)
               .updateDriverDataInCarCollection(
                   carPlateNum,

@@ -431,6 +431,8 @@ class _ParkingPageState extends State<ParkingPage> {
                             await FirebaseService(uid: driveruid.uid)
                                 .updateDriverParkingStatus(true);
                             await FirebaseService(uid: driveruid.uid)
+                                .updateCarParkingStatus(car!.carPlateNum, true);
+                            await FirebaseService(uid: driveruid.uid)
                                 .updateUserTransactionHistory(
                                     transactionHistory);
                             await FirebaseService(uid: driveruid.uid)

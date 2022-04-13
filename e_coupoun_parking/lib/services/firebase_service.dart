@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/models/car.dart';
+import 'package:e_coupoun_parking/models/compound.dart';
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/location_parking.dart';
 import 'package:e_coupoun_parking/models/parking.dart';
@@ -29,6 +30,9 @@ class FirebaseService {
 
   final CollectionReference parkingCollection =
       FirebaseFirestore.instance.collection('parkings');
+
+  final CollectionReference compoundCollection =
+      FirebaseFirestore.instance.collection('compounds');
 
   //method untuk CRUD query
 
@@ -59,14 +63,17 @@ class FirebaseService {
 
   //query untuk cars punya collection untuk new car or existed car*
   //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
-  Future updateCarDataCollection(/*String carName,*/ String carBrand,
-      String carType, String carPlateNum) async {
-    return await carCollection.doc(carPlateNum).set({
-      //"carName": carName,
-      "carBrand": carBrand,
-      "carType": carType,
-      "carPlateNum": carPlateNum
-    });
+  Future updateCarDataCollection(
+      //String carBrand,
+      // String carType, String carPlateNum
+      Car car) async {
+    return await carCollection.doc(car.carPlateNum).set(car.toMap()
+        //   {
+        //   "carBrand": carBrand,
+        //   "carType": carType,
+        //   "carPlateNum": carPlateNum
+        // }
+        );
   }
 
   // Future updateLocationDataCollection(LocationParking locationParking) async {
@@ -86,18 +93,25 @@ class FirebaseService {
 
   //query untuk cars punya subcollection from driver punya collection*
   //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
-  Future updateCarDataInDriverCollection(/*String carName,*/ String carBrand,
-      String carType, String carPlateNum) async {
-    DocumentReference docRef = driverCollection.doc('$uid/Cars/$carPlateNum');
-    DocumentSnapshot docSnap = await carCollection.doc(carPlateNum).get();
-    docRef.set({
-      "carBrand": carBrand,
-      "carType": carType,
-      "carPlateNum": carPlateNum,
-      "carRef": carCollection.doc(carPlateNum),
-      "documentID": carPlateNum,
-      // "snapsot": docSnap
-    });
+  Future updateCarDataInDriverCollection(
+      // String carBrand,
+      //   String carType, String carPlateNum,
+      Car car) async {
+    DocumentReference docRef =
+        driverCollection.doc('$uid/Cars/${car.carPlateNum}');
+    // DocumentReference docRef = driverCollection.doc('$uid/Cars/$carPlateNum');
+    // DocumentSnapshot docSnap = await carCollection.doc(carPlateNum).get();
+    docRef.set(
+      car.toMap(),
+      //   {
+      //   "carBrand": carBrand,
+      //   "carType": carType,
+      //   "carPlateNum": carPlateNum,
+      //   "carRef": carCollection.doc(carPlateNum),
+      //   "documentID": carPlateNum,
+      //   // "snapsot": docSnap
+      // }
+    );
 
     // return await driverCollection
     //     .doc(uid)
@@ -162,16 +176,17 @@ class FirebaseService {
   List<Car> _carListFromSnapshot(QuerySnapshot snapshot) {
     //print(snapshot.docs[0].id);
     return snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-      return Car(
-        //carName: data['carName'],
-        carBrand: data['carBrand'],
-        carPlateNum: data['carPlateNum'],
-        carType: data['carType'],
-        documentID: data['documentID'],
-        reference: data['carRef'],
-        //snapshot: data['snapshot'],
-      );
+      //Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+      return Car.fromFirestore(doc);
+      // Car(
+      //   parkingStatus: data['parkingStatus'],
+      //   carBrand: data['carBrand'],
+      //   carPlateNum: data['carPlateNum'],
+      //   carType: data['carType'],
+      //   documentID: data['documentID'],
+      //   reference: data['carRef'],
+      //   //snapshot: data['snapshot'],
+      // );
     }).toList();
   }
 
@@ -197,20 +212,27 @@ class FirebaseService {
     }).toList();
   }
 
+  List<Compound> _compoundListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Compound.fromFirestore(doc);
+    }).toList();
+  }
+
   //method untuk get data from firestore
   //guna untuk generate List dalam bentuk instance Driver(refer driver.dart dalam folder models)*
   //act as converter nak tukaq data from firestore dalam bentuk querysnapshot kepada bentuk List untuk mudah kerja
   List<Driver> _driverListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-      return Driver(
-        uid: doc.id,
-        username: data['username'],
-        phoneNum: data['phoneNum'],
-        name: data['name'],
-        icNum: data['icNum'],
-        birthDate: data['dateOfBirth'],
-      );
+      //Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+      return Driver.fromFirestore(doc);
+      // Driver(
+      //   uid: doc.id,
+      //   username: data['username'],
+      //   phoneNum: data['phoneNum'],
+      //   name: data['name'],
+      //   icNum: data['icNum'],
+      //   birthDate: data['dateOfBirth'],
+      // );
     }).toList();
   }
 
@@ -268,8 +290,26 @@ class FirebaseService {
     return driverCollection
         .doc(uid)
         .collection('transactions')
+        .orderBy('date', descending: true)
         .snapshots()
         .map(_transactionListFromSnapshot);
+  }
+
+  Stream<List<Compound>> streamCarCompoundListById(String carPlateNum) {
+    return compoundCollection
+        .where('carId', isEqualTo: carPlateNum)
+        .orderBy('dateIssued', descending: true)
+        .snapshots()
+        .map(_compoundListFromSnapshot);
+  }
+
+  Future<List<Compound>> getCarCompoundListById(String carPlateNum) {
+    return compoundCollection
+        .where('carId', isEqualTo: carPlateNum)
+        .orderBy('dateIssued', descending: false)
+        .get()
+        .then(_compoundListFromSnapshot);
+    // .map(_compoundListFromSnapshot);
   }
 
   Stream<Parking> get userCurrentParking {
@@ -312,18 +352,27 @@ class FirebaseService {
   //method untuk get data untuk driver from firestore
   //convert requested data dalam bentuk instance Driver
   Future<Driver?> get driverinfo async {
-    return await driverCollection.doc(this.uid).get().then((data) => Driver(
-        uid: this.uid!,
-        name: data['name'],
-        icNum: data['icNum'],
-        birthDate:
-            data['dateOfBirth']?.toDate() ?? DateTime.parse("1111-11-11"),
-        phoneNum: data['phoneNum'],
-        username: data['username']));
+    return await driverCollection.doc(this.uid).get().then(
+        (data) => Driver.fromFirestore(data)
+        // Driver(
+        //     uid: this.uid!,
+        //     name: data['name'],
+        //     icNum: data['icNum'],
+        //     birthDate:
+        //         data['dateOfBirth']?.toDate() ?? DateTime.parse("1111-11-11"),
+        //     phoneNum: data['phoneNum'],
+        //     username: data['username']),
+        );
   }
 
   Future updateDriverParkingStatus(bool status) async {
     return await driverCollection.doc(uid).update({
+      'parkingStatus': status,
+    });
+  }
+
+  Future updateCarParkingStatus(String carPLateNum, bool status) async {
+    return await carCollection.doc(carPLateNum).update({
       'parkingStatus': status,
     });
   }
@@ -417,23 +466,31 @@ class FirebaseService {
         .collection("Cars")
         .doc(carPlateNum)
         .get()
-        .then((data) => Car(
-              // carName: data['carName'],
-              carBrand: data['carBrand'],
-              carPlateNum: data['carPlateNum'],
-              carType: data['carType'],
-            ));
+        .then((data) => Car.fromFirestore(data)
+            //     Car(
+            //   // carName: data['carName'],
+            //   carBrand: data['carBrand'],
+            //   carPlateNum: data['carPlateNum'],
+            //   carType: data['carType'],
+            // ),
+            );
   }
 
   //method untuk get data car for current driver from car collection*
   //check based on carplateNum*
   Future<Car> getCarInfoCollection(String carPlateNum) async {
-    return carCollection.doc(carPlateNum).get().then((data) => Car(
-          // carName: data['carName'],
-          carBrand: data['carBrand'],
-          carPlateNum: data['carPlateNum'],
-          carType: data['carType'],
-        ));
+    return carCollection
+        .doc(carPlateNum)
+        .get()
+        .then((data) => Car.fromFirestore(data)
+            //   Car(
+            //   // carName: data['carName'],
+            //   carBrand: data['carBrand'],
+            //   carPlateNum: data['carPlateNum'],
+            //   carType: data['carType'],
+            //   parkingStatus: data['parkingStatus']
+            // ),
+            );
   }
 
   Future<double> getWalletBalance() async {

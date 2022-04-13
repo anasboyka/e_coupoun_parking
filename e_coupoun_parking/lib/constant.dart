@@ -1,6 +1,7 @@
 //coding untuk constant variable or data nak guna kat file coding lain
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const kprimaryColor = Color(0xff15B73E);
@@ -25,4 +26,15 @@ Widget gaph({double h = 20}) {
   return SizedBox(
     height: h.h,
   );
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }

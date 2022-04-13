@@ -2,25 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Compound {
   final double amount;
-  final bool read;
-  final String status;
-  final DateTime dateCompoundStart;
-  final DateTime dateCompoundEnd;
+  final bool isPaid;
+  final String carId;
+  final DateTime dateIssued;
   final DateTime? datePaid;
-  final DocumentReference? officerId;
-  final DocumentReference? parkingId;
+  final String officerId;
+  final String locationId;
+  final String locationName;
   final DocumentSnapshot? snapshot;
   final DocumentReference? reference;
   final String? documentID;
 
   Compound({
     required this.amount,
-    required this.read,
-    required this.status,
-    required this.dateCompoundStart,
-    required this.dateCompoundEnd,
-    this.officerId,
-    this.parkingId,
+    required this.isPaid,
+    required this.carId,
+    required this.dateIssued,
+    required this.officerId,
+    required this.locationId,
+    required this.locationName,
     this.datePaid,
     this.snapshot,
     this.reference,
@@ -32,14 +32,14 @@ class Compound {
     dynamic map = snapshot.data();
 
     return Compound(
-      amount: map['amount'],
-      read: map['read'],
-      status: map['status'],
-      dateCompoundStart: map['dateCompoundStart']?.toDate(),
-      dateCompoundEnd: map['dateCompoundEnd']?.toDate(),
-      datePaid: map['datePaid']?.toDate() ?? null,
+      amount: map['amount'].toDouble(),
+      isPaid: map['isPaid'],
+      carId: map['carId'],
+      dateIssued: map['dateIssued']?.toDate(),
       officerId: map['officerId'],
-      parkingId: map['parkingId'],
+      locationId: map['locationId'],
+      locationName: map['locationName'],
+      datePaid: map['dateIssued']?.toDate() ?? null,
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -51,50 +51,52 @@ class Compound {
 
     return Compound(
       amount: map['amount'],
-      read: map['read'],
-      status: map['status'],
-      dateCompoundStart: map['dateCompoundStart']?.toDate(),
-      dateCompoundEnd: map['dateCompoundEnd']?.toDate(),
-      datePaid: map['datePaid']?.toDate() ?? null,
+      isPaid: map['isPaid'],
+      carId: map['carId'],
+      dateIssued: map['dateIssued']?.toDate(),
       officerId: map['officerId'],
-      parkingId: map['parkingId'],
+      locationId: map['locationId'],
+      locationName: map['locationName'],
+      datePaid: map['datePaid']?.toDate() ?? null,
     );
   }
 
   Map<String, dynamic> toMap() => {
         'amount': amount,
-        'read': read,
-        'status': status,
-        'dateCompoundStart': dateCompoundStart,
-        'dateCompoundEnd': dateCompoundEnd,
+        'isPaid': isPaid,
+        'carId': carId,
+        'dateIssued': dateIssued,
+        'officerId': officerId,
         'datePaid': datePaid,
+        'locationId': locationId,
+        'locationName': locationName
       };
 
   Compound copyWith({
     required double amount,
-    required bool read,
-    required String status,
-    required DateTime dateCompoundStart,
-    required DateTime dateCompoundEnd,
+    required bool isPaid,
+    required String carId,
+    required DateTime dateIssued,
     DateTime? datePaid,
-    required DocumentReference officerId,
-    required DocumentReference parkingId,
+    required String officerId,
+    required String locationId,
+    required String locationName,
   }) {
     return Compound(
       amount: amount,
-      read: read,
-      status: status,
-      dateCompoundStart: dateCompoundStart,
-      dateCompoundEnd: dateCompoundEnd,
+      isPaid: isPaid,
+      carId: carId,
+      dateIssued: dateIssued,
       datePaid: datePaid,
       officerId: officerId,
-      parkingId: parkingId,
+      locationId: locationId,
+      locationName: locationName,
     );
   }
 
   @override
   String toString() {
-    return '${amount.toString()}, ${read.toString()}, ${status.toString()}, ${dateCompoundStart.toString()},${dateCompoundEnd.toString()}, ${datePaid.toString()}, ';
+    return '${amount.toString()}, ${isPaid.toString()}, ${carId.toString()}, ${dateIssued.toString()},${officerId.toString()}, ${datePaid.toString()}, ';
   }
 
   @override
