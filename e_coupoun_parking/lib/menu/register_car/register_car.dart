@@ -120,127 +120,118 @@ class _RegisterCarState extends State<RegisterCar> {
     Size size = MediaQuery.of(context).size;
     final driver = Provider.of<Driveruid?>(context);
 
-    return MultiProvider(
-      providers: [
-        StreamProvider<List<Car>>.value(
-          initialData: [],
-          value: FirebaseService(uid: driver!.uid).userCars,
-        ),
-      ],
-      child: Scaffold(
-        appBar: registerCarAppbarDesign(),
-        body: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              color: Color(0xffF1F1F1),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 0.131 * size.height,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color(0xffE1F9E0),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      ),
-                      boxShadow: [
-                        BoxShadow(color: Colors.grey, blurRadius: 6),
+    return Scaffold(
+      appBar: registerCarAppbarDesign(),
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            color: Color(0xffF1F1F1),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: 0.131 * size.height,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color(0xffE1F9E0),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey, blurRadius: 6),
+                    ],
+                  ),
+                  child: SizedBox(
+                    width: size.width / 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Registered Car',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16.sp,
+                            color: const Color(0xff000000),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(height: 14.h),
+                        StreamBuilder(
+                            stream: FirebaseService(uid: driver!.uid).userCars,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<Car> carList = snapshot.data! as List<Car>;
+                                return Text(
+                                  carList.length.toString().padLeft(2, '0'),
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 30.sp,
+                                    color: const Color(0xff000000),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                );
+                              } else {
+                                return Text(
+                                  '00',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 30.sp,
+                                    color: const Color(0xff000000),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                );
+                              }
+                            })
                       ],
                     ),
-                    child: SizedBox(
-                      width: size.width / 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Registered Car',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 16.sp,
-                              color: const Color(0xff000000),
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          SizedBox(height: 14.h),
-                          StreamBuilder(
-                              stream: FirebaseService(uid: driver.uid).userCars,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  List<Car> carList =
-                                      snapshot.data! as List<Car>;
-                                  return Text(
-                                    carList.length.toString().padLeft(2, '0'),
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 30.sp,
-                                      color: const Color(0xff000000),
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  );
-                                } else {
-                                  return Text(
-                                    '00',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 30.sp,
-                                      color: const Color(0xff000000),
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  );
-                                }
-                              })
-                        ],
-                      ),
-                    ),
                   ),
-                  SizedBox(height: 40.h),
-                  registerCarDesign(),
-                  Padding(
-                    padding: EdgeInsets.all(20.w),
-                    child: Divider(
-                      color: Colors.black,
-                      height: 1,
-                      thickness: 1,
-                    ),
+                ),
+                SizedBox(height: 40.h),
+                registerCarDesign(),
+                Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Divider(
+                    color: Colors.black,
+                    height: 1,
+                    thickness: 1,
                   ),
-                  StreamBuilder(
-                      stream: FirebaseService(uid: driver.uid).userCars,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          print('hasdata');
-                          return listViewCarDesign(snapshot, driver.uid);
-                        } else {
-                          print('nodata');
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 1,
-                              itemBuilder: (context, snapshot) {
-                                return Padding(
-                                  padding: EdgeInsets.all(8.w),
-                                  child: Center(
-                                    child: SizedBox(
-                                      height: 30.h,
-                                      child: CircularProgressIndicator(),
-                                    ),
+                ),
+                StreamBuilder(
+                    stream: FirebaseService(uid: driver.uid).userCars,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        print('hasdata');
+                        return listViewCarDesign(snapshot, driver.uid);
+                      } else {
+                        print('nodata');
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 1,
+                            itemBuilder: (context, snapshot) {
+                              return Padding(
+                                padding: EdgeInsets.all(8.w),
+                                child: Center(
+                                  child: SizedBox(
+                                    height: 30.h,
+                                    child: CircularProgressIndicator(),
                                   ),
-                                );
-                              });
-                        }
-                      }),
-                  SizedBox(height: 16.h),
-                ],
-              ),
-            )
-          ],
-        ),
+                                ),
+                              );
+                            });
+                      }
+                    }),
+                SizedBox(height: 16.h),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

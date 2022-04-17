@@ -11,7 +11,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //declare instance untuk firebase user based on id
-  Driveruid _userFromFirebaseUser(User? user) {
+  Driveruid? _userFromFirebaseUser(User? user) {
     return Driveruid(uid: user!.uid);
   }
 
