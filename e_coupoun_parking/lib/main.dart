@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       ],
       child: ScreenUtilInit(
           designSize: const Size(428, 926),
-          builder: () {
+          builder: (BuildContext context) {
             return MaterialApp(
               title: 'E-Coupoun Parking',
               debugShowCheckedModeBanner: false,
