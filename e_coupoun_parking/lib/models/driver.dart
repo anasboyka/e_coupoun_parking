@@ -44,7 +44,7 @@ class Driver {
       parkingStatus: map['parkingStatus'] ?? null,
       profileComplete: map['profileComplete'] ?? null,
       walletBalance:
-          map['walletBalance'] != null ? map['walletBalance'].toDouble() : 0,
+          map['walletBalance'] != null ? map['walletBalance'].toDouble() : 0.00,
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,

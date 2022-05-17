@@ -473,8 +473,8 @@ class FirebaseService {
   }
 
   Future<double> getWalletBalance() async {
-    return driverCollection.doc(uid).get().then(
-        (snapshot) => (snapshot.data() as Map)['walletBalance'].toDouble());
+    return driverCollection.doc(uid).get().then((snapshot) =>
+        (snapshot.data() as Map)['walletBalance']?.toDouble() ?? 0.00);
   }
 
   //method untuk get data number of cars for current driver from driver collection*
