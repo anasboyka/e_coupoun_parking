@@ -38,9 +38,6 @@ class RouteGenerator {
             child: child,
           );
         });
-      // case '/subBluebook':
-      //   return CupertinoPageRoute(
-      //       builder: (_) => SubBluebook(bluebookdata: args));
       case '/home':
         return PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) {

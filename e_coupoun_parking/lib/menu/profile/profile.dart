@@ -144,15 +144,7 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
                     Navigator.of(context).pop();
                   } else if (title == 'Save') {
                     await FirebaseService(uid: driver!.uid)
-                        .updateDriverDataCollection(driver
-                            // driver.username,
-                            // driver.name,
-                            // driver.phoneNum,
-                            // driver.icNum,
-                            // driver.birthDate,
-                            // driver.profileComplete,
-                            // driver.parkingStatus,
-                            );
+                        .updateDriverDataCollection(driver);
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   } else {
                     Navigator.of(context).pop();
@@ -175,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> with InputValidationMixin {
   @override
   void initState() {
     driverInfo = widget.argument!['driverInfo'];
-    print(driverInfo!.name);
+    // print(driverInfo!.name);
     initDriverData();
     // TODO: implement initState
     //widget.argument!['driverinfo']==null?usernamecon = new TextEditingController():usernamecon = new TextEditingController();

@@ -24,7 +24,6 @@ class Car {
   });
 
   factory Car.fromFirestore(DocumentSnapshot snapshot) {
-    // if (snapshot == null) return null;
     dynamic map = snapshot.data()!;
 
     return Car(

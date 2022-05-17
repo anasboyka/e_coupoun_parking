@@ -42,15 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.initState();
   }
-  //test
 
   @override
   Widget build(BuildContext context) {
-    // final driveruid = Provider.of<Driveruid?>(context);
-    //final firebaseProvider = Provider.of<FirebaseProvider?>(context);
-
-    final driverinfo = Provider.of<Driver?>(context);
-
+    final driverinfo = Provider.of<Driver>(context);
+    print(driverinfo);
     return Scaffold(
       appBar: appBarDesign(context),
       drawer: Drawer(
@@ -123,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           onTap: () {
             print(title);
+            print(args);
             Navigator.of(context).pushNamed(navigationPath, arguments: args);
           },
         ),

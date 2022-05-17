@@ -164,6 +164,7 @@ class _RegisterCarState extends State<RegisterCar> {
                         StreamBuilder(
                             stream: FirebaseService(uid: driver!.uid).userCars,
                             builder: (context, snapshot) {
+                              print(snapshot.hasError);
                               if (snapshot.hasData) {
                                 List<Car> carList = snapshot.data! as List<Car>;
                                 return Text(

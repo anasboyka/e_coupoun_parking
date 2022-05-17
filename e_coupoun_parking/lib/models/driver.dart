@@ -37,11 +37,14 @@ class Driver {
       name: map['name'] ?? null,
       username: map['username'] ?? null,
       phoneNum: map['phoneNum'] ?? null,
-      birthDate: map['dateOfBirth'].toDate() ?? DateTime.parse("1111-11-11"),
+      birthDate: map['dateOfBirth'] != null
+          ? map['dateOfBirth'].toDate()
+          : DateTime.parse("1111-11-11"),
       icNum: map['icNum'] ?? null,
       parkingStatus: map['parkingStatus'] ?? null,
       profileComplete: map['profileComplete'] ?? null,
-      walletBalance: map['walletBalance'].toDouble() ?? 0,
+      walletBalance:
+          map['walletBalance'] != null ? map['walletBalance'].toDouble() : 0,
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,

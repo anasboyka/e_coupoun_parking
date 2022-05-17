@@ -125,18 +125,6 @@ class FirebaseService {
     // });
   }
 
-  //carPath
-  // Future updateCarPathInDriverCollection(String carPlateNum) async {
-  //   return await driverCollection
-  //       .doc(uid)
-  //       .collection('Cars')
-  //       .doc(carPlateNum)
-  //       .set({
-  //     //"carName": carName,
-  //     "carId": carCollection.doc(carPlateNum),
-  //   });
-  // }
-
   //query untuk driver punya subcollection from cars punya collection*
   //kalau data tu document id exist, update data tu... kalau x exist, tambah data tu
   Future updateDriverDataInCarCollection(
@@ -159,16 +147,6 @@ class FirebaseService {
         // }
         );
   }
-
-  // Future updateDriverPathInCarCollection(String? carPlateNum) async {
-  //   return await carCollection
-  //       .doc(carPlateNum)
-  //       .collection('Drivers')
-  //       .doc(this.uid)
-  //       .set({
-  //     "driverId": driverCollection.doc(this.uid),
-  //   });
-  // }
 
   //method untuk get data from firestore
   //guna untuk generate List dalam bentuk instance Car(refer car.dart dalam folder models)*
@@ -328,6 +306,7 @@ class FirebaseService {
   //method untuk dapat stream data untuk sorang driver sahaja from firestore based on current user id*
   Stream<Driver?> get driver {
     return driverCollection.doc(this.uid).snapshots().map((doc) {
+      // print(Driver.fromFirestore(doc));
       return Driver.fromFirestore(doc);
     });
   }
