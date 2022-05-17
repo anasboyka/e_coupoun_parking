@@ -7,9 +7,11 @@ import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/models/location_parking.dart';
 import 'package:e_coupoun_parking/models/parking.dart';
 import 'package:e_coupoun_parking/models/transaction_history.dart';
+import 'package:e_coupoun_parking/provider/location_provider.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -32,19 +34,22 @@ class _ParkingPageState extends State<ParkingPage> {
 
   GoogleMapController? mapController;
   BitmapDescriptor? sourceIcon;
-  Set<Marker> _markers = Set<Marker>();
+  //Set<Marker> _markers = Set<Marker>();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14,
-  );
+  // static final CameraPosition _kGooglePlex = CameraPosition(
+  //   target: LatLng(37.42796133580664, -122.085749655962),
+  //   zoom: 14,
+  // );
 
   LatLng? currentLocation;
+  Position? pos;
+  late CameraPosition _currentPos;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // print(widget.argument?["position"]);
     _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     //dateTime = DateTime.now();
   }
@@ -61,7 +66,16 @@ class _ParkingPageState extends State<ParkingPage> {
   Widget build(BuildContext context) {
     //Car? car = data1?['car'] ?? null; //widget.argument?['car'] ?? null;
     //print(car?.carPlateNum ?? 'null');
+
     Driveruid driveruid = Provider.of<Driveruid>(context);
+    pos = Provider.of<LocationProvider>(context).position;
+    // print(pos?.latitude);
+    _currentPos = CameraPosition(
+      target: LatLng(pos?.latitude ?? 37.42796133580664,
+          pos?.longitude ?? -122.085749655962),
+      zoom: pos != null ? 18 : 14,
+    );
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: parkingAppbarDesign('Parking', driveruid.uid),
@@ -74,10 +88,11 @@ class _ParkingPageState extends State<ParkingPage> {
                 width: double.infinity,
                 child: GoogleMap(
                   mapType: MapType.normal,
-                  initialCameraPosition: _kGooglePlex,
+                  initialCameraPosition: _currentPos,
                   onMapCreated: onMapCreated,
-                  myLocationButtonEnabled: true,
+                  // myLocationButtonEnabled: true,
                   myLocationEnabled: true,
+                  padding: EdgeInsets.only(top: 90),
                 )
                 //color: Colors.blue,
                 ),
@@ -552,7 +567,7 @@ class _ParkingPageState extends State<ParkingPage> {
   }
 
   void onMapCreated(GoogleMapController controller) async {
-    final LatLngBounds visibleRegion = await controller.getVisibleRegion();
+    //final LatLngBounds visibleRegion = await controller.getVisibleRegion();
     setState(() {
       mapController = controller;
     });

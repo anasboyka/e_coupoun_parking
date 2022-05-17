@@ -5,11 +5,13 @@ import 'dart:io';
 import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/provider/firebaseProvider.dart';
+import 'package:e_coupoun_parking/provider/location_provider.dart';
 import 'package:e_coupoun_parking/services/auth.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:e_coupoun_parking/services/mysql_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -46,9 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final driverinfo = Provider.of<Driver>(context);
-    print(driverinfo);
+    final location = Provider.of<LocationProvider>(context);
+
+    print(location.position?.latitude);
     return Scaffold(
-      appBar: appBarDesign(context),
+      appBar: appBarDesign(context, driverinfo),
       drawer: Drawer(
         child: driverinfo == null
             ? Text('null')
@@ -57,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height -
-              appBarDesign(context).preferredSize.height -
+              appBarDesign(context, driverinfo).preferredSize.height -
               MediaQuery.of(context).padding.top,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -65,8 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  menuDesign('Parking', 'assets/icons/parkingIcon.png',
-                      '/parking', {"driverInfo": driverinfo}),
+                  menuDesign(
+                      'Parking', 'assets/icons/parkingIcon.png', '/parking', {
+                    "driverInfo": driverinfo,
+                  }),
                   menuDesign('Register Car', 'assets/icons/carIcon.png',
                       '/registercar', driverinfo)
                 ],
@@ -139,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  AppBar appBarDesign(BuildContext context) {
+  AppBar appBarDesign(BuildContext context, Driver? driver) {
     return AppBar(
       toolbarHeight: Platform.isAndroid
           ? 190 - MediaQuery.of(context).padding.top
@@ -213,7 +219,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         textAlign: TextAlign.left,
                       ),
                       Text(
-                        'RM 0.00',
+                        driver != null
+                            ? 'RM ${driver.walletBalance?.toStringAsFixed(2) ?? '0.00'}'
+                            : 'RM 0.00', //'RM 0.00',
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 30,
@@ -249,7 +257,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               textAlign: TextAlign.left,
                             )),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/ewallet',
+                              arguments: {"driverInfo": driver});
+                        },
                       ),
                     ],
                   ),
