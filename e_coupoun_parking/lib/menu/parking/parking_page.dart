@@ -92,7 +92,6 @@ class _ParkingPageState extends State<ParkingPage> {
                   onMapCreated: onMapCreated,
                   // myLocationButtonEnabled: true,
                   myLocationEnabled: true,
-                  padding: EdgeInsets.only(top: 90),
                 )
                 //color: Colors.blue,
                 ),
@@ -309,6 +308,11 @@ class _ParkingPageState extends State<ParkingPage> {
                                 if (value != null) {
                                   locationParking =
                                       (value as Map)['locationParking'];
+                                  mapController!.animateCamera(
+                                      CameraUpdate.newLatLng(LatLng(
+                                          locationParking!.geoPoint.latitude,
+                                          locationParking!
+                                              .geoPoint.longitude)));
                                 } else {
                                   locationParking = null;
                                 }

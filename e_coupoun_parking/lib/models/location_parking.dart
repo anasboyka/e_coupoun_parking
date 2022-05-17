@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LocationParking {
-  final String locationName;
-  final String locationSubname;
-  final DocumentSnapshot? snapshot;
-  final DocumentReference? reference;
-  final String? documentID;
+  String locationName;
+  String locationSubname;
+  GeoPoint geoPoint;
+  DocumentSnapshot? snapshot;
+  DocumentReference? reference;
+  String? documentID;
 
   LocationParking({
     required this.locationName,
     required this.locationSubname,
+    required this.geoPoint,
     this.snapshot,
     this.reference,
     this.documentID,
@@ -22,6 +24,7 @@ class LocationParking {
     return LocationParking(
       locationName: map['locationName'],
       locationSubname: map['locationSubname'],
+      geoPoint: map['geoPoint'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -32,23 +35,26 @@ class LocationParking {
     // if (map == null) return null;
 
     return LocationParking(
-      locationName: map['locationName'],
-      locationSubname: map['locationSubname'],
-    );
+        locationName: map['locationName'],
+        locationSubname: map['locationSubname'],
+        geoPoint: map['geoPoint']);
   }
 
   Map<String, dynamic> toMap() => {
         'locationName': locationName,
         'locationSubname': locationSubname,
+        'geoPoint': geoPoint,
       };
 
   LocationParking copyWith({
     String? locationName,
     String? locationSubname,
+    GeoPoint? geoPoint,
   }) {
     return LocationParking(
       locationName: locationName ?? this.locationName,
       locationSubname: locationSubname ?? this.locationSubname,
+      geoPoint: geoPoint ?? this.geoPoint,
     );
   }
 
