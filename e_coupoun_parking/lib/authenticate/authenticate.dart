@@ -145,7 +145,7 @@ class _AuthenticationState extends State<Authentication> {
               Padding(
                 padding: EdgeInsets.only(top: 0.05 * size.height),
                 child: Image.asset(
-                  'assets/icons/logo1.png',
+                  'assets/icons/logo.png',
                   height: 185,
                 ),
               ),

@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final driverinfo = Provider.of<Driver>(context);
+    final driverinfo = Provider.of<Driver?>(context);
     print(driverinfo);
     return Scaffold(
       appBar: appBarDesign(context),
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Image.asset(
-                  'assets/icons/logo1.png',
+                  'assets/icons/logo.png',
                   width: 99,
                 )
               ],
