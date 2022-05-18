@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final driverinfo = Provider.of<Driver>(context);
+    final driverinfo = Provider.of<Driver?>(context);
     final location = Provider.of<LocationProvider>(context);
 
     print(location.position?.latitude);

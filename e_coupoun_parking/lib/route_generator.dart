@@ -116,13 +116,13 @@ class RouteGenerator {
       case '/locationSelection':
         return CupertinoPageRoute(
           builder: (_) => LocationSelection(
-            args: args as Map<String?, dynamic>,
+            args: args as Map<String?, dynamic>?,
           ),
         );
       case '/carSelection':
         return CupertinoPageRoute(
           builder: (_) => CarSelection(
-            args: args as Map<String?, dynamic>,
+            args: args as Map<String?, dynamic>?,
           ),
         );
       default:
