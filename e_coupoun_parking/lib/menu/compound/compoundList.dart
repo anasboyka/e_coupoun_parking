@@ -216,7 +216,7 @@ class _CompoundPageState extends State<CompoundPage> {
               searchCon.text.isNotEmpty
                   ? FutureBuilder(
                       future: FirebaseService(uid: driveruid.uid)
-                          .getCarCompoundListById(searchCon.text),
+                          .getCarCompoundListById(searchCon.text.toUpperCase()),
                       builder: (_, AsyncSnapshot snapshot) {
                         if (snapshot.hasData) {
                           print(snapshot.data);
