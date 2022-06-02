@@ -50,7 +50,9 @@ class HistoryPage extends StatelessWidget {
                         if (snapshot.hasData) {
                           List<Parking> parkings = snapshot.data;
                           return Text(
-                            'Last parking: ${DateFormat("yyyy-MM-dd").format(parkings[0].date).toString()}',
+                            parkings.isEmpty
+                                ? 'No parking History'
+                                : 'Last parking: ${DateFormat("yyyy-MM-dd").format(parkings[0].date).toString()}',
                             style: TextStyle(
                               fontFamily: 'SFProText-Regular',
                               fontSize: 14,
@@ -60,7 +62,8 @@ class HistoryPage extends StatelessWidget {
                             textAlign: TextAlign.left,
                           );
                         } else {
-                          return CircularProgressIndicator.adaptive();
+                          return Center(
+                              child: CircularProgressIndicator.adaptive());
                         }
                       }),
                   gaph(),

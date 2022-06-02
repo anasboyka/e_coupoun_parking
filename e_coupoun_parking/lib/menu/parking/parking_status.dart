@@ -224,10 +224,10 @@ class ParkingStatus extends StatelessWidget {
                             onPressed: () async {
                               Navigator.of(context).pop();
                               await FirebaseService(uid: driveruid.uid)
-                                  .updateDriverParkingStatus(false);
+                                  .updateDriverParkingStatus(false, null);
                               await FirebaseService(uid: driveruid.uid)
                                   .updateCarParkingStatus(
-                                      parking.carId!, false);
+                                      parking.carId!, false, null);
                             },
                           ),
                         )

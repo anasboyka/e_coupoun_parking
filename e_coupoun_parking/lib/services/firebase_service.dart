@@ -203,14 +203,6 @@ class FirebaseService {
     return snapshot.docs.map((doc) {
       //Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
       return Driver.fromFirestore(doc);
-      // Driver(
-      //   uid: doc.id,
-      //   username: data['username'],
-      //   phoneNum: data['phoneNum'],
-      //   name: data['name'],
-      //   icNum: data['icNum'],
-      //   birthDate: data['dateOfBirth'],
-      // );
     }).toList();
   }
 
@@ -331,28 +323,24 @@ class FirebaseService {
   //method untuk get data untuk driver from firestore
   //convert requested data dalam bentuk instance Driver
   Future<Driver?> get driverinfo async {
-    return await driverCollection.doc(this.uid).get().then(
-        (data) => Driver.fromFirestore(data)
-        // Driver(
-        //     uid: this.uid!,
-        //     name: data['name'],
-        //     icNum: data['icNum'],
-        //     birthDate:
-        //         data['dateOfBirth']?.toDate() ?? DateTime.parse("1111-11-11"),
-        //     phoneNum: data['phoneNum'],
-        //     username: data['username']),
-        );
+    return await driverCollection
+        .doc(this.uid)
+        .get()
+        .then((data) => Driver.fromFirestore(data));
   }
 
-  Future updateDriverParkingStatus(bool status) async {
+  Future updateDriverParkingStatus(bool status, String? locationId) async {
     return await driverCollection.doc(uid).update({
       'parkingStatus': status,
+      'locationId': locationId,
     });
   }
 
-  Future updateCarParkingStatus(String carPLateNum, bool status) async {
+  Future updateCarParkingStatus(
+      String carPLateNum, bool status, String? locationId) async {
     return await carCollection.doc(carPLateNum).update({
       'parkingStatus': status,
+      'locationId': locationId,
     });
   }
 

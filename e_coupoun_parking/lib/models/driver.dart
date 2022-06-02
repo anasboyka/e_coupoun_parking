@@ -8,6 +8,7 @@ class Driver {
   final String? icNum;
   final DateTime? birthDate;
   final bool? parkingStatus;
+  final String? locationId;
   final bool? profileComplete;
   final double? walletBalance;
   final DocumentSnapshot? snapshot;
@@ -22,6 +23,7 @@ class Driver {
     this.icNum,
     this.birthDate,
     this.parkingStatus,
+    this.locationId,
     this.profileComplete,
     this.walletBalance,
     this.snapshot,
@@ -42,6 +44,7 @@ class Driver {
           : DateTime.parse("1111-11-11"),
       icNum: map['icNum'] ?? null,
       parkingStatus: map['parkingStatus'] ?? null,
+      locationId: map['locationId'] ?? null,
       profileComplete: map['profileComplete'] ?? null,
       walletBalance:
           map['walletBalance'] != null ? map['walletBalance'].toDouble() : 0.00,
@@ -58,6 +61,7 @@ class Driver {
         'dateOfBirth': birthDate,
         'icNum': icNum,
         'parkingStatus': parkingStatus,
+        'locationId': locationId,
         'profileComplete': profileComplete,
         'walletBalance': walletBalance,
       };
