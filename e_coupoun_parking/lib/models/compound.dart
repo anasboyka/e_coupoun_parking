@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Compound {
-  //final double amount;
+  final double amount;
   final bool isPaid;
   final String carId;
   final String carBrand;
@@ -11,13 +11,13 @@ class Compound {
   final String locationId;
   final String locationName;
   final String invoiceNum;
-
+  final String offenceType;
   final DocumentSnapshot? snapshot;
   final DocumentReference? reference;
   final String? documentID;
 
   Compound({
-    //required this.amount,
+    required this.amount,
     required this.isPaid,
     required this.carId,
     required this.carBrand,
@@ -26,6 +26,7 @@ class Compound {
     required this.locationId,
     required this.locationName,
     required this.invoiceNum,
+    required this.offenceType,
     this.datePaid,
     this.snapshot,
     this.reference,
@@ -37,7 +38,7 @@ class Compound {
     dynamic map = snapshot.data();
 
     return Compound(
-      //amount: map['amount'].toDouble(),
+      amount: map['amount'].toDouble(),
       isPaid: map['isPaid'],
       carId: map['carId'],
       carBrand: map['carBrand'],
@@ -47,6 +48,7 @@ class Compound {
       locationName: map['locationName'],
       datePaid: map['dateIssued']?.toDate(),
       invoiceNum: map['invoiceNum'],
+      offenceType: map['offenceType'],
       snapshot: snapshot,
       reference: snapshot.reference,
       documentID: snapshot.id,
@@ -57,21 +59,21 @@ class Compound {
     //if (map == null) return null;
 
     return Compound(
-      //amount: map['amount'],
-      isPaid: map['isPaid'],
-      carId: map['carId'],
-      carBrand: map['carBrand'],
-      dateIssued: map['dateIssued']?.toDate(),
-      officerId: map['officerId'],
-      locationId: map['locationId'],
-      locationName: map['locationName'],
-      datePaid: map['datePaid']?.toDate(),
-      invoiceNum: map['invoiceNum'],
-    );
+        amount: map['amount'],
+        isPaid: map['isPaid'],
+        carId: map['carId'],
+        carBrand: map['carBrand'],
+        dateIssued: map['dateIssued']?.toDate(),
+        officerId: map['officerId'],
+        locationId: map['locationId'],
+        locationName: map['locationName'],
+        datePaid: map['datePaid']?.toDate(),
+        invoiceNum: map['invoiceNum'],
+        offenceType: map['offenceType']);
   }
 
   Map<String, dynamic> toMap() => {
-        //'amount': amount,
+        'amount': amount,
         'isPaid': isPaid,
         'carId': carId,
         'carBrand': carBrand,
@@ -81,22 +83,23 @@ class Compound {
         'locationId': locationId,
         'locationName': locationName,
         'invoiceNum': invoiceNum,
+        'offenceType': offenceType,
       };
 
-  Compound copyWith({
-    required double amount,
-    required bool isPaid,
-    required String carId,
-    required String carBrand,
-    required DateTime dateIssued,
-    DateTime? datePaid,
-    required String officerId,
-    required String locationId,
-    required String locationName,
-    required String invoiceNum,
-  }) {
+  Compound copyWith(
+      {required double amount,
+      required bool isPaid,
+      required String carId,
+      required String carBrand,
+      required DateTime dateIssued,
+      DateTime? datePaid,
+      required String officerId,
+      required String locationId,
+      required String locationName,
+      required String invoiceNum,
+      required String offenceType}) {
     return Compound(
-      //amount: this.amount,
+      amount: this.amount,
       isPaid: this.isPaid,
       carId: this.carId,
       carBrand: this.carBrand,
@@ -106,6 +109,7 @@ class Compound {
       locationId: this.locationId,
       locationName: this.locationName,
       invoiceNum: this.invoiceNum,
+      offenceType: this.offenceType,
     );
   }
 

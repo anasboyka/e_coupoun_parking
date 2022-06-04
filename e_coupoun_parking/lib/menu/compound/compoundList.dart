@@ -259,7 +259,7 @@ class _CompoundPageState extends State<CompoundPage> {
                                           textAlign: TextAlign.left,
                                         ),
                                         trailing: Text(
-                                          'Date Issued ${DateFormat("yyyy-MM-dd").format(compoundList[index].dateIssued).toString()}',
+                                          'Date Issued ${DateFormat("dd/MM/yyyy").format(compoundList[index].dateIssued).toString()}',
                                           style: TextStyle(
                                             fontFamily: 'Roboto',
                                             fontSize: 12,
