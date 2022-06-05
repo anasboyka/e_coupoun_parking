@@ -1,4 +1,5 @@
 import 'package:e_coupoun_parking/constant.dart';
+import 'package:e_coupoun_parking/custom_widget/custom_expansionpanel.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
 import 'package:provider/provider.dart';
@@ -222,58 +223,7 @@ class _CompoundPageState extends State<CompoundPage> {
                           print(snapshot.data);
                           List<Compound> compoundList = snapshot.data;
                           if (compoundList.length > 0) {
-                            return ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: compoundList.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10.h, horizontal: 0),
-                                    child: Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.white,
-                                      ),
-                                      child: ListTile(
-                                        horizontalTitleGap: 0,
-                                        leading: Container(
-                                          height: 20,
-                                          width: 20,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: compoundList[index].isPaid
-                                                ? Colors.green
-                                                : Colors.red,
-                                          ),
-                                        ),
-                                        title: Text(
-                                          compoundList[index].locationName,
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 14,
-                                            color: const Color(0xff77838f),
-                                            letterSpacing: 1.0000000305175782,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                        trailing: Text(
-                                          'Date Issued ${DateFormat("dd/MM/yyyy").format(compoundList[index].dateIssued).toString()}',
-                                          style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 12,
-                                            color: compoundList[index].isPaid
-                                                ? Color(0xff77838F)
-                                                : Color(0xffe30c0c),
-                                            letterSpacing: 0.8571428833007813,
-                                          ),
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                });
+                            return listviewCompoundView(compoundList);
                           } else {
                             return ListTile(
                               shape: RoundedRectangleBorder(
@@ -302,6 +252,102 @@ class _CompoundPageState extends State<CompoundPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget listviewCompoundView(List<Compound> compoundList) {
+    return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: compoundList.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+              color: Colors.white,
+            ),
+            child: Theme(
+              data:
+                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                backgroundColor: Colors.transparent,
+                expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                title: Row(
+                  children: [
+                    listTileData(
+                        'Offence Location', compoundList[index].locationName)
+                  ],
+                ),
+                children: [
+                  gaph(h: 1),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Divider(
+                      color: kgreycolor1,
+                      thickness: 1.5,
+                      height: 0,
+                    ),
+                  ),
+                  gaph(h: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        listTileData(
+                          'Offence Date & Time',
+                          DateFormat('dd-MM-yyyy')
+                              .format(compoundList[index].dateIssued),
+                        ),
+                        const Spacer(),
+                        listTileData(
+                          'Amount',
+                          'RM ${compoundList[index].amount.toStringAsFixed(2)}',
+                        ),
+                      ],
+                    ),
+                  ),
+                  gaph(h: 4),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: listTileData(
+                      'Type Of Offence',
+                      compoundList[index].offenceType,
+                    ),
+                  ),
+                  gaph(h: 12),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Column listTileData(
+    String title,
+    String data,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 10,
+            color: const Color(0xff808080),
+          ),
+        ),
+        gaph(h: 3),
+        Text(
+          data, //'Hentian Tikam Batu',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 12,
+            color: const Color(0xff000000),
+            fontWeight: FontWeight.w700,
+          ),
+        )
+      ],
     );
   }
 

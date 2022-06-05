@@ -2,6 +2,7 @@ import 'package:e_coupoun_parking/models/driver.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
 import 'package:e_coupoun_parking/models/transaction_history.dart';
 import 'package:e_coupoun_parking/services/firebase_service.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../constant.dart';
@@ -219,7 +220,7 @@ class _EwalletState extends State<Ewallet> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 20.w),
                                     child: Text(
-                                      'Latest Transaction',
+                                      'E-Wallet',
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.bold,
@@ -269,14 +270,32 @@ class _EwalletState extends State<Ewallet> {
                                                             '${transaction.description?['subtitle'] ?? null}',
                                                           )
                                                         : null,
-                                                trailing: Text(
-                                                  '${transaction.isPaid ? '-' : '+'} RM ${transaction.amount.toStringAsFixed(2)}',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: transaction.isPaid
-                                                          ? Colors.red
-                                                          : Colors.green),
+                                                trailing: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      '${transaction.isPaid ? '-' : '+'} RM ${transaction.amount.toStringAsFixed(2)}',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: transaction
+                                                                  .isPaid
+                                                              ? Colors.red
+                                                              : Colors.green),
+                                                    ),
+                                                    gaph(h: 7),
+                                                    Text(
+                                                      '${DateFormat('dd-MM-yyyy').format(transaction.date)}', //'22-05-2022',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Roboto',
+                                                        fontSize: 12,
+                                                        color: const Color(
+                                                            0xff808080),
+                                                      ),
+                                                      softWrap: false,
+                                                    )
+                                                  ],
                                                 ),
                                               );
                                             },
