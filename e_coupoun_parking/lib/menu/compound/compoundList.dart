@@ -261,61 +261,64 @@ class _CompoundPageState extends State<CompoundPage> {
         itemCount: compoundList.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              color: Colors.white,
-            ),
-            child: Theme(
-              data:
-                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                backgroundColor: Colors.transparent,
-                expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                title: Row(
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 15),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.r),
+                color: Colors.white,
+              ),
+              child: Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  backgroundColor: Colors.transparent,
+                  expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                  title: Row(
+                    children: [
+                      listTileData(
+                          'Offence Location', compoundList[index].locationName)
+                    ],
+                  ),
                   children: [
-                    listTileData(
-                        'Offence Location', compoundList[index].locationName)
+                    gaph(h: 1),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(
+                        color: kgreycolor1,
+                        thickness: 1.5,
+                        height: 0,
+                      ),
+                    ),
+                    gaph(h: 12),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          listTileData(
+                            'Offence Date & Time',
+                            DateFormat('dd-MM-yyyy')
+                                .format(compoundList[index].dateIssued),
+                          ),
+                          const Spacer(),
+                          listTileData(
+                            'Amount',
+                            'RM ${compoundList[index].amount.toStringAsFixed(2)}',
+                          ),
+                        ],
+                      ),
+                    ),
+                    gaph(h: 4),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: listTileData(
+                        'Type Of Offence',
+                        compoundList[index].offenceType,
+                      ),
+                    ),
+                    gaph(h: 12),
                   ],
                 ),
-                children: [
-                  gaph(h: 1),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Divider(
-                      color: kgreycolor1,
-                      thickness: 1.5,
-                      height: 0,
-                    ),
-                  ),
-                  gaph(h: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        listTileData(
-                          'Offence Date & Time',
-                          DateFormat('dd-MM-yyyy')
-                              .format(compoundList[index].dateIssued),
-                        ),
-                        const Spacer(),
-                        listTileData(
-                          'Amount',
-                          'RM ${compoundList[index].amount.toStringAsFixed(2)}',
-                        ),
-                      ],
-                    ),
-                  ),
-                  gaph(h: 4),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: listTileData(
-                      'Type Of Offence',
-                      compoundList[index].offenceType,
-                    ),
-                  ),
-                  gaph(h: 12),
-                ],
               ),
             ),
           );
