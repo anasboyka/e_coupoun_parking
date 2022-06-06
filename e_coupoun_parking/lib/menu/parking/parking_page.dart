@@ -15,6 +15,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
 
 class ParkingPage extends StatefulWidget {
   Map? argument = {};
@@ -459,6 +460,18 @@ class _ParkingPageState extends State<ParkingPage> {
                             await FirebaseService(uid: driveruid.uid)
                                 .updateDriverWalletBalance(
                                     (price * -1 * 100).round() / 100);
+                            Workmanager().registerOneOffTask(
+                              'parking_status',
+                              'taskName',
+                              inputData: {
+                                'duration': 1,
+                                'driveruid': driveruid.uid,
+                                // 'endTime': _dateTime.add(
+                                //   Duration(minutes: duration),
+                                // ),
+                                'carid': car!.carPlateNum
+                              },
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

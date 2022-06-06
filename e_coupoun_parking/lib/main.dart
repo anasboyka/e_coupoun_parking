@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_coupoun_parking/provider/location_provider.dart';
 import 'package:e_coupoun_parking/services/location_services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:workmanager/workmanager.dart';
 import 'constant.dart';
 import 'models/driver.dart';
 import 'models/driveruid.dart';
@@ -16,10 +17,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 //test windows
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) async {
+//     switch (task) {
+//       case 'taskName':
+//         print('$inputData runninggggg');
+//         print(DateTime.now());
+//         await Future.delayed(Duration(seconds: 3));
+//         // await FirebaseService(uid: inputData['driveruid'])
+//         //     .updateDriverParkingStatus(false, null);
+//         // await FirebaseService(uid: inputData['driveruid'])
+//         //     .updateCarParkingStatus(inputData['carid'], false, null);
+//         print('done');
+//         break;
+//       default:
+//     }
+//     return Future.value(true);
+//   });
+// }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  //Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+
   Position? position = await LocationServices().initPosition();
   runApp(MultiProvider(
     providers: [

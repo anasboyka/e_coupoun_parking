@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:e_coupoun_parking/constant.dart';
 import 'package:e_coupoun_parking/models/car.dart';
 import 'package:e_coupoun_parking/models/driveruid.dart';
@@ -9,8 +11,35 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ParkingStatus extends StatelessWidget {
+class ParkingStatus extends StatefulWidget {
   const ParkingStatus({Key? key}) : super(key: key);
+
+  @override
+  State<ParkingStatus> createState() => _ParkingStatusState();
+}
+
+class _ParkingStatusState extends State<ParkingStatus> {
+  late Timer? _timer;
+  late DateTime _dateTime = DateTime.now();
+  @override
+  void initState() {
+    // TODO: implement initState
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _timer!.cancel();
+    super.dispose();
+  }
+
+  void _getTime() {
+    setState(() {
+      _dateTime = DateTime.now();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +52,13 @@ class ParkingStatus extends StatelessWidget {
           builder: (_, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               Parking parking = snapshot.data; //parkings[0];
+              if (_dateTime.isAfter(parking.endTime)) {
+                print('done');
+                FirebaseService(uid: driveruid.uid)
+                    .updateDriverParkingStatus(false, null);
+                FirebaseService(uid: driveruid.uid)
+                    .updateCarParkingStatus(parking.carId!, false, null);
+              }
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
